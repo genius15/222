@@ -1,8 +1,11 @@
 package com.sogou.mobiletoolassist;
 
+import com.sogou.mobiletoolassist.service.ClearDataService;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +25,7 @@ public class AssistActivity extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		
 	}
 
 	@Override
@@ -60,5 +64,10 @@ public class AssistActivity extends ActionBarActivity {
 			return rootView;
 		}
 	}
-
+	
+	public void onAddNotify(View v){
+		Intent it = new Intent(this,ClearDataService.class);
+		
+		this.startService(it);
+	}
 }
