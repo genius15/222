@@ -41,3 +41,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+bin/AndroidManifest.xml
+bin/classes/android/support/v7/appcompat/R$anim.class
+*.class
+*.cache
+bin/R.txt
