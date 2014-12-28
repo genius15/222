@@ -23,21 +23,11 @@
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/btn_custom_prev"
-            style="@style/btn_custom_style"
-            android:src="@drawable/btn_prev" />
-
-        <ImageButton
-            android:id="@+id/btn_custom_play"
-            style="@style/btn_custom_style"
-            android:contentDescription="播放"
-            android:src="@drawable/btn_play" />
-
-        <ImageButton
             android:id="@+id/btn_custom_next"
             style="@style/btn_custom_style"
-            android:contentDescription="下一首"
-            android:src="@drawable/btn_next" />
+            android:layout_height="match_parent"
+            android:contentDescription="清理垃圾"
+            android:src="@drawable/btn_del" />
     </LinearLayout>
 
     <RelativeLayout
@@ -71,5 +61,16 @@
             android:text="content"
             android:textSize="12sp" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/custom_song_icon"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/relativeLayout1"
+        android:text="@string/ClearBtn"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="10dp" />
 
 </RelativeLayout>
