@@ -1,6 +1,11 @@
 package com.sogou.mobiletoolassist.service;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
+import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.StreamReader;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,6 +20,7 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -33,7 +39,7 @@ public class ClearDataService extends Service implements OnClickListener{
 	@Override
 	public void onCreate(){
 		super.onCreate();
-		Log.e("assist", "create service");
+		Log.e(AssistActivity.myTag, "create clear service");
 		bReceiver = new ButtonBroadcastReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(ACTION_BUTTON);
@@ -45,20 +51,20 @@ public class ClearDataService extends Service implements OnClickListener{
 		
 		mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.drawable.sing_icon);  
         //API3.0 以上的时候显示按钮，否则消失  
-        mRemoteViews.setTextViewText(R.id.tv_custom_song_singer, "周杰伦");  
-        mRemoteViews.setTextViewText(R.id.tv_custom_song_name, "七里香");  
+        mRemoteViews.setTextViewText(R.id.tv_custom_song_singer, "助手测试工具");  
+        mRemoteViews.setTextViewText(R.id.tv_custom_song_name, "zhangshuai203407");  
        
         //点击的事件处理  
         Intent buttonIntent = new Intent(ACTION_BUTTON);  
         /* 上一首按钮 */  
-        buttonIntent.putExtra(INTENT_BUTTONID_TAG, 1);  
-        //这里加了广播，所及INTENT的必须用getBroadcast方法  
-        PendingIntent intent_prev = PendingIntent.getBroadcast(this, 1, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);  
-        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_prev, intent_prev);  
-        /* 播放/暂停  按钮 */  
-        buttonIntent.putExtra(INTENT_BUTTONID_TAG, 2);  
-        PendingIntent intent_paly = PendingIntent.getBroadcast(this, 2, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);  
-        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_play, intent_paly);  
+//        buttonIntent.putExtra(INTENT_BUTTONID_TAG, 1);  
+//        //这里加了广播，所及INTENT的必须用getBroadcast方法  
+//        PendingIntent intent_prev = PendingIntent.getBroadcast(this, 1, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);  
+//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_prev, intent_prev);  
+//        /* 播放/暂停  按钮 */  
+//        buttonIntent.putExtra(INTENT_BUTTONID_TAG, 2);  
+//        PendingIntent intent_paly = PendingIntent.getBroadcast(this, 2, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);  
+//        mRemoteViews.setOnClickPendingIntent(R.id.btn_custom_play, intent_paly);  
         /* 下一首 按钮  */  
         buttonIntent.putExtra(INTENT_BUTTONID_TAG, 3);  
         PendingIntent intent_next = PendingIntent.getBroadcast(this, 3, buttonIntent, PendingIntent.FLAG_UPDATE_CURRENT);  
@@ -69,8 +75,7 @@ public class ClearDataService extends Service implements OnClickListener{
 		Log.i("assist", "start command service");
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 		builder.setContent(mRemoteViews);
-		builder.setContentTitle("助手测试工具");
-		builder.setContentText("加油");
+	
 		
 		builder.setOngoing(true);
 		Notification nf = builder.build();
@@ -97,24 +102,60 @@ public class ClearDataService extends Service implements OnClickListener{
 				int buttonId = intent.getIntExtra(INTENT_BUTTONID_TAG, 0);
 				switch (buttonId) {
 				case 1:
-					Log.d("assist" , "上一首");
-					Toast.makeText(getApplicationContext(), "上一首", Toast.LENGTH_SHORT).show();
-					break;
+//					Log.d("assist" , "上一首");
+//					Toast.makeText(getApplicationContext(), "上一首", Toast.LENGTH_SHORT).show();
+//					break;
 				case 2:
-					String play_status = "";
-					
-					//showButtonNotify();
-					Log.d("assist" , play_status);
-					Toast.makeText(getApplicationContext(), play_status, Toast.LENGTH_SHORT).show();
-					break;
+//					String play_status = "";
+//					
+//					//showButtonNotify();
+//					Log.d("assist" , play_status);
+//					Toast.makeText(getApplicationContext(), play_status, Toast.LENGTH_SHORT).show();
+//					break;
 				case 3:
-					Log.d("assist" , "下一首");
-					Toast.makeText(getApplicationContext(), "下一首", Toast.LENGTH_SHORT).show();
+					Log.d("assist" , "清理垃圾");
+					onClearBtn();
+					Toast.makeText(getApplicationContext(), "正在为您清理", Toast.LENGTH_SHORT).show();
 					break;
 				default:
 					break;
 				}
 			}
 		}
+	}
+	public void onClearBtn(){
+		String cmd = "pm clear com.sogou.androidtool";
+
+		ProcessBuilder pb = new ProcessBuilder().redirectErrorStream(true).command("su");
+		Process p = null;
+		try {
+			p = pb.start();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// We must handle the result stream in another Thread first
+		StreamReader stdoutReader = new StreamReader(p.getInputStream(), "utf-8");
+		stdoutReader.start();
+
+		OutputStream out = p.getOutputStream();
+		try {
+			out.write((cmd + "\n").getBytes("utf-8"));
+			out.write(("exit" + "\n").getBytes("utf-8"));
+			out.flush();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			p.waitFor();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String result = stdoutReader.getResult();
 	}
 }
