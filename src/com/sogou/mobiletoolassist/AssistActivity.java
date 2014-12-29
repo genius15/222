@@ -9,9 +9,8 @@ import com.sogou.mobiletoolassist.service.ClearDataService;
 import com.sogou.mobiletoolassist.service.FileObserverService;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,6 +18,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Build;
 
-public class AssistActivity extends ActionBarActivity {
+public class AssistActivity extends Activity {
 	public static String myTag = "Assist";
 	public static String obPath = Environment.getExternalStorageDirectory().getPath()+File.separator+"MobileTool/CrashReport";
 	public static int selectedidx = 0;
@@ -49,6 +49,14 @@ public class AssistActivity extends ActionBarActivity {
 			Log.d(myTag, "cleardataservice start");
 		}
 	}
+	@Override  
+    public boolean onKeyDown(int keyCode, KeyEvent event) {  
+        if (keyCode == KeyEvent.KEYCODE_BACK) {  
+            moveTaskToBack(false);  
+            return true;  
+        }  
+        return super.onKeyDown(keyCode, event);  
+    } 
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,17 +66,7 @@ public class AssistActivity extends ActionBarActivity {
 		return true;
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+	
 
 	/**
 	 * A placeholder fragment containing a simple view.

@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.StreamReader;
+import com.sogou.mobiletoolassist.util.UsefulClass;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -124,6 +125,10 @@ public class ClearDataService extends Service implements OnClickListener{
 		}
 	}
 	public void onClearBtn(){
+		if(!UsefulClass.hasappnamedxxx(this, "com.sogou.androidtool")){
+			Toast.makeText(getApplicationContext(), "没有安装助手", Toast.LENGTH_SHORT).show();
+			return;
+		}
 		String cmd = "pm clear com.sogou.androidtool";
 
 		ProcessBuilder pb = new ProcessBuilder().redirectErrorStream(true).command("su");

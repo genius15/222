@@ -7,6 +7,10 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
+    <uses-permission android:maxSdkVersion="19" android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:maxSdkVersion="19" android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:maxSdkVersion="19" android:name="android.permission.MOUNT_FORMAT_FILESYSTEMS"/>
+    <uses-permission android:maxSdkVersion="19" android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
