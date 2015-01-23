@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import com.sogou.mobiletoolassist.service.ClearDataService;
 import com.sogou.mobiletoolassist.service.FileObserverService;
+import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 
 import android.support.v4.app.Fragment;
@@ -43,11 +44,12 @@ public class AssistActivity extends Activity {
 //					.add(R.id.container, new PlaceholderFragment()).commit();
 //		}
 		setPathView();//设置默认显示路径
-		if(!UsefulClass.isServiceRunning(this,ClearDataService.class.getName())){
-			Intent it = new Intent(this,ClearDataService.class);			
-			this.startService(it);
-			Log.d(myTag, "cleardataservice start");
-		}
+//		if(!UsefulClass.isServiceRunning(this,ClearDataService.class.getName())){
+//			Intent it = new Intent(this,ClearDataService.class);			
+//			this.startService(it);
+//			Log.d(myTag, "cleardataservice start");
+//		}
+		
 	}
 	@Override  
     public boolean onKeyDown(int keyCode, KeyEvent event) {  
@@ -66,24 +68,6 @@ public class AssistActivity extends Activity {
 		return true;
 	}
 
-	
-
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
-
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_assist,
-					container, false);
-			return rootView;
-		}
-	}
 	
 	
 	private void setPathView(){
@@ -165,5 +149,9 @@ public class AssistActivity extends Activity {
 
 	}
 	
+	public void onTestbtn(View v){
+		ScreenshotforGINGERBREAD_MR1.init(this);
+		ScreenshotforGINGERBREAD_MR1.shoot();
+	}
 	
 }

@@ -48,6 +48,7 @@ public class ClearDataService extends Service implements OnClickListener{
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId){
+		
 		RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_custom_button);  
 		
 		mRemoteViews.setImageViewResource(R.id.custom_song_icon, R.drawable.sing_icon);  
@@ -116,7 +117,7 @@ public class ClearDataService extends Service implements OnClickListener{
 				case 3:
 					Log.d("assist" , "清理垃圾");
 					onClearBtn();
-					Toast.makeText(getApplicationContext(), "正在为您清理", Toast.LENGTH_SHORT).show();
+					
 					break;
 				default:
 					break;
@@ -139,11 +140,13 @@ public class ClearDataService extends Service implements OnClickListener{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
+		if(p == null){
+			Toast.makeText(getApplicationContext(), "您的手机尚未root不能清理", Toast.LENGTH_SHORT).show();
+		}
 		// We must handle the result stream in another Thread first
 		StreamReader stdoutReader = new StreamReader(p.getInputStream(), "utf-8");
 		stdoutReader.start();
-
+		
 		OutputStream out = p.getOutputStream();
 		try {
 			out.write((cmd + "\n").getBytes("utf-8"));
@@ -155,6 +158,7 @@ public class ClearDataService extends Service implements OnClickListener{
 			e.printStackTrace();
 		}
 		
+		Toast.makeText(getApplicationContext(), "正在为您清理", Toast.LENGTH_SHORT).show();
 		try {
 			p.waitFor();
 		} catch (InterruptedException e) {
