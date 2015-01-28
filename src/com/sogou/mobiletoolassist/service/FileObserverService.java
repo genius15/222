@@ -3,21 +3,20 @@ package com.sogou.mobiletoolassist.service;
 import java.io.File;
 
 import com.sogou.mobiletoolassist.fileobserver.FileObserverThread;
-import com.sogou.mobiletoolassist.AssistActivity;
 
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.IBinder;
-import android.util.Log;
+
 
 public class FileObserverService extends Service {
 	private FileObserverThread listener = null;
 	private String observerpath = null;
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	@Override

@@ -12,11 +12,10 @@
         android:id="@+id/SelectPath"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp"
         android:onClick="onSelectClick"
-        android:text="浏览" />
+        android:text="@string/ScanFile" />
 
     <Button
         android:id="@+id/startObserve"
@@ -25,24 +24,23 @@
         android:layout_alignBottom="@+id/SelectPath"
         android:layout_centerHorizontal="true"
         android:onClick="onStartObserve"
-        android:text="开始监控" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="53dp"
-        android:text="@string/hello_world" />
+        android:text="@string/startObserver" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
         android:layout_alignParentTop="true"
         android:layout_marginTop="17dp"
-        android:text="监控路径为："
+        android:text="@string/ObserverPath"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/observerpath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="15dp" />
 
 </RelativeLayout>

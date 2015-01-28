@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">MobileToolAssist</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">测试助手</string>
     <string name="action_settings">Settings</string>
     <string name="addNotify">add</string>
     <string name="ClearBtn">清理数据</string>
-
+	<string name="Screenshot">截图</string>
+	<string name="ScanFile">浏览</string>
+	<string name="startObserver">开始监控</string>
+	<string name="ObserverPath">监控路径：</string>
+	<string name="ClearZSData">清理数据</string>
+	<string name="ScreenCap">截图</string>
+	<string name="NotifyScreenshot">截图</string>
+	<string name="notifyIconDesc">左侧大icon</string>
+	<string name="notifyScreenShotBtn">通知里截图按钮</string>
+	
 </resources>

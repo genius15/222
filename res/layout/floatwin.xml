@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EE9A00"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/cleardatabtn"
+        android:layout_width="80dp"
+        android:layout_height="31dp"
+        android:background="#87CEFA"
+        android:text="@string/ClearZSData" />
+
+    <Button
+        android:id="@+id/screenshotbtn"
+        android:layout_width="80dp"
+        android:layout_height="31dp"
+        android:background="#CD69C9"
+        android:text="@string/ScreenCap" />
+
+</LinearLayout>

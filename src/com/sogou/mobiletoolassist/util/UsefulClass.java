@@ -1,12 +1,20 @@
 package com.sogou.mobiletoolassist.util;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+
+import com.sogou.mobiletoolassist.AssistActivity;
+import com.sogou.mobiletoolassist.StreamReader;
+import com.sogou.mobiletoolassist.assistApplication;
 
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.util.Log;
 
 public class UsefulClass {
 	//判断某个服务是否在运行
@@ -34,10 +42,75 @@ public class UsefulClass {
 					return true;
 				}
 			} catch (NameNotFoundException e) {
-				// TODO Auto-generated catch block
+				// 
 				e.printStackTrace();
 			}
 		}
 		return false;
+	}
+	
+	public static String getDeviceInfo(){
+		String info = "";
+		info += "Device name:";		
+		info += Build.MODEL;
+		return info;
+	}
+	
+	public static String getZSPkgInfo(){
+		String info = "";
+		info += "versionName:";
+		Context ctx = assistApplication.getContext();
+		if(ctx != null){
+			PackageManager pm = ctx.getPackageManager();
+			try {
+				PackageInfo appinfo = pm.getPackageInfo("com.sogou.androidtool", 0);
+				info += appinfo.versionName;
+				info += "</br>";
+				info += "versionCode:";
+				info += appinfo.versionCode;
+			} catch (NameNotFoundException e) {
+				// 
+				e.printStackTrace();
+			}
+		}
+		return info;
+	}
+	
+	public static boolean processCmd(String cmd) {
+		boolean ret = true;
+		ProcessBuilder pb = new ProcessBuilder().redirectErrorStream(true)
+				.command("su");
+		Process p = null;
+		try {
+			p = pb.start();
+		} catch (IOException e1) {
+			// 
+			e1.printStackTrace();
+		}
+		if (p == null) {
+			Log.e(AssistActivity.myTag, "截图时获取root权限失败");
+			
+			return false;
+		}
+		// We must handle the result stream in another Thread first
+		StreamReader stdoutReader = new StreamReader(p.getInputStream(),
+				"utf-8");
+		stdoutReader.start();
+
+		OutputStream out = p.getOutputStream();
+		try {
+			out.write((cmd + "\n").getBytes("utf-8"));
+			out.write(("exit" + "\n").getBytes("utf-8"));
+			out.flush();
+
+		} catch (IOException e) {
+			// 
+			ret = false;
+			e.printStackTrace();
+			
+		} 	
+		//String result = stdoutReader.getResult();
+		//ret = result.contains("Success");
+		return ret;
 	}
 }

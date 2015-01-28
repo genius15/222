@@ -31,14 +31,16 @@ import javax.mail.internet.MimeMultipart;
 public class MailSender {
 
 	private static final int PORT = 25;
-
+	private static final String sender = "pdatest0123@126.com";
+	private static final String encryptPassword = "0123pdatest";
+	private static final String smtp = "portal.sys.sogou-op.org";
+	
 	/**
 	 * 以文本格式发送邮件
 	 * 
 	 *            待发送的邮件的信息
 	 */
-	public static boolean sendTextMail(String sender, String encryptPassword,
-			String smtp, String subject, String content, String file,
+	public static boolean sendTextMail(String subject, String content, String file,
 			String[] maillists) {
 		if (maillists == null || maillists.length == 0
 				|| ("".equals(maillists[0].trim()))) {
@@ -108,7 +110,7 @@ public class MailSender {
 				Multipart multipart = new MimeMultipart();
 				MimeBodyPart attachPart = new MimeBodyPart();
 				File resultFile = new File(file);
-				if(resultFile.exists()){
+				if(resultFile.isFile() && resultFile.exists()){
 					DataSource source = new FileDataSource(file);
 					attachPart.setDataHandler(new DataHandler(source));
 					attachPart.setFileName(new File(file).getName());

@@ -2,37 +2,37 @@ package com.sogou.mobiletoolassist;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 import com.sogou.mobiletoolassist.service.ClearDataService;
 import com.sogou.mobiletoolassist.service.FileObserverService;
+import com.sogou.mobiletoolassist.service.floatwin;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 
-import android.support.v4.app.Fragment;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
+
 import android.view.View;
-import android.view.ViewGroup;
+
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Build;
+
 
 public class AssistActivity extends Activity {
 	public static String myTag = "Assist";
 	public static String obPath = Environment.getExternalStorageDirectory().getPath()+File.separator+"MobileTool/CrashReport";
 	public static int selectedidx = 0;
+	@SuppressWarnings("unused")
+	private assistApplication app = new assistApplication();
 	private Stack<String> dirs = new Stack<String>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +44,25 @@ public class AssistActivity extends Activity {
 //					.add(R.id.container, new PlaceholderFragment()).commit();
 //		}
 		setPathView();//设置默认显示路径
-//		if(!UsefulClass.isServiceRunning(this,ClearDataService.class.getName())){
-//			Intent it = new Intent(this,ClearDataService.class);			
-//			this.startService(it);
-//			Log.d(myTag, "cleardataservice start");
+		if(Build.VERSION.SDK_INT > 13){
+			if(!UsefulClass.isServiceRunning(this,ClearDataService.class.getName())){
+				Intent it = new Intent(this,ClearDataService.class);			
+				this.startService(it);
+				Log.d(myTag, "cleardataservice start");
+			}
+		}
+//		else{2.3手机悬浮窗在通知栏上面所以不需要通过通知来截图
+//			if(!UsefulClass.isServiceRunning(this,NotificationBelowIceCreamSandwich.class.getName())){
+//				Intent it = new Intent(this,NotificationBelowIceCreamSandwich.class);			
+//				this.startService(it);
+//				Log.d(myTag, "NotificationBelowIceCreamSandwich start");
+//			}
 //		}
-		
+		if(!UsefulClass.isServiceRunning(this,floatwin.class.getName())){
+			Intent it = new Intent(this,floatwin.class);
+			startService(it);
+		}
+		ScreenshotforGINGERBREAD_MR1.init(this);
 	}
 	@Override  
     public boolean onKeyDown(int keyCode, KeyEvent event) {  
@@ -71,7 +84,7 @@ public class AssistActivity extends Activity {
 	
 	
 	private void setPathView(){
-		TextView v = (TextView)this.findViewById(R.id.textView1);
+		TextView v = (TextView)this.findViewById(R.id.observerpath);
 		v.setText(obPath);
 	}
 	
@@ -89,6 +102,7 @@ public class AssistActivity extends Activity {
 			}
 		}
 		final String spaths[] = (String[])paths.toArray(new String[paths.size()]);
+		@SuppressWarnings("unused")
 		AlertDialog ad = new AlertDialog.Builder(this)
 		.setTitle("选择一个要监控的文件夹")
 		.setSingleChoiceItems(spaths, 0,new DialogInterface.OnClickListener(){
@@ -142,16 +156,7 @@ public class AssistActivity extends Activity {
 		Intent intent = new Intent(this, FileObserverService.class);
 		intent.putExtra("observerpath", obPath);
 		this.startService(intent);
-		
-		//v.setClickable(false);不可点击是不能触发点击事件，但是按钮看起来还是能点的
 		v.setEnabled(false);
 		this.findViewById(R.id.SelectPath).setEnabled(false);
-
-	}
-	
-	public void onTestbtn(View v){
-		ScreenshotforGINGERBREAD_MR1.init(this);
-		ScreenshotforGINGERBREAD_MR1.shoot();
-	}
-	
+	}	
 }
