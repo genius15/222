@@ -14,6 +14,7 @@ import android.os.IBinder;
 public class FileObserverService extends Service {
 	private FileObserverThread listener = null;
 	private String observerpath = null;
+	private String emailReceiver = null;
 	@Override
 	public IBinder onBind(Intent arg0) {
 		
@@ -45,7 +46,9 @@ public class FileObserverService extends Service {
 			deafultpath += File.separator + "MobileTool/CrashReport";
 			observerpath = appdata.getString("obPath", deafultpath);
 		}
-		listener = new FileObserverThread(observerpath);
+		SharedPreferences appdata = this.getSharedPreferences("AppData", MODE_PRIVATE);
+		emailReceiver = appdata.getString("mailReceiver", "pdatest@sogou-inc.com");
+		listener = new FileObserverThread(observerpath,emailReceiver);
 		//¿ªÊ¼¼àÌý
 		
 		listener.startWatching();

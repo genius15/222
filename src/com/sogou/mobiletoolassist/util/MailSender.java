@@ -22,6 +22,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import android.util.Log;
+
 
 /**
  * 发送邮件给多个接收者、抄送邮件
@@ -110,11 +112,13 @@ public class MailSender {
 				Multipart multipart = new MimeMultipart();
 				MimeBodyPart attachPart = new MimeBodyPart();
 				File resultFile = new File(file);
-				if(resultFile.isFile() && resultFile.exists()){
+				if(resultFile.exists()){
 					DataSource source = new FileDataSource(file);
 					attachPart.setDataHandler(new DataHandler(source));
 					attachPart.setFileName(new File(file).getName());
 					multipart.addBodyPart(attachPart);
+				}else{
+					Log.e("mailtag", file);
 				}
 				
 				multipart.addBodyPart(bodyPart);

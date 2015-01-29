@@ -14,6 +14,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -27,10 +31,16 @@ public class ClearDataService extends Service implements OnClickListener{
 	/** 通知栏按钮点击事件对应的ACTION */
 	public final static String ACTION_BUTTON = "com.notifications.intent.action.ButtonClick";
 	public final static String INTENT_BUTTONID_TAG = "ButtonId";
+	private final IBinder binder = new MyBinder();
 	@Override
 	public IBinder onBind(Intent arg0) {
 		
-		return null;
+		return binder;
+	}
+	public class MyBinder extends Binder{
+		ClearDataService getService(){
+			return ClearDataService.this;
+		}
 	}
 	@Override
 	public void onCreate(){
@@ -113,6 +123,9 @@ public class ClearDataService extends Service implements OnClickListener{
 					new Thread(new Runnable(){
 						@Override
 						public void run() {
+							Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//系统自带提示音
+							Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
+							rt.play();
 							// TODO 我没用线程时会出现intent接收的android runtime，有时间解一下，先用线程解决
 							floatwin.ScreenShot();	
 						}

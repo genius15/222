@@ -50,7 +50,7 @@ public class ScreenshotforGINGERBREAD_MR1 {
 			/************ 创建锁对象 ************/
 			String cmd = "chmod 777 /dev/graphics/fb0";
 
-			if (!UsefulClass.processCmd(cmd)){
+			if (UsefulClass.processCmd(cmd) != StateValue.success){
 				
 				return "";
 			}

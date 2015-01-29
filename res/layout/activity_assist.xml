@@ -8,24 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AssistActivity" >
 
-    <Button
-        android:id="@+id/SelectPath"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
-        android:onClick="onSelectClick"
-        android:text="@string/ScanFile" />
-
-    <Button
-        android:id="@+id/startObserve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/SelectPath"
-        android:layout_centerHorizontal="true"
-        android:onClick="onStartObserve"
-        android:text="@string/startObserver" />
-
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -42,5 +24,43 @@
         android:layout_alignLeft="@+id/title"
         android:layout_below="@+id/title"
         android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/startObserve"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/observerpath"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/SelectPath"
+        android:onClick="onStartObserve"
+        android:text="@string/startObserver" />
+
+    <Button
+        android:id="@+id/uninstallappBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/SelectPath"
+        android:text="@string/uninstallApps" 
+        android:onClick="onUninstallAPPS"/>
+
+    <ImageView
+        android:id="@+id/mailReceiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/mailreceiver"
+        android:onClick="onSetMailReceiver"
+        android:src="@drawable/portrait" />
+
+    <Button
+        android:id="@+id/SelectPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/startObserve"
+        android:layout_alignBottom="@+id/startObserve"
+        android:layout_alignLeft="@+id/observerpath"
+        android:onClick="onSelectClick"
+        android:text="@string/ScanFile" />
 
 </RelativeLayout>

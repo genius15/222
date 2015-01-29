@@ -3,8 +3,6 @@ package com.sogou.mobiletoolassist.util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-
-import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.StreamReader;
 import com.sogou.mobiletoolassist.assistApplication;
 
@@ -75,9 +73,7 @@ public class UsefulClass {
 		}
 		return info;
 	}
-	
-	public static boolean processCmd(String cmd) {
-		boolean ret = true;
+	private static Process getRootProcess(){
 		ProcessBuilder pb = new ProcessBuilder().redirectErrorStream(true)
 				.command("su");
 		Process p = null;
@@ -87,11 +83,13 @@ public class UsefulClass {
 			// 
 			e1.printStackTrace();
 		}
-		if (p == null) {
-			Log.e(AssistActivity.myTag, "截图时获取root权限失败");
-			
-			return false;
-		}
+		return p;
+	}
+	public static int processCmd(String cmd) {
+		int ret = StateValue.success;
+		Process p = getRootProcess();
+		if(p==null)
+			return StateValue.unroot;
 		// We must handle the result stream in another Thread first
 		StreamReader stdoutReader = new StreamReader(p.getInputStream(),
 				"utf-8");
@@ -104,13 +102,12 @@ public class UsefulClass {
 			out.flush();
 
 		} catch (IOException e) {
-			// 
-			ret = false;
+			ret = StateValue.cmdfailed;
 			e.printStackTrace();
 			
 		} 	
-		//String result = stdoutReader.getResult();
-		//ret = result.contains("Success");
+		String result = stdoutReader.getResult();
+		Log.i("scresult", result);
 		return ret;
 	}
 }

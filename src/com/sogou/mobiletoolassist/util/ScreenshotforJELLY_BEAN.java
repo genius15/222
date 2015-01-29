@@ -12,7 +12,7 @@ public class ScreenshotforJELLY_BEAN {
 		long ti = System.currentTimeMillis();
 		String path = imagepath + String.valueOf(ti)+".png";
 		String cmd = "screencap "+path;
-		if(!UsefulClass.processCmd(cmd)){			
+		if(UsefulClass.processCmd(cmd) != StateValue.success){			
 			return "";
 		}	
 		return path;

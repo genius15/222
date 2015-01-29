@@ -23,13 +23,15 @@ import android.util.Log;
 public class FileObserverThread extends FileObserver {
 	private String observerpath = null;
 	private String tmp = null;
+	private String emailReceiver = null;
 
-	public FileObserverThread(String path) {
+	public FileObserverThread(String path,String emailRec) {
 		/*
 		 * 这种构造方法是默认监听所有事件的,如果使用super(String,int)这种构造方法， 则int参数是要监听的事件类型.
 		 */
 		super(path);
 		observerpath = path;
+		emailReceiver = emailRec;
 	}
 
 	@Override
@@ -71,10 +73,10 @@ public class FileObserverThread extends FileObserver {
 						
 						e.printStackTrace();
 					}
-					if (attach != "" && res != "") {
+					if (attach.length()!=0 && res.length()!=0) {
 
 						MailSender.sendTextMail("手机助手崩溃文件监控",res, attach,
-								new String[] { "pdatest@sogou-inc.com" });
+								new String[] { emailReceiver});
 						Log.i(AssistActivity.myTag, "send mail over:" + tmp);
 						File att = new File(attach);
 						if (att.exists()) {
