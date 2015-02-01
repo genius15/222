@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+	
+	<PreferenceCategory 
+	  android:title="@string/MainSettings" 
+	  android:key="mainSettings">
+
+		<CheckBoxPreference
+		    android:id="@+id/enable"
+		    android:layout_width="wrap_content"
+		    android:enabled="true"
+		    android:key="isEnabled"
+		    android:selectable="true"
+		    android:shouldDisableView="true"
+		    android:summary="选中为开启/取消选中为关闭"
+		    android:title="@string/proxySwitch" >
+
+		 </CheckBoxPreference>
+	</PreferenceCategory>
+	
+    <PreferenceCategory 
+	  android:summary="Basic setup of transparent proxy" 
+	  android:title="@string/ProxySettings" 
+	  android:key="proxySettings">
+		<!-- <ListPreference 
+		  android:dialogTitle="Proxy Type" 
+		  android:summary="Type of proxy server" 
+		  android:title="Proxy Type" 
+		  android:dialogMessage="Please select proxy type" 
+		  android:defaultValue="http"
+		  android:key="proxyType" android:entries="@array/proxy" android:entryValues="@array/proxy_values" android:dialogLayout="@layout/proxylist">
+		</ListPreference>-->
+		<EditTextPreference 
+		  android:summary="设置fiddler所在主机的ip" 
+		  android:key="proxyHost" 
+		  android:title="@string/proxyHost">
+		</EditTextPreference>
+
+		<EditTextPreference
+		    android:layout_width="match_parent"
+		    android:key="proxyPort"
+		    android:maxLength="5"
+		    android:numeric="integer"
+		    android:summary="fiddler里设置的监听端口号"
+		    android:title="@string/proxyPort" >
+
+		 </EditTextPreference>
+	</PreferenceCategory>
+	
+	 <!-- <PreferenceCategory 
+	  android:summary="Settings of proxy authentication" 
+	  android:title="Proxy Authentication" 
+	  android:key="authSettings">
+		<CheckBoxPreference 
+		  android:title="Proxy Auth" 
+		  android:key="isAuthEnabled" 
+		  android:summary="Enable/disable proxy authentication" 
+		  android:shouldDisableView="true" 
+		  android:selectable="true" 
+		  android:defaultValue="false" android:enabled="true">
+		</CheckBoxPreference>
+		<EditTextPreference 
+		  android:summary="Username for proxy authentication" 
+		  android:key="username" 
+		  android:title="Proxy Username" android:dependency="isAuthEnabled">
+		</EditTextPreference>
+		<EditTextPreference 
+		  android:selectable="true" 
+		  android:key="password" 
+		  android:password="true"
+		  android:title="Proxy Password" android:dependency="isAuthEnabled">
+		 </EditTextPreference>
+		 <EditTextPreference 
+		  android:selectable="true" 
+		  android:key="domain" 
+		  android:summary="Doamin for NTLM authentication only" 
+		  android:title="NTLM Domain" android:dependency="isAuthEnabled">
+		</EditTextPreference>
+	</PreferenceCategory>
+	
+	<PreferenceCategory 
+	  android:summary="About" 
+	  android:title="About" 
+	  android:key="about">
+	  <EditTextPreference 
+	  	  android:layout="@layout/simple"
+		  android:selectable="false" 
+		  android:key="version" 
+		  android:title="Version"
+		  android:summary="TransProxy version ">
+		</EditTextPreference>
+	</PreferenceCategory>
+	  -->
+</PreferenceScreen>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.assistApplication;
@@ -58,7 +59,13 @@ public class floatwin extends Service {
 			return floatwin.this;
 		}
 	}
-	
+	public native String memcreate(int mem);
+	public native String memfree();
+
+	static {
+		System.loadLibrary("memCtrl");
+	}
+     
 	@Override
 	public void onCreate(){
 		//createFloatView();

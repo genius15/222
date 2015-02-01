@@ -18,4 +18,16 @@
 	<string name="uninstallApps">卸载所有app</string>
 	<string name="mailreceiver">邮件接收者</string>
 	
+	
+	<string name="proxyactivity">代理相关设置</string>	
+	<string name="proxysetbtn">设置代理</string>
+	
+	<string name="ProxySettings">代理设置项</string>
+	<string name="MainSettings">代理开关项</string>
+	<string name="proxySwitch">代理开关</string>
+	<string name="proxyHost">代理地址</string>
+	<string name="proxyPort">代理端口号</string>
+	<string name="CreateMem">填充</string>
+	<string name="freemem">释放</string>
+	<string name="memHint">请输入小于950的整数</string>
 </resources>

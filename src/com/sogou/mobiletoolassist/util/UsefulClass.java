@@ -73,7 +73,7 @@ public class UsefulClass {
 		}
 		return info;
 	}
-	private static Process getRootProcess(){
+	public static Process getRootProcess(){
 		ProcessBuilder pb = new ProcessBuilder().redirectErrorStream(true)
 				.command("su");
 		Process p = null;
