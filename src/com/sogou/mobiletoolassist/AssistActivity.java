@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+
 import com.sogou.mobiletoolassist.service.ClearDataService;
 import com.sogou.mobiletoolassist.service.FileObserverService;
 import com.sogou.mobiletoolassist.service.floatwin;
+import com.sogou.mobiletoolassist.ui.MyImageView;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
@@ -20,13 +22,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.StrictMode;
-
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -49,6 +49,11 @@ public class AssistActivity extends Activity {
 	private floatwin backservice;
 	private String basedir = null;
 
+	private MyImageView scanfileview = null;
+	private MyImageView observerview = null;
+	private MyImageView UninsatllView = null;
+	private MyImageView contactView = null;
+	private MyImageView proxysetView = null;
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className,
 				IBinder localBinder) {
@@ -109,6 +114,30 @@ public class AssistActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		scanfileview = (MyImageView) findViewById(R.id.scanfileview);
+		scanfileview.setOnClickIntent(new MyImageView.OnViewClick(){
+
+			@Override
+			public void onClick() {
+				// TODO Auto-generated method stub
+				File file = Environment.getExternalStorageDirectory();
+				ShowDialog(file.getPath());
+			}
+			
+		});
+		
+		observerview = (MyImageView) findViewById(R.id.observerview);
+//		observerview.setOnClickIntent(new MyImageView.OnViewClick(){
+//
+//			@Override
+//			public void onClick() {
+//				// TODO Auto-generated method stub
+//				File file = Environment.getExternalStorageDirectory();
+//				ShowDialog(file.getPath());
+//			}
+//			
+//		});
 	}
 
 	private void initEmailReceiver() {

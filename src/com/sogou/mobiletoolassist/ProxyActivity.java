@@ -12,7 +12,10 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.Editable;
+import android.text.Selection;
 import android.util.Log;
+import android.widget.EditText;
 
 import java.net.InetAddress;
 import java.net.Socket;
@@ -73,13 +76,19 @@ public class ProxyActivity extends PreferenceActivity {
 				.findPreference("proxyHost");
 		final EditTextPreference portedit = (EditTextPreference) this
 				.findPreference("proxyPort");
+		
 		if (!"".equals(addrsum)) {
 			addredit.setSummary("当前为：" + addrsum);
+			
 		}
 		if (!"".equals(portsum)) {
 
 			portedit.setSummary("当前为：" + portsum);
 		}
+//		EditText et = addredit.getEditText();
+//		Editable ea = et.getText();
+//		int ln = ea.length();
+//		Selection.setSelection(ea, 0);//
 		addredit.setOnPreferenceChangeListener(new EditTextPreference.OnPreferenceChangeListener() {
 
 			@Override
@@ -109,7 +118,6 @@ public class ProxyActivity extends PreferenceActivity {
 		cb.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
 					Object newValue) {
-				final CheckBoxPreference cbp = (CheckBoxPreference) preference;
 				Boolean ret = proxy((Boolean) newValue ? START : STOP);
 				setenabled(checklistener());
 				return ret;

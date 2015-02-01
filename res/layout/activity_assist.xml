@@ -40,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/SelectPath"
-        android:text="@string/uninstallApps" 
-        android:onClick="onUninstallAPPS"/>
+        android:onClick="onUninstallAPPS"
+        android:text="@string/uninstallApps" />
 
     <ImageView
         android:id="@+id/mailReceiver"
@@ -63,15 +63,6 @@
         android:onClick="onSelectClick"
         android:text="@string/ScanFile" />
 
-    <Button
-        android:id="@+id/proxySetBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/startObserve"
-        android:layout_toRightOf="@+id/uninstallappBtn"
-        android:onClick="onSetProxyBtn"
-        android:text="@string/proxysetbtn" />
-
     <EditText
         android:id="@+id/memEdit"
         android:layout_width="wrap_content"
@@ -89,7 +80,84 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/memEdit"
         android:layout_alignRight="@+id/mailReceiver"
-        android:text="@string/CreateMem" 
-        android:onClick="onMemCtrl"/>
+        android:onClick="onMemCtrl"
+        android:text="@string/CreateMem" />
+
+    
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/memEdit"
+        android:layout_below="@+id/memEdit"
+        android:layout_marginTop="41dp"
+        android:columnCount="3"
+        android:rowCount="3"
+		android:alignmentMode="alignMargins"
+		>
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/scanfileview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_marginRight="10dp"
+            android:layout_row="0"
+            android:scaleType="matrix"
+            android:src="@drawable/scanfile" />
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+	        android:id="@+id/observerview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	       	android:layout_row="0"
+	       	android:layout_column="1"
+	        android:onClick="onStartObserve"
+	        android:scaleType="matrix"
+	        android:layout_marginRight="10dp"
+	        android:src="@drawable/observer" />
+
+	    <com.sogou.mobiletoolassist.ui.MyImageView
+	        android:id="@+id/contactview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_row="0"
+	       	android:layout_column="2"
+	        android:onClick="onSetMailReceiver"
+	        android:scaleType="matrix"
+	        android:src="@drawable/contact" />
+	
+	    <com.sogou.mobiletoolassist.ui.MyImageView
+	        android:id="@+id/uninstallview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_row="1"
+	       	android:layout_column="0"
+	        android:onClick="onUninstallAPPS"
+	        android:scaleType="matrix"
+	        android:layout_marginTop="10dp"
+	        android:src="@drawable/cleandata" />
+	
+	    <com.sogou.mobiletoolassist.ui.MyImageView
+	        android:id="@+id/proxysetview"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_row="1"
+	       	android:layout_column="1"
+	       	android:layout_marginTop="10dp"
+	        android:onClick="onSetProxyBtn"
+	        android:scaleType="matrix"
+	        android:src="@drawable/proxyset" />
+    </GridLayout>
+
+    <Button
+        android:id="@+id/proxySetBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/uninstallappBtn"
+        android:layout_alignRight="@+id/memory"
+        android:onClick="onSetProxyBtn"
+        android:text="@string/proxysetbtn" />
 
 </RelativeLayout>
