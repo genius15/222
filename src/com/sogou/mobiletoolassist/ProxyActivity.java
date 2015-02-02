@@ -129,7 +129,6 @@ public class ProxyActivity extends PreferenceActivity {
 	}
 
 	public boolean proxy(int action) {
-		Process p = UsefulClass.getRootProcess();
 		if (action == START) { // start proxy
 			SharedPreferences settings = PreferenceManager
 					.getDefaultSharedPreferences(getBaseContext());
@@ -169,14 +168,6 @@ public class ProxyActivity extends PreferenceActivity {
 				alert("Cannot resolve hostname " + host, null);
 				return false;
 			}
-			// Log.v("tproxy","proxy.sh start " + basedir + " "
-			// +"type=" + proxy_type + " "
-			// +"host=" + ipaddr + " "
-			// +"port=" + port.trim() + " "
-			// +"auth=" + auth + " "
-			// +"user=" + user.trim() + " "
-			// +"pass=*****"
-			// +"domain=" + domain.trim());
 
 			ShellCommand cmd = new ShellCommand();
 			CommandResult r = cmd.sh.runWaitFor(basedir + "/proxy.sh start "
@@ -192,29 +183,21 @@ public class ProxyActivity extends PreferenceActivity {
 			}
 
 			if (checklistener()) {
-//				r = cmd.su.runWaitFor(basedir + "/redirect.sh start "
-//						+ proxy_type);
-				int ret = UsefulClass.processCmd(basedir + "/redirect.sh start "
-						+ proxy_type);//有些手机上用原来的执行方法总是失败，换个方式
-//				if (!r.success()) {
-//					Log.v("tproxy", "Error starting redirect.sh (" + r.stderr
-//							+ ")");
-//					cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
-//					alert("Failed to start redirect.sh (" + r.stderr + ")",
-//							null);
-//					return false;
-//				} else {
-//					Log.v("tproxy", "Successfully ran redirect.sh start "
-//							+ proxy_type);
-//					return true;
-//				}
-				if(ret != StateValue.success){
+				r = cmd.su.runWaitFor(basedir + "/redirect.sh start "
+						+ proxy_type);
+				if (!r.success()) {
+					Log.v("tproxy", "Error starting redirect.sh (" + r.stderr
+							+ ")");
 					cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
 					alert("Failed to start redirect.sh (" + r.stderr + ")",
 							null);
 					return false;
+				} else {
+					Log.v("tproxy", "Successfully ran redirect.sh start "
+							+ proxy_type);
+					return true;
 				}
-				return true;
+
 			} else {
 				alert("Proxy failed to start", null);
 				return false;

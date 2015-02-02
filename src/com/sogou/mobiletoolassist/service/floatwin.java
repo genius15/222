@@ -83,9 +83,15 @@ public class floatwin extends Service {
 		createFloatView();
 		return Service.START_STICKY;//表示被系统杀掉后需要重启
 	}
+	@Override
+	public void onDestroy(){
+		wm.removeView(btn_floatView);
+		super.onDestroy();
+	} 
 	@SuppressLint("InflateParams")
 	private void createFloatView() {
 		if(btn_floatView!=null){
+			wm.addView(btn_floatView, params);
 			return;
 		}
         btn_floatView = LayoutInflater.from(this).inflate(R.layout.floatwin, null);
@@ -321,6 +327,13 @@ public class floatwin extends Service {
 			}
 		}	
 		Toast.makeText(this, "已卸载所有app", Toast.LENGTH_LONG).show();
+	}
+	public void floatwinswitch(boolean set){
+		if(set){
+			wm.addView(btn_floatView, params);
+		}else{
+			wm.removeView(btn_floatView);
+		}
 	}
 }
 

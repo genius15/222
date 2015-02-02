@@ -48,12 +48,8 @@ public class AssistActivity extends Activity {
 	private Stack<String> dirs = new Stack<String>();
 	private floatwin backservice;
 	private String basedir = null;
+	private boolean isFloatwinon = true;
 
-	private MyImageView scanfileview = null;
-	private MyImageView observerview = null;
-	private MyImageView UninsatllView = null;
-	private MyImageView contactView = null;
-	private MyImageView proxysetView = null;
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className,
 				IBinder localBinder) {
@@ -113,20 +109,20 @@ public class AssistActivity extends Activity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+//		
+//		scanfileview = (MyImageView) findViewById(R.id.scanfileview);
+//		scanfileview.setOnClickIntent(new MyImageView.OnViewClick(){
+//
+//			@Override
+//			public void onClick() {
+//				// TODO Auto-generated method stub
+//				File file = Environment.getExternalStorageDirectory();
+//				ShowDialog(file.getPath());
+//			}
+//			
+//		});
 		
-		scanfileview = (MyImageView) findViewById(R.id.scanfileview);
-		scanfileview.setOnClickIntent(new MyImageView.OnViewClick(){
-
-			@Override
-			public void onClick() {
-				// TODO Auto-generated method stub
-				File file = Environment.getExternalStorageDirectory();
-				ShowDialog(file.getPath());
-			}
-			
-		});
-		
-		observerview = (MyImageView) findViewById(R.id.observerview);
+		//observerview = (MyImageView) findViewById(R.id.observerview);
 //		observerview.setOnClickIntent(new MyImageView.OnViewClick(){
 //
 //			@Override
@@ -248,7 +244,8 @@ public class AssistActivity extends Activity {
 		intent.putExtra("observerpath", obPath);
 		this.startService(intent);
 		v.setEnabled(false);
-		//this.findViewById(R.id.SelectPath).setEnabled(false);
+		this.findViewById(R.id.scanfileview).setEnabled(false);
+		Toast.makeText(this, "已经开始监控，选择文件夹功能将会被禁用", Toast.LENGTH_SHORT).show();
 	}
 
 	public void onUninstallAPPS(View v) {
@@ -389,5 +386,17 @@ public class AssistActivity extends Activity {
 	
 	private String memfree(){
 		return backservice.memfree();
+	}
+	
+	public void onFloatwinSet(View v){
+		if(isFloatwinon){
+			backservice.floatwinswitch(false);
+			((TextView)v).setText(R.string.floatwinofftext);
+			isFloatwinon = false;
+		}else{
+			backservice.floatwinswitch(true);
+			((TextView)v).setText(R.string.floatwinontext);
+			isFloatwinon = true;
+		}
 	}
 }

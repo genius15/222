@@ -30,4 +30,6 @@
 	<string name="CreateMem">填充</string>
 	<string name="freemem">释放</string>
 	<string name="memHint">请输入小于950的整数</string>
+	<string name="floatwinontext">悬浮窗开启中</string>
+	<string name="floatwinofftext">悬浮窗已关闭</string>
 </resources>

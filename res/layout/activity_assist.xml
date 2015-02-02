@@ -8,9 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AssistActivity" >
 
-
-
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -27,10 +26,8 @@
             android:id="@+id/observerpath"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginTop="15dp"
             android:text="11" />
-
 
         <LinearLayout
             android:id="@+id/linearLayout1"
@@ -61,6 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
+                android:onClick="onSelectClick"
                 android:scaleType="matrix"
                 android:src="@drawable/scanfile" />
         </LinearLayout>
@@ -87,6 +85,21 @@
                 android:onClick="onSetProxyBtn"
                 android:scaleType="matrix"
                 android:src="@drawable/proxyset" />
+
+            <TextView
+                android:id="@+id/floatwinsetview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/floatwinon"
+                android:gravity="bottom|center"
+				android:onClick="onFloatwinSet"
+				android:clickable = "true"
+				android:textColor="#FFFFFF"
+				android:textSize="12sp"
+                android:text="@string/floatwinontext"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -97,10 +110,10 @@
                 android:id="@+id/memEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/memHint" 
-                android:layout_marginTop="10dp">
+                android:hint="@string/memHint" >
 
                 <requestFocus />
             </EditText>
@@ -109,9 +122,9 @@
                 android:id="@+id/memory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:onClick="onMemCtrl"
-                android:text="@string/CreateMem"
-                android:layout_marginTop="10dp" />
+                android:text="@string/CreateMem" />
 
         </LinearLayout>
 
