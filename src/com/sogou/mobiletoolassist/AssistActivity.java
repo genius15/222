@@ -306,6 +306,7 @@ public class AssistActivity extends Activity {
 				break;
 			}
 		}
+		selectedidx = idx;//设置默认值，如果进去后没有切换，那么默认是这个
 		@SuppressWarnings("unused")
 		AlertDialog ad = new AlertDialog.Builder(this)
 				.setTitle("选择邮件接收者")

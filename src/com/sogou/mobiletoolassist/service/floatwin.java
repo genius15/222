@@ -186,7 +186,8 @@ public class floatwin extends Service {
 						Toast.makeText(assistApplication.getContext(), "开始截图", Toast.LENGTH_LONG).show();
 						Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//系统自带提示音
 						Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
-						rt.play();
+						if(rt!=null)
+							rt.play();
 						screenshotBtn.performClick();
 						Toast.makeText(assistApplication.getContext(), "截图完毕，静候邮件~", Toast.LENGTH_LONG).show();
 					}
