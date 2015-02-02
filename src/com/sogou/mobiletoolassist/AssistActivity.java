@@ -106,9 +106,8 @@ public class AssistActivity extends Activity {
 				.detectDiskReads().detectDiskWrites().detectNetwork() 
 				.penaltyLog().build());
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-				.detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
-				.penaltyLog().penaltyDeath().build());
-		
+				.detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath().build());
+		//detectLeakedClosableObjects()
 		try {
 			basedir = getBaseContext().getFilesDir().getAbsolutePath();
 		} catch (Exception e) {
@@ -249,7 +248,7 @@ public class AssistActivity extends Activity {
 		intent.putExtra("observerpath", obPath);
 		this.startService(intent);
 		v.setEnabled(false);
-		this.findViewById(R.id.SelectPath).setEnabled(false);
+		//this.findViewById(R.id.SelectPath).setEnabled(false);
 	}
 
 	public void onUninstallAPPS(View v) {
@@ -279,6 +278,18 @@ public class AssistActivity extends Activity {
 	public static HashMap<String, String> nameipMap = new HashMap<String, String>();
 	static {
 		nameipMap.put("ÕÅË§", "10.129.156.232");
+		nameipMap.put("ĞìÎÄ¾²", "10.129.157.69 ");
+		nameipMap.put("Ìïµ¤µ¤", "10.129.156.198");
+		nameipMap.put("¹ÈÏşÉ³", "10.129.158.21");
+		nameipMap.put("ÁÎÕñ»ª", "10.129.156.103");
+		nameipMap.put("Íõ²Ó", "10.129.156.142");
+		nameipMap.put("ÍõÀ¤", "10.129.158.46");
+		nameipMap.put("¶­ºê²©", "10.129.157.240");
+		nameipMap.put("Ëï¾²", "10.129.158.123");
+		nameipMap.put("ÕÔÏ²Äş", "10.129.157.39");
+		nameipMap.put("ÉÌÀöÀö", "");
+		nameipMap.put("ÌÆÖ¾¸Õ", "10.129.158.20");
+		
 	}
 	public final static String names[] = { "ĞìÎÄ¾²", "Ìïµ¤µ¤", "ÕÅË§", "¹ÈÏşÉ³", "ÁÎÕñ»ª",
 			"Íõ²Ó", "ÍõÀ¤", "¶­ºê²©", "Ëï¾²", "ÕÔÏ²Äş", "ÉÌÀöÀö", "ÌÆÖ¾¸Õ" };
@@ -341,7 +352,7 @@ public class AssistActivity extends Activity {
 
 	public void onMemCtrl(View v){
 		if(!isadded){//Èç¹ûÊÇ»¹Ã»Ìî³äÔòÌî³ä
-			EditText ev = (EditText) findViewById(R.id.memEdit);
+			EditText ev = (EditText)this.findViewById(R.id.memEdit);
 	    	String mem = ev.getText().toString();
 	    	try{
 	    		int memi = Integer.valueOf(mem);

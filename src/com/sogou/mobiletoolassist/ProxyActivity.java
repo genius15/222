@@ -24,6 +24,7 @@ import java.io.*;
 
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.util.ShellCommand;
+import com.sogou.mobiletoolassist.util.StateValue;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 import com.sogou.mobiletoolassist.R.layout;
 import com.sogou.mobiletoolassist.util.ShellCommand.CommandResult;
@@ -191,21 +192,29 @@ public class ProxyActivity extends PreferenceActivity {
 			}
 
 			if (checklistener()) {
-				r = cmd.su.runWaitFor(basedir + "/redirect.sh start "
-						+ proxy_type);
-
-				if (!r.success()) {
-					Log.v("tproxy", "Error starting redirect.sh (" + r.stderr
-							+ ")");
+//				r = cmd.su.runWaitFor(basedir + "/redirect.sh start "
+//						+ proxy_type);
+				int ret = UsefulClass.processCmd(basedir + "/redirect.sh start "
+						+ proxy_type);//有些手机上用原来的执行方法总是失败，换个方式
+//				if (!r.success()) {
+//					Log.v("tproxy", "Error starting redirect.sh (" + r.stderr
+//							+ ")");
+//					cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
+//					alert("Failed to start redirect.sh (" + r.stderr + ")",
+//							null);
+//					return false;
+//				} else {
+//					Log.v("tproxy", "Successfully ran redirect.sh start "
+//							+ proxy_type);
+//					return true;
+//				}
+				if(ret != StateValue.success){
 					cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
 					alert("Failed to start redirect.sh (" + r.stderr + ")",
 							null);
 					return false;
-				} else {
-					Log.v("tproxy", "Successfully ran redirect.sh start "
-							+ proxy_type);
-					return true;
 				}
+				return true;
 			} else {
 				alert("Proxy failed to start", null);
 				return false;

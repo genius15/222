@@ -8,156 +8,113 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AssistActivity" >
 
-    <TextView
-        android:id="@+id/title"
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="17dp"
-        android:text="@string/ObserverPath"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/observerpath"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/title"
-        android:layout_below="@+id/title"
-        android:layout_marginTop="15dp" />
-
-    <Button
-        android:id="@+id/startObserve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/observerpath"
-        android:layout_marginLeft="14dp"
-        android:layout_toRightOf="@+id/SelectPath"
-        android:onClick="onStartObserve"
-        android:text="@string/startObserver" />
-
-    <Button
-        android:id="@+id/uninstallappBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/SelectPath"
-        android:onClick="onUninstallAPPS"
-        android:text="@string/uninstallApps" />
-
-    <ImageView
-        android:id="@+id/mailReceiver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:contentDescription="@string/mailreceiver"
-        android:onClick="onSetMailReceiver"
-        android:src="@drawable/portrait" />
-
-    <Button
-        android:id="@+id/SelectPath"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/startObserve"
-        android:layout_alignBottom="@+id/startObserve"
-        android:layout_alignLeft="@+id/observerpath"
-        android:onClick="onSelectClick"
-        android:text="@string/ScanFile" />
-
-    <EditText
-        android:id="@+id/memEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/uninstallappBtn"
-        android:layout_alignRight="@+id/proxySetBtn"
-        android:layout_below="@+id/uninstallappBtn"
-        android:layout_marginTop="17dp"
-        android:ems="10"
-        android:hint="@string/memHint" />
-
-    <Button
-        android:id="@+id/memory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/memEdit"
-        android:layout_alignRight="@+id/mailReceiver"
-        android:onClick="onMemCtrl"
-        android:text="@string/CreateMem" />
-
-    
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/memEdit"
-        android:layout_below="@+id/memEdit"
-        android:layout_marginTop="41dp"
-        android:columnCount="3"
-        android:rowCount="3"
-		android:alignmentMode="alignMargins"
-		>
-
-        <com.sogou.mobiletoolassist.ui.MyImageView
-            android:id="@+id/scanfileview"
+        <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
-            android:layout_gravity="left|top"
-            android:layout_marginRight="10dp"
-            android:layout_row="0"
-            android:scaleType="matrix"
-            android:src="@drawable/scanfile" />
+            android:layout_marginTop="17dp"
+            android:text="@string/ObserverPath"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <com.sogou.mobiletoolassist.ui.MyImageView
-	        android:id="@+id/observerview"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	       	android:layout_row="0"
-	       	android:layout_column="1"
-	        android:onClick="onStartObserve"
-	        android:scaleType="matrix"
-	        android:layout_marginRight="10dp"
-	        android:src="@drawable/observer" />
+        <TextView
+            android:id="@+id/observerpath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-	    <com.sogou.mobiletoolassist.ui.MyImageView
-	        android:id="@+id/contactview"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_row="0"
-	       	android:layout_column="2"
-	        android:onClick="onSetMailReceiver"
-	        android:scaleType="matrix"
-	        android:src="@drawable/contact" />
-	
-	    <com.sogou.mobiletoolassist.ui.MyImageView
-	        android:id="@+id/uninstallview"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_row="1"
-	       	android:layout_column="0"
-	        android:onClick="onUninstallAPPS"
-	        android:scaleType="matrix"
-	        android:layout_marginTop="10dp"
-	        android:src="@drawable/cleandata" />
-	
-	    <com.sogou.mobiletoolassist.ui.MyImageView
-	        android:id="@+id/proxysetview"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_row="1"
-	       	android:layout_column="1"
-	       	android:layout_marginTop="10dp"
-	        android:onClick="onSetProxyBtn"
-	        android:scaleType="matrix"
-	        android:src="@drawable/proxyset" />
-    </GridLayout>
+            android:layout_marginTop="15dp"
+            android:text="11" />
 
-    <Button
-        android:id="@+id/proxySetBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/uninstallappBtn"
-        android:layout_alignRight="@+id/memory"
-        android:onClick="onSetProxyBtn"
-        android:text="@string/proxysetbtn" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp" >
+
+            <com.sogou.mobiletoolassist.ui.MyImageView
+                android:id="@+id/contactview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:onClick="onSetMailReceiver"
+                android:scaleType="matrix"
+                android:src="@drawable/contact" />
+
+            <com.sogou.mobiletoolassist.ui.MyImageView
+                android:id="@+id/observerview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:onClick="onStartObserve"
+                android:scaleType="matrix"
+                android:src="@drawable/observer" />
+
+            <com.sogou.mobiletoolassist.ui.MyImageView
+                android:id="@+id/scanfileview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:scaleType="matrix"
+                android:src="@drawable/scanfile" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <com.sogou.mobiletoolassist.ui.MyImageView
+                android:id="@+id/uninstallview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:onClick="onUninstallAPPS"
+                android:scaleType="matrix"
+                android:src="@drawable/cleandata" />
+
+            <com.sogou.mobiletoolassist.ui.MyImageView
+                android:id="@+id/proxysetview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="onSetProxyBtn"
+                android:scaleType="matrix"
+                android:src="@drawable/proxyset" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/memEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/memHint" 
+                android:layout_marginTop="10dp">
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/memory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onMemCtrl"
+                android:text="@string/CreateMem"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
