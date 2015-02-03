@@ -40,6 +40,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class floatwin extends Service {
@@ -48,6 +49,7 @@ public class floatwin extends Service {
 	private View btn_floatView = null;  
 	private Button clearBtn = null;
 	private Button screenshotBtn = null;
+	private ImageView smallview = null;
 	private final IBinder binder = new MyBinder();
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -95,7 +97,23 @@ public class floatwin extends Service {
 			return;
 		}
         btn_floatView = LayoutInflater.from(this).inflate(R.layout.floatwin, null);
+        smallview = (ImageView)btn_floatView.findViewById(R.id.fwinsmallview);
+        smallview.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View arg0) {
+				if(!clearBtn.isShown() || !screenshotBtn.isShown()){
+					clearBtn.setVisibility(Button.VISIBLE);
+					screenshotBtn.setVisibility(Button.VISIBLE);
+				}
+				else{
+					clearBtn.setVisibility(Button.GONE); 
+					screenshotBtn.setVisibility(Button.GONE);
+				}
+			}
+        	
+        });
         clearBtn = (Button)btn_floatView.findViewById(R.id.cleardatabtn);
+        clearBtn.setVisibility(Button.GONE);        
 		clearBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0) {
@@ -105,6 +123,7 @@ public class floatwin extends Service {
 			
 		});
 		screenshotBtn = (Button)btn_floatView.findViewById(R.id.screenshotbtn);
+		screenshotBtn.setVisibility(Button.GONE);
 		screenshotBtn.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
@@ -148,11 +167,53 @@ public class floatwin extends Service {
 
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.gravity =  Gravity.LEFT | Gravity.TOP; // 调整悬浮窗口至左上角
+        params.gravity =  Gravity.LEFT; // 调整悬浮窗口至左上角
         params.x = 0;  
         params.y = 0; 
         //需要增加增加system.alert_window权限
         wm.addView(btn_floatView, params);
+        smallview.setOnTouchListener(new OnTouchListener() {
+        	int lastX, lastY;
+        	int paramX, paramY;
+        	
+			@SuppressLint("ClickableViewAccessibility")
+			public boolean onTouch(View v, MotionEvent event) {	
+				switch(event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					lastX = (int) event.getRawX();
+					lastY = (int) event.getRawY();
+					paramX = params.x;
+					paramY = params.y;
+					
+
+					break;
+				case MotionEvent.ACTION_MOVE:
+					int dx = (int) event.getRawX() - lastX;
+					int dy = (int) event.getRawY() - lastY;
+					if(Math.abs(dx) < 5 && Math.abs(dy) <5){
+						//不这么做太灵敏了，明明我是在点击你移动个毛线啊
+						
+						break;	
+					}
+					params.x = paramX + dx;
+					params.y = paramY + dy;
+					
+					// 更新悬浮窗位置
+			        wm.updateViewLayout(btn_floatView, params);
+			        
+
+					break;
+				case MotionEvent.ACTION_UP:
+					int dx1 = (int) event.getRawX() - lastX;
+					int dy1 = (int) event.getRawY() - lastY;
+					if(Math.abs(dx1) < 5 && Math.abs(dy1) <5){
+						smallview.performClick();
+					}
+								
+				}
+				return true;
+			}
+		});
         // 设置悬浮窗的Touch监听
         screenshotBtn.setOnTouchListener(new OnTouchListener() {
         	int lastX, lastY;

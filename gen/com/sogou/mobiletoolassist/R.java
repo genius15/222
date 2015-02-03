@@ -41,27 +41,28 @@ public final class R {
         public static final int sym_def_app_icon=0x7f020010;
     }
     public static final class id {
-        public static final int btn_custom_next=0x7f080015;
-        public static final int cleardatabtn=0x7f08000c;
+        public static final int btn_custom_next=0x7f080016;
+        public static final int cleardatabtn=0x7f08000d;
         public static final int contactview=0x7f080004;
-        public static final int custom_song_icon=0x7f080011;
-        public static final int enable=0x7f08000e;
+        public static final int custom_song_icon=0x7f080012;
+        public static final int enable=0x7f08000f;
         public static final int floatwinsetview=0x7f080009;
+        public static final int fwinsmallview=0x7f08000c;
         public static final int linearLayout1=0x7f080003;
         public static final int linearLayout2=0x7f080000;
-        public static final int ll_custom_button=0x7f080014;
+        public static final int ll_custom_button=0x7f080015;
         public static final int memEdit=0x7f08000a;
         public static final int memory=0x7f08000b;
-        public static final int notifyContent=0x7f080012;
-        public static final int notifyScreenshotBtn=0x7f080016;
-        public static final int notifyTitle=0x7f080013;
+        public static final int notifyContent=0x7f080013;
+        public static final int notifyScreenshotBtn=0x7f080017;
+        public static final int notifyTitle=0x7f080014;
         public static final int observerpath=0x7f080002;
         public static final int observerview=0x7f080005;
-        public static final int preference_first_line=0x7f08000f;
-        public static final int preference_value=0x7f080010;
+        public static final int preference_first_line=0x7f080010;
+        public static final int preference_value=0x7f080011;
         public static final int proxysetview=0x7f080008;
         public static final int scanfileview=0x7f080006;
-        public static final int screenshotbtn=0x7f08000d;
+        public static final int screenshotbtn=0x7f08000e;
         public static final int title=0x7f080001;
         public static final int uninstallview=0x7f080007;
     }
