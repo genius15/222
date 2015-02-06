@@ -125,7 +125,8 @@ public class ClearDataService extends Service implements OnClickListener{
 						public void run() {
 							Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);//系统自带提示音
 							Ringtone rt = RingtoneManager.getRingtone(getApplicationContext(), uri);
-							rt.play();
+							if(rt!=null)
+								rt.play();
 							// TODO 我没用线程时会出现intent接收的android runtime，有时间解一下，先用线程解决
 							floatwin.ScreenShot();	
 						}

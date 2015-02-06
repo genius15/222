@@ -59,8 +59,7 @@ public class ScreenshotforGINGERBREAD_MR1 {
 			piex = new byte[screenHeight * screenWidth * deepth];// ÏñËØ
 			colors = new int[screenHeight * screenWidth];
 			long timestamp = System.currentTimeMillis();
-			String filePath = Environment.getExternalStorageDirectory() + 
-					File.separator+String.valueOf(timestamp) + ".png";
+			String filePath = "/sdcard/"+String.valueOf(timestamp) + ".png";
 					
 			final Object lock = new Object();
 			synchronized (lock) {

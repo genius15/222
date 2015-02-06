@@ -117,6 +117,7 @@ public class MailSender {
 					attachPart.setDataHandler(new DataHandler(source));
 					attachPart.setFileName(new File(file).getName());
 					multipart.addBodyPart(attachPart);
+					
 				}else{
 					Log.e("mailtag", file);
 				}
