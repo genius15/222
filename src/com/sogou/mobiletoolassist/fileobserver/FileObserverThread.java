@@ -1,22 +1,13 @@
 package com.sogou.mobiletoolassist.fileobserver;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.util.MailSender;
+import com.sogou.mobiletoolassist.util.UsefulClass;
 import org.apache.http.util.EncodingUtils;
-
 import android.os.FileObserver;
 import android.util.Log;
 
@@ -59,7 +50,7 @@ public class FileObserverThread extends FileObserver {
 					String res = "";
 					try {
 						File shot = new File(tmp);
-						attach = upZipFile(shot, observerpath);
+						attach = UsefulClass.upZipFile(shot, observerpath);
 						FileInputStream fin = new FileInputStream(attach);
 						int length = fin.available();
 						byte[] buffer = new byte[length];
@@ -90,48 +81,5 @@ public class FileObserverThread extends FileObserver {
 		}
 	}
 
-	/**
-	 * 解压缩功能. 将zipFile文件解压到folderPath目录下.
-	 * 
-	 * @throws Exception
-	 */
-	public static String upZipFile(File zipFile, String folderPath)
-			throws ZipException, IOException {
-		// public static void upZipFile() throws Exception{
-		ZipFile zfile = new ZipFile(zipFile);
-		@SuppressWarnings("rawtypes")
-		Enumeration zList = zfile.entries();
-		ZipEntry ze = null;
-		byte[] buf = new byte[1024];
-		String zippedname = "";
-		while (zList.hasMoreElements()) {
-			ze = (ZipEntry) zList.nextElement();
-			if (ze.isDirectory()) {
-				Log.d(AssistActivity.myTag, "ze.getName() = " + ze.getName());
-				String dirstr = folderPath + ze.getName();
-				// dirstr.trim();
-				dirstr = new String(dirstr.getBytes("8859_1"), "GB2312");
-				Log.d(AssistActivity.myTag, "str = " + dirstr);
-				File f = new File(dirstr);
-				f.mkdir();
-				continue;
-			}
-			Log.d(AssistActivity.myTag, "ze.getName() = " + ze.getName());
-			long curtime = System.currentTimeMillis();
-			zippedname = folderPath + File.separator + String.valueOf(curtime)
-					+ ".rc";
-			OutputStream os = new BufferedOutputStream(new FileOutputStream(
-					zippedname));
-			InputStream is = new BufferedInputStream(zfile.getInputStream(ze));
-			int readLen = 0;
-			while ((readLen = is.read(buf, 0, 1024)) != -1) {
-				os.write(buf, 0, readLen);
-			}
-			is.close();
-			os.close();
-		}
-		zfile.close();
-		Log.d(AssistActivity.myTag, "finishssssssssssssssssssss");
-		return zippedname;
-	}
+	
 }

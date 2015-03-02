@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string-array android:id="@+id/teamsset" name="teams">
+        <item android:id="@+id/item1">手机助手</item>
+        
+    </string-array>
+    
+</resources>

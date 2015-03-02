@@ -18,6 +18,18 @@
 		    android:title="@string/proxySwitch" >
 
 		 </CheckBoxPreference>
+		 
+		<CheckBoxPreference
+		    android:id="@+id/tcpdumenable"
+		    android:layout_width="wrap_content"
+		    android:enabled="true"
+		    android:key="isTcpdumpEnabled"
+		    android:selectable="true"
+		    android:shouldDisableView="true"
+		    android:summary="选中开启tcpdump"
+		    android:title="@string/tcpdump" >
+
+		 </CheckBoxPreference>
 	</PreferenceCategory>
 	
     <PreferenceCategory 

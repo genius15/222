@@ -1,0 +1,125 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolsLinear"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".AssistActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="41dp" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ObserverPath"
+            />
+
+        <TextView
+            android:id="@+id/observerpath"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.69"
+            android:text="11" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp" 
+        >
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/contactview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_marginRight="10dp"
+            android:onClick="onSetMailReceiver"
+            android:scaleType="matrix"
+            android:src="@drawable/contact" />
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/observerview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:onClick="onStartObserve"
+            android:scaleType="matrix"
+            android:src="@drawable/observer" />
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/scanfileview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onSelectClick"
+            android:scaleType="matrix"
+            android:src="@drawable/scanfile" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/uninstallview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="onUninstallAPPS"
+            android:scaleType="matrix"
+            android:src="@drawable/cleandata" />
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/proxysetview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="onSetProxyBtn"
+            android:scaleType="matrix"
+            android:src="@drawable/proxyset" />
+
+        <com.sogou.mobiletoolassist.ui.MyImageView
+            android:id="@+id/floatwinsetview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/floatwinon"
+            android:scaleType="matrix"
+            android:onClick="onFloatwinSet"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center" >
+
+        <EditText
+            android:id="@+id/memEdit"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+
+
+            android:layout_weight="0.44"
+            android:ems="10"
+            android:hint="@string/memHint" />
+
+        <Button
+            android:id="@+id/memory"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+   
+            android:onClick="onMemCtrl"
+            android:text="@string/CreateMem" />
+    </LinearLayout>
+
+</LinearLayout>

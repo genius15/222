@@ -27,9 +27,13 @@
 	<string name="proxySwitch">代理开关</string>
 	<string name="proxyHost">代理地址</string>
 	<string name="proxyPort">代理端口号</string>
+	<string name="tcpdump">tcpdump开关</string>
 	<string name="CreateMem">填充</string>
 	<string name="freemem">释放</string>
 	<string name="memHint">请输入小于950的整数</string>
 	<string name="floatwinontext">悬浮窗开启中</string>
 	<string name="floatwinofftext">悬浮窗已关闭</string>
+	<string name="thanks">感谢伟大的开源</string>
+	<string name="version">v3.3</string>
+	<string name="source">手机助手测试组低调出品</string>
 </resources>

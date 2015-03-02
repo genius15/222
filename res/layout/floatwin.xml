@@ -4,25 +4,65 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
+    <ImageButton
+        android:id="@+id/appmag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000"
+        android:src="@drawable/appmag_selector"
+        android:visibility="gone"/>
+    
+    <ImageButton
+        android:id="@+id/wifiset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000"
+        android:src="@drawable/clock_selector"
+        android:visibility="gone"/>
+	
+    <ImageButton
+        android:id="@+id/nextday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000"
+        android:visibility="gone"
+        android:src="@drawable/nextday_selector" />
+
+    <ImageButton
+        android:id="@+id/nexthour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000"
+        android:visibility="gone"
+        android:src="@drawable/nexthour_selector" />
+
+    <ImageButton
+        android:id="@+id/screenshotbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000"
+        android:visibility="gone"
+        android:src="@drawable/screencap_selector" />
+
+    <ImageButton
+        android:id="@+id/cleardatabtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="#00000000"
+        android:visibility="gone"
+        android:src="@drawable/cleardata_selector" />
+
+    <ImageButton
         android:id="@+id/fwinsmallview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:src="@drawable/portrait" />
-
-    <Button
-        android:id="@+id/cleardatabtn"
-        android:layout_width="80dp"
-        android:layout_height="31dp"
-        android:background="#87CEFA"
-        android:text="@string/ClearZSData" />
-
-    <Button
-        android:id="@+id/screenshotbtn"
-        android:layout_width="80dp"
-        android:layout_height="31dp"
-        android:background="#CD69C9"
-        android:text="@string/ScreenCap" />
+        android:background="#00000000"
+        android:src="@drawable/floatwin_collapsed" />
 
 </LinearLayout>

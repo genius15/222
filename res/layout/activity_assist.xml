@@ -2,132 +2,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".AssistActivity" >
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/toolsLinear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:text="@string/ObserverPath"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/observerpath"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="11" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp" >
-
-            <com.sogou.mobiletoolassist.ui.MyImageView
-                android:id="@+id/contactview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:onClick="onSetMailReceiver"
-                android:scaleType="matrix"
-                android:src="@drawable/contact" />
-
-            <com.sogou.mobiletoolassist.ui.MyImageView
-                android:id="@+id/observerview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:onClick="onStartObserve"
-                android:scaleType="matrix"
-                android:src="@drawable/observer" />
-
-            <com.sogou.mobiletoolassist.ui.MyImageView
-                android:id="@+id/scanfileview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:onClick="onSelectClick"
-                android:scaleType="matrix"
-                android:src="@drawable/scanfile" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <com.sogou.mobiletoolassist.ui.MyImageView
-                android:id="@+id/uninstallview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:onClick="onUninstallAPPS"
-                android:scaleType="matrix"
-                android:src="@drawable/cleandata" />
-
-            <com.sogou.mobiletoolassist.ui.MyImageView
-                android:id="@+id/proxysetview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:onClick="onSetProxyBtn"
-                android:scaleType="matrix"
-                android:src="@drawable/proxyset" />
-
-            <TextView
-                android:id="@+id/floatwinsetview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/floatwinon"
-                android:gravity="bottom|center"
-				android:onClick="onFloatwinSet"
-				android:clickable = "true"
-				android:textColor="#FFFFFF"
-				android:textSize="12sp"
-                android:text="@string/floatwinontext"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/memEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="@string/memHint" >
-
-                <requestFocus />
-            </EditText>
-
-            <Button
-                android:id="@+id/memory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:onClick="onMemCtrl"
-                android:text="@string/CreateMem" />
-
-        </LinearLayout>
-
     </LinearLayout>
+
+    <TableRow
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/boder" >
+
+        <ImageView
+            android:id="@+id/toolsTab"
+            android:layout_width="107dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            
+            android:onClick="onClickToolsTab"
+            android:src="@drawable/toolstabnew" />
+
+        <ImageView
+            android:id="@+id/receiverListTab"
+            android:layout_width="107dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            
+            android:onClick="onClickRecTab"
+            android:src="@drawable/contacts" />
+
+        <ImageView
+            android:id="@+id/aboutTab"
+            android:layout_width="106dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            
+            android:onClick="onClickAbout"
+            android:src="@drawable/abouttab" />
+    </TableRow>
 
 </RelativeLayout>

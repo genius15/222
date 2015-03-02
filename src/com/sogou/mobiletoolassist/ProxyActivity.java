@@ -10,12 +10,7 @@ import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.text.Editable;
-import android.text.Selection;
 import android.util.Log;
-import android.widget.EditText;
 
 import java.net.InetAddress;
 import java.net.Socket;
@@ -24,10 +19,8 @@ import java.io.*;
 
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.util.ShellCommand;
-import com.sogou.mobiletoolassist.util.StateValue;
-import com.sogou.mobiletoolassist.util.UsefulClass;
-import com.sogou.mobiletoolassist.R.layout;
 import com.sogou.mobiletoolassist.util.ShellCommand.CommandResult;
+import com.sogou.mobiletoolassist.util.UsefulClass;
 
 public class ProxyActivity extends PreferenceActivity {
 	public static final String PREFS_NAME = "prefs";
@@ -53,17 +46,18 @@ public class ProxyActivity extends PreferenceActivity {
 				alert("No su binary found on your ROM !", this);
 			}
 		}
-
-		try {
-			basedir = getBaseContext().getFilesDir().getAbsolutePath();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(basedir == null){
+			try {
+				basedir = getBaseContext().getFilesDir().getAbsolutePath();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 		copyfile("redsocks");
 		copyfile("proxy.sh");
 		copyfile("redirect.sh");
-
+		copyTcpDumpfile();
+		copyBusybox();
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.mainview);
 
@@ -77,19 +71,19 @@ public class ProxyActivity extends PreferenceActivity {
 				.findPreference("proxyHost");
 		final EditTextPreference portedit = (EditTextPreference) this
 				.findPreference("proxyPort");
-		
+		CheckBoxPreference tcpdumenable = (CheckBoxPreference) this
+				.findPreference("isTcpdumpEnabled");
 		if (!"".equals(addrsum)) {
 			addredit.setSummary("当前为：" + addrsum);
-			
+
 		}
 		if (!"".equals(portsum)) {
-
 			portedit.setSummary("当前为：" + portsum);
 		}
-//		EditText et = addredit.getEditText();
-//		Editable ea = et.getText();
-//		int ln = ea.length();
-//		Selection.setSelection(ea, 0);//
+		// EditText et = addredit.getEditText();
+		// Editable ea = et.getText();
+		// int ln = ea.length();
+		// Selection.setSelection(ea, 0);//
 		addredit.setOnPreferenceChangeListener(new EditTextPreference.OnPreferenceChangeListener() {
 
 			@Override
@@ -110,11 +104,6 @@ public class ProxyActivity extends PreferenceActivity {
 			}
 
 		});
-		// PackageInfo pi = null;
-		// try {
-		// pi = getPackageManager().getPackageInfo(getPackageName(), 0);
-		// } catch (PackageManager.NameNotFoundException e) {}
-		// findPreference("version").setSummary("TransProxy "+pi.versionName);
 
 		cb.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference,
@@ -124,7 +113,18 @@ public class ProxyActivity extends PreferenceActivity {
 				return ret;
 			}
 		});
-
+		tcpdumenable.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+			public boolean onPreferenceChange(Preference preference,
+					Object newValue) {
+				if((Boolean) newValue){				
+					UsefulClass.processCmdWithoutWait("/data/local/tcpdump -n -s 0 -w - | busybox nc -l -p 11233 ");
+				}else{
+					UsefulClass.processCmd("busybox killall tcpdump");
+				}
+				
+				return true;
+			}
+		});
 		setenabled(checklistener());
 	}
 
@@ -213,7 +213,7 @@ public class ProxyActivity extends PreferenceActivity {
 
 	public void copyfile(String file) {
 		String of = file;
-		File f = new File(of);
+		File f = new File(basedir+File.separator+of);
 
 		if (!f.exists()) {
 			try {
@@ -232,6 +232,53 @@ public class ProxyActivity extends PreferenceActivity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void copyTcpDumpfile() {
+		try {
+			UsefulClass.processCmd("chmod 777 /data");
+			UsefulClass.processCmd("chmod 777 /data/local");
+			File tcpdump = new File("/data/local/tcpdump");
+			if (!tcpdump.exists()) {
+				InputStream in = getAssets().open("tcpdump");
+				FileOutputStream out = new FileOutputStream(
+						"/data/local/tcpdump");
+
+				byte[] buf = new byte[1024];
+				int len;
+				while ((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				out.close();
+				in.close();
+				Runtime.getRuntime().exec("chmod 777  /data/local/tcpdump");
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void copyBusybox() {
+		try {
+			File busybox = new File("/system/bin/busybox");
+			if (!busybox.exists()) {
+				InputStream in = getAssets().open("busybox");
+				FileOutputStream out = new FileOutputStream(
+						"/system/bin/busybox");
+				byte[] buf = new byte[1024];
+				int len;
+				while ((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				out.close();
+				in.close();
+				Runtime.getRuntime().exec("chmod 777  /system/bin/busybox");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
