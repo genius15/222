@@ -34,6 +34,7 @@
 	<string name="floatwinontext">悬浮窗开启中</string>
 	<string name="floatwinofftext">悬浮窗已关闭</string>
 	<string name="thanks">感谢伟大的开源</string>
-	<string name="version">v3.3</string>
+	<string name="version">v3.4</string>
 	<string name="source">手机助手测试组低调出品</string>
+	<string name="mt_download_dir_url">http://installer.sogou-inc.com/mirror_installer/smt_android/</string>
 </resources>

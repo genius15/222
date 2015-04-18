@@ -5,5 +5,11 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="D:/PDASrcCode/useful_libs/jsoup-1.8.1.jar" sourcepath="D:/PDASrcCode/useful_libs/jsoup-1.8.1-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/PDASrcCode/useful_libs/jsoup-1.8.1-javadoc.jar!/"/>
+			<attribute name="source_encoding" value="UTF-8"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

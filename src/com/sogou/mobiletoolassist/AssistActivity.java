@@ -1,6 +1,7 @@
 package com.sogou.mobiletoolassist;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -11,17 +12,22 @@ import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
 import com.sogou.mobiletoolassist.ui.ReceiversFragment;
 import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
+import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
+
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,6 +58,7 @@ public class AssistActivity extends FragmentActivity {
 	public static String myTag = "Assist";
 	public static String obPath = Environment.getExternalStorageDirectory()
 			.getPath() + File.separator + "MobileTool/CrashReport";
+
 	public static int selectedidx = 0;
 	public static String receiver = null;
 	@SuppressWarnings("unused")
@@ -70,6 +77,7 @@ public class AssistActivity extends FragmentActivity {
 	public static int neverWatching = 0x00001000;
 	public static int isWatching = neverWatching+1;
 	public static int noWatching = neverWatching+2;
+	public static String installedaction = "com.sogou.mobiletoolassist.action.installed";
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className,
 				IBinder localBinder) {
@@ -82,7 +90,8 @@ public class AssistActivity extends FragmentActivity {
 	};
 	private boolean isadded = false;
 	private final static int uninstallapps = 900;
-	private Handler assistActhandler = new Handler(){
+	private final static int installmt = uninstallapps + 1;
+	public Handler assistActhandler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case AssistActivity.uninstallapps:
@@ -92,6 +101,7 @@ public class AssistActivity extends FragmentActivity {
 				}
 				findViewById(R.id.uninstallview).setEnabled(true);
 				break;
+			
 			}
 			super.handleMessage(msg);
 		}
@@ -174,7 +184,17 @@ public class AssistActivity extends FragmentActivity {
 		}
 				
 	}
-
+	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
+		 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(installedaction)) {
+                ImageView view = (ImageView) findViewById(R.id.installmt);
+                view.setImageResource(R.drawable.installmt);
+            } 
+        }
+    };
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -347,9 +367,13 @@ public class AssistActivity extends FragmentActivity {
 	public void onSelectClick(View arg0) {
 		File file = Environment.getExternalStorageDirectory();
 		ShowDialog(file.getPath());
-
+		
 	}
-
+	public void onInstallMt(View arg) {
+		backservice.installmt();
+//		ImageView view = (ImageView) findViewById(R.id.installmt);
+//		view.setImageResource(R.drawable.installmting);
+	}
 	private void switchTab(Fragment tab) {
 		FragmentManager fm = this.getSupportFragmentManager();
 		FragmentTransaction transaction = fm.beginTransaction();
@@ -413,6 +437,7 @@ public class AssistActivity extends FragmentActivity {
 	public static HashMap<String, String> nameEmailMap = new HashMap<String, String>();
 	static {
 		nameEmailMap.put("ĞìÎÄ¾²", "xuwenjing@sogou-inc.com");
+		nameEmailMap.put("ÌÆÖ¾¸Õ", "tangzhigang@sogou-inc.com");
 		nameEmailMap.put("Ìïµ¤µ¤", "tindandan@sogou-inc.com");
 		nameEmailMap.put("ÕÅË§", "zhangshuai203407@sogou-inc.com");
 		nameEmailMap.put("¹ÈÏşÉ³", "guxiaosha203822@sogou-inc.com");
@@ -423,27 +448,27 @@ public class AssistActivity extends FragmentActivity {
 		nameEmailMap.put("Ëï¾²", "sunjing@sogou-inc.com");
 		nameEmailMap.put("ÕÔÏ²Äş", "zhaoxining@sogou-inc.com");
 		nameEmailMap.put("ÉÌÀöÀö", "shanglili@sogou-inc.com");
-		nameEmailMap.put("ÌÆÖ¾¸Õ", "tangzhigang@sogou-inc.com");
+		
 
 	}
 	public static HashMap<String, String> nameipMap = new HashMap<String, String>();
 	static {
 		nameipMap.put("ÕÅË§", "10.129.157.174");
-		nameipMap.put("ĞìÎÄ¾²", "10.129.157.69");
-		nameipMap.put("Ìïµ¤µ¤", "10.129.156.198");
-		nameipMap.put("¹ÈÏşÉ³", "10.129.158.21");
+		nameipMap.put("ĞìÎÄ¾²", "10.129.156.128");
+		nameipMap.put("Ìïµ¤µ¤", "10.129.157.134");
+		nameipMap.put("¹ÈÏşÉ³", "10.129.156.78");
 		nameipMap.put("ÁÎÕñ»ª", "10.129.156.103");
-		nameipMap.put("Íõ²Ó", "10.129.156.142");
+		nameipMap.put("Íõ²Ó", "10.129.156.42");
 		nameipMap.put("ÍõÀ¤", "10.129.158.46");
-		nameipMap.put("¶­ºê²©", "10.129.157.240");
-		nameipMap.put("Ëï¾²", "10.129.158.123");
+		nameipMap.put("¶­ºê²©", "10.129.157.28");
+		nameipMap.put("Ëï¾²", "10.129.156.69");
 		nameipMap.put("ÕÔÏ²Äş", "10.129.157.249");
 		nameipMap.put("ÉÌÀöÀö", "");
-		nameipMap.put("ÌÆÖ¾¸Õ", "10.129.158.20");
+		nameipMap.put("ÌÆÖ¾¸Õ", "10.129.156.164");
 
 	}
-	public final static String names[] = { "ĞìÎÄ¾²", "Ìïµ¤µ¤", "ÕÅË§", "¹ÈÏşÉ³", "ÁÎÕñ»ª",
-			"Íõ²Ó", "ÍõÀ¤", "¶­ºê²©", "Ëï¾²", "ÕÔÏ²Äş", "ÉÌÀöÀö", "ÌÆÖ¾¸Õ" };
+	public final static String names[] = { "ĞìÎÄ¾²", "ÌÆÖ¾¸Õ" ,"Ìïµ¤µ¤", "ÕÅË§", "¹ÈÏşÉ³", "ÁÎÕñ»ª",
+			"Íõ²Ó", "ÍõÀ¤", "¶­ºê²©", "Ëï¾²", "ÕÔÏ²Äş", "ÉÌÀöÀö"};
 
 	public void onSetMailReceiver(View v) {
 		SharedPreferences data = AssistApplication.getContext()

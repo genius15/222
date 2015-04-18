@@ -46,3 +46,6 @@ bin/classes/android/support/v7/appcompat/R$anim.class
 *.class
 *.cache
 bin/R.txt
+bin
+obj
+gen

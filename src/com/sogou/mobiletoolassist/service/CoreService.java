@@ -1,6 +1,7 @@
 package com.sogou.mobiletoolassist.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,13 +13,17 @@ import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.fileobserver.FileObserverThread;
+import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
 import com.sogou.mobiletoolassist.util.MailSender;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ScreenshotforJELLY_BEAN;
 import com.sogou.mobiletoolassist.util.StateValue;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 
+import android.R.integer;
+import android.R.string;
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -34,11 +39,15 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -68,12 +77,15 @@ public class CoreService extends Service {
 	private final static int hide = 0x0000001;
 	public final static int screenshot = 0x0000002;
 	private final static int visiable = 0x0000003;
+	private final static int installmt = 0x0000004;
+	private final static int downloadfailed = 0x0000005;
 	private static boolean isUninstalling = false;
-	
+	public static String mtpathString = Environment.getExternalStorageDirectory()
+			.getPath() + File.separator;
 	private FileObserverThread listener = null;
 	private String observerpath = null;
 	private String emailReceiver = null;
-	
+	public boolean isInstalling = false;
 	
 	public Handler fltwinhandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -95,6 +107,24 @@ public class CoreService extends Service {
 				break;
 			case CoreService.visiable:
 				wm.addView(btn_floatView, params);
+				break;
+			case CoreService.installmt:		
+//				Intent installIntent = new Intent(Intent.ACTION_MAIN);
+//				installIntent.setAction(AssistActivity.installedaction);
+//				installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//				startActivity(installIntent);
+				String pathString = msg.getData().getString("path");
+				Intent intent = new Intent(Intent.ACTION_VIEW); 
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.setDataAndType(Uri.fromFile(new File(pathString)), "application/vnd.android.package-archive"); 
+				startActivity(intent);
+				isInstalling = false;
+				stopForeground(true);//取消前台服务
+				break;
+			case CoreService.downloadfailed:
+				Toast.makeText(AssistApplication.getContext(), "下载失败！", Toast.LENGTH_LONG).show();
+				isInstalling = false;
+				stopForeground(true);//取消前台服务
 				break;
 			}
 			super.handleMessage(msg);
@@ -236,6 +266,7 @@ public class CoreService extends Service {
 				String nextTime = String.valueOf(hour)+"5500";
 				String cmd = "date -s  "+nowDate+"."+nextTime;
 				UsefulClass.processCmd(cmd);
+				
 			}
 			
 		});
@@ -505,5 +536,68 @@ public class CoreService extends Service {
 		} else {
 			wm.removeView(btn_floatView);
 		}
+	}
+
+	public void installmt() {
+		if (isInstalling) {
+			Toast.makeText(this, "正在下载，请不要重复点击", Toast.LENGTH_LONG).show();
+			return;
+		}
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				isInstalling = true;
+				Intent notificationIntent = new Intent(Intent.ACTION_MAIN);
+				notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);   
+				notificationIntent.setClass(AssistApplication.getContext(), AssistActivity.class);
+				notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|
+						Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);  
+				PendingIntent contentIntent = PendingIntent.getActivity(AssistApplication.getContext(), 0,
+						notificationIntent, 0);
+				//notif.setLatestEventInfo(context, contentTitle, contentText,
+					//	contentIntent);
+				Builder builder = new NotificationCompat.Builder(AssistApplication.getContext());
+				builder.setContentIntent(contentIntent).setAutoCancel(false)
+					.setSmallIcon(R.drawable.ic_launcher).setOngoing(true)
+					.setContentTitle("正在下载最新版助手测试包");
+				startForeground(1024, builder.build());
+				String root_urlString = getResources().getString(
+						R.string.mt_download_dir_url);
+				String downloadurlString = null;
+				try {
+					downloadurlString = FetchNewestMTApk.getDownloadUrl(root_urlString);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					
+					e.printStackTrace();
+				}
+				if(downloadurlString == null){
+					Message msgMessage = new Message();
+					msgMessage.what = downloadfailed;
+					fltwinhandler.sendMessage(msgMessage);
+					return;
+				}
+					
+				int idx = downloadurlString.lastIndexOf("/");
+				String filenameString = downloadurlString.substring(idx+1);
+				File file = new File(mtpathString+filenameString);
+
+				if (file.exists()) {
+					file.delete();
+					file = null;
+				}
+				UsefulClass.Download(downloadurlString, mtpathString+filenameString);
+				Message msg = new Message();
+				
+				msg.what = CoreService.installmt;
+				Bundle bundle = new Bundle();   
+				bundle.putString("path", mtpathString+filenameString);
+				msg.setData(bundle);
+				fltwinhandler.sendMessage(msg);
+				
+			}
+		}).start();
 	}
 }

@@ -80,10 +80,7 @@ public class ProxyActivity extends PreferenceActivity {
 		if (!"".equals(portsum)) {
 			portedit.setSummary("µ±Ç°Îª£º" + portsum);
 		}
-		// EditText et = addredit.getEditText();
-		// Editable ea = et.getText();
-		// int ln = ea.length();
-		// Selection.setSelection(ea, 0);//
+
 		addredit.setOnPreferenceChangeListener(new EditTextPreference.OnPreferenceChangeListener() {
 
 			@Override
