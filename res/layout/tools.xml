@@ -98,7 +98,7 @@
     </LinearLayout>
 
 	<LinearLayout
-	    android:layout_width="274dp"
+	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content" >
 
 		<com.sogou.mobiletoolassist.ui.MyImageView
@@ -110,6 +110,25 @@
 		    android:onClick="onInstallMt"
 		    android:scaleType="matrix"
 		    android:src="@drawable/installmt" />
+		
+		<com.sogou.mobiletoolassist.ui.MyImageView
+		    android:id="@+id/generateFolder"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="10dp"
+		    android:layout_marginTop="10dp"
+		    android:onClick="onGenerateFolder"
+		    android:scaleType="matrix"
+		    android:src="@drawable/generatefolder" />
+		
+		<com.sogou.mobiletoolassist.ui.MyImageView
+		    android:id="@+id/generateFile"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginTop="10dp"
+		    android:onClick="onGenerateEmptyFile"
+		    android:scaleType="matrix"
+		    android:src="@drawable/generatefile" />
 	    
 	</LinearLayout>
     <LinearLayout
@@ -122,9 +141,7 @@
             android:id="@+id/memEdit"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-
-
-            android:layout_weight="0.44"
+            android:layout_weight="0.20"
             android:ems="10"
             android:hint="@string/memHint" />
 

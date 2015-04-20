@@ -94,6 +94,9 @@ public class AssistActivity extends FragmentActivity {
 	private boolean isadded = false;
 	private final static int uninstallapps = 900;
 	private final static int installmt = uninstallapps + 1;
+	private final static int generateFile = installmt+1;
+	private final static int generateFolder = generateFile + 1;
+	private final static int generateOver = generateFolder + 1;
 	public Handler assistActhandler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -104,7 +107,55 @@ public class AssistActivity extends FragmentActivity {
 				}
 				findViewById(R.id.uninstallview).setEnabled(true);
 				break;
-			
+			case AssistActivity.generateFile:
+				final int num = msg.getData().getInt("num");
+				
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						String path = Environment.getExternalStorageDirectory()+File.separator;
+						for (int i = 0; i < num; i++) {
+							File file = new File(path+i+".log");
+							if (file.exists()) {
+								file.delete();
+							}
+							try {
+								file.createNewFile();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							file = null;
+						}
+						Message toa = new Message();
+						toa.what = AssistActivity.generateOver;
+						assistActhandler.sendMessage(toa);
+					}
+				}).start();
+				break;
+			case AssistActivity.generateFolder:
+				final int num1 = msg.getData().getInt("num");
+				new Thread(new Runnable() {
+					public void run() {
+						String path = Environment.getExternalStorageDirectory()+File.separator;
+						for (int i = 0; i < num1; i++) {
+							File file = new File(path+i);
+							if (file.exists()) {
+								file.delete();
+							}
+							file.mkdirs();
+							file = null;
+						}
+						Message toa = new Message();
+						toa.what = AssistActivity.generateOver;
+						assistActhandler.sendMessage(toa);
+					}
+				}).start();
+				break;
+			case AssistActivity.generateOver:
+				Toast.makeText(AssistApplication.getContext(),"生成完毕",Toast.LENGTH_LONG).show();
+				break;
 			}
 			super.handleMessage(msg);
 		}
@@ -183,8 +234,7 @@ public class AssistActivity extends FragmentActivity {
 			para = aboutTab.getLayoutParams();
 			para.width = screenWidth - 2 * viewWidth;
 			aboutTab.setLayoutParams(para);
-			onClickToolsTab(toolsTab);
-			
+			onClickToolsTab(toolsTab);			
 		}
 		
 		
@@ -388,6 +438,8 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onStartObserve(View v) {
+		
+
 		if (!new File(obPath).exists()) {
 			Log.e(myTag, obPath + " does not exist");
 			File p = new File(obPath);
@@ -585,7 +637,6 @@ public class AssistActivity extends FragmentActivity {
 			isFloatwinon = true;
 		}
 		
-		
 	}
 
 	public void onClickToolsTab(View v) {
@@ -628,5 +679,42 @@ public class AssistActivity extends FragmentActivity {
 		CheckBox cbBox = (CheckBox) v;
 		boolean needSend = cbBox.isChecked();
 		this.getSharedPreferences("AppData",Context.MODE_PRIVATE).edit().putBoolean("needSend", needSend).commit();
+	}
+	
+	public void onGenerateFolder(View v){
+		EditText ev = (EditText) this.findViewById(R.id.memEdit);
+		String num = ev.getText().toString();
+		int n = 500;
+		try {
+			n = Integer.parseInt(num);
+		} catch (NumberFormatException e) {
+			Toast.makeText(this, "输入的内容不是数字,将默认生成500个", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		Message msg  = new Message();
+		msg.what = AssistActivity.generateFolder;
+		Bundle bundle = new Bundle();   
+		bundle.putInt("num", n);
+		msg.setData(bundle);
+		assistActhandler.sendMessage(msg);
+	}
+	
+	public void onGenerateEmptyFile(View v){
+		EditText ev = (EditText) this.findViewById(R.id.memEdit);
+		String num = ev.getText().toString();
+		int n = 500;
+		try {
+			n = Integer.parseInt(num);
+		} catch (NumberFormatException e) {
+			Toast.makeText(this, "输入的内容不是数字,将默认生成500个", Toast.LENGTH_LONG).show();
+			return;
+		}
+		Message msg  = new Message();
+		Bundle bundle = new Bundle();   
+		bundle.putInt("num", n);
+		msg.setData(bundle);
+		msg.what = AssistActivity.generateFile;
+		assistActhandler.sendMessage(msg);
 	}
 }
