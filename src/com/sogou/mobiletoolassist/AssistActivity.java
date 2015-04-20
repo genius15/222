@@ -13,6 +13,7 @@ import com.sogou.mobiletoolassist.ui.AboutTabFragment;
 import com.sogou.mobiletoolassist.ui.ReceiversFragment;
 import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
 import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
+import com.sogou.mobiletoolassist.util.JsonTestResultHandle;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
@@ -49,6 +50,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -73,6 +75,7 @@ public class AssistActivity extends FragmentActivity {
 	private ImageView toolsTab = null;
 	private ImageView contactTab = null;
 	private ImageView aboutTab = null;
+	private CheckBox jsonCheckBox = null;
 	public static String dataname = "AppData";
 	public static int neverWatching = 0x00001000;
 	public static int isWatching = neverWatching+1;
@@ -182,7 +185,8 @@ public class AssistActivity extends FragmentActivity {
 			aboutTab.setLayoutParams(para);
 			onClickToolsTab(toolsTab);
 		}
-				
+		
+		
 	}
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
 		 
@@ -618,5 +622,10 @@ public class AssistActivity extends FragmentActivity {
 			aboutFrag = new AboutTabFragment();
 		}
 		switchTab(aboutFrag);
+	}
+	public void onClickJsonTest(View v) {
+		CheckBox cbBox = (CheckBox) v;
+		boolean needSend = cbBox.isChecked();
+		this.getSharedPreferences("AppData",Context.MODE_PRIVATE).edit().putBoolean("needSend", needSend).commit();
 	}
 }

@@ -137,4 +137,11 @@
             android:text="@string/CreateMem" />
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/cb_sendjson"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:text="@string/sendjsontestResult" 
+        android:onClick="onClickJsonTest"/>
+
 </LinearLayout>

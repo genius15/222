@@ -240,4 +240,6 @@ public class UsefulClass {
 		return true;
 
 	}
+	
+	
 }
