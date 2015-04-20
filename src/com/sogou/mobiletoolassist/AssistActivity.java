@@ -184,6 +184,7 @@ public class AssistActivity extends FragmentActivity {
 			para.width = screenWidth - 2 * viewWidth;
 			aboutTab.setLayoutParams(para);
 			onClickToolsTab(toolsTab);
+			
 		}
 		
 		
