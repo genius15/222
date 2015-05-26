@@ -20,6 +20,9 @@ public class JsonTestResultHandle {
 		File file = new File(pathString);
 		if (file.exists() && file.isDirectory()) {
 			String[] filesString = file.list();
+			if (filesString == null) {
+				return;
+			}
 			long recent = 0;
 			File lastFile = null;
 			for (int i = 0; i < filesString.length; i++) {

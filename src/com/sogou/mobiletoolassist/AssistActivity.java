@@ -5,21 +5,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
-
-import com.sogou.mobiletoolassist.service.ToolsNotifBelowIceCreamSandwich;
-import com.sogou.mobiletoolassist.service.ToolNotification;
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
 import com.sogou.mobiletoolassist.ui.ReceiversFragment;
 import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
-import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
-import com.sogou.mobiletoolassist.util.JsonTestResultHandle;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
-
-import android.R.integer;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -28,8 +22,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -166,28 +158,14 @@ public class AssistActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		Log.i("study", "assist act oncreate");
 		setContentView(R.layout.activity_assist);
-		
-		
+
+		Log.i("study", AssistActivity.class.getName());
 		// if (!appdata.getBoolean("isscadded", false)) {
 		// addShortcut();
 		// appdata.edit().putBoolean("isscadded", true).commit();
 		// }
 		//UsefulClass.processCmd("/data/local/tcpdump -p -vv -s 0 -w /sdcard/zscapture.pcap");
-		if (Build.VERSION.SDK_INT > 13) {
-			if (!UsefulClass.isServiceRunning(this,
-					ToolNotification.class.getName())) {
-				Intent it = new Intent(this, ToolNotification.class);
-				this.startService(it);
-			}
-		} else {
-			if (!UsefulClass.isServiceRunning(this,
-					ToolsNotifBelowIceCreamSandwich.class.getName())) {
-				Intent it = new Intent(this,
-						ToolsNotifBelowIceCreamSandwich.class);
-				this.startService(it);
-				Log.d(myTag, "NotificationBelowIceCreamSandwich start");
-			}
-		}
+
 		if (!UsefulClass
 				.isServiceRunning(this, CoreService.class.getName())) {
 			Intent it = new Intent(this, CoreService.class);
@@ -716,5 +694,18 @@ public class AssistActivity extends FragmentActivity {
 		msg.setData(bundle);
 		msg.what = AssistActivity.generateFile;
 		assistActhandler.sendMessage(msg);
+	}
+	
+	public void onSendbroadcast(View v) {
+		Message msg = new Message();
+		msg.what = CoreService.sendBroadcast;
+		backservice.fltwinhandler.sendMessage(msg);
+		
+	}
+	
+	public void onClickMaxHeapShow(View b) {
+		ActivityManager mManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		int mTotalSize = mManager.getMemoryClass();
+		Toast.makeText(this, String.valueOf(mTotalSize), Toast.LENGTH_LONG).show();
 	}
 }
