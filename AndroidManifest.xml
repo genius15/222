@@ -24,6 +24,9 @@
         android:name="com.android.launcher.permission.INSTALL_SHORTCUT"
         android:maxSdkVersion="9" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    
+    
 
     <application
         android:name="AssistApplication"
@@ -51,13 +54,10 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <service android:name="com.sogou.mobiletoolassist.service.ToolNotification" >
-        </service>
         
         <service android:name="com.sogou.mobiletoolassist.service.CoreService" >
         </service>
-        <service android:name="com.sogou.mobiletoolassist.service.ToolsNotifBelowIceCreamSandwich" >
-        </service>
+
         <receiver 
             android:name="com.sogou.mobiletoolassist.receiver.SimuBroadcastRec">
             <intent-filter >

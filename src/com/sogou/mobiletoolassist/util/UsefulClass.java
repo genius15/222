@@ -130,7 +130,7 @@ public class UsefulClass {
 
 		}
 		String result = stdoutReader.getResult();
-		Log.d(AssistActivity.myTag, result);
+		Log.i(AssistActivity.myTag, result);
 		return ret;
 	}
 

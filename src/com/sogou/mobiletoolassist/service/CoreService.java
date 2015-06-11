@@ -1,7 +1,6 @@
 package com.sogou.mobiletoolassist.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,8 +21,6 @@ import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ScreenshotforJELLY_BEAN;
 import com.sogou.mobiletoolassist.util.StateValue;
 import com.sogou.mobiletoolassist.util.UsefulClass;
-
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -44,7 +41,6 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -53,6 +49,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
@@ -688,6 +685,16 @@ public class CoreService extends Service implements OnClickListener {
 	}
 
 	public void setNextAlarm(int cnt) {
+		PowerManager.WakeLock wakeLock = null;
+
+		final PowerManager pm = (PowerManager) this
+				.getSystemService(Context.POWER_SERVICE);
+
+		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+				"send test broadcast");
+		wakeLock.acquire();
+		
+		
 		String bString = intentStrings.get(cnt);
 		if (cnt == intentStrings.size()) {
 			getSharedPreferences("broadcastcnt", MODE_PRIVATE).edit()
@@ -712,6 +719,9 @@ public class CoreService extends Service implements OnClickListener {
 				PendingIntent.FLAG_ONE_SHOT);
 		alarms.set(AlarmManager.RTC_WAKEUP,
 				System.currentTimeMillis() + 15 * 60 * 1000, pIntent);
+		wakeLock.release();
+		wakeLock = null;
+		Log.i("broadcast", "fale 1 tiao");
 	}
 
 	public final static String ACTION_BUTTON = "com.notifications.intent.action.ButtonClick";

@@ -260,6 +260,7 @@ public class ProxyActivity extends PreferenceActivity {
 
 	public void copyBusybox() {
 		try {
+			Runtime.getRuntime().exec("chmod 777 /system/bin");
 			File busybox = new File("/system/bin/busybox");
 			if (!busybox.exists()) {
 				InputStream in = getAssets().open("busybox");

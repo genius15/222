@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
@@ -14,6 +15,7 @@ import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -22,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -47,6 +50,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class AssistActivity extends FragmentActivity {
 	public static String myTag = "Assist";
@@ -214,8 +218,13 @@ public class AssistActivity extends FragmentActivity {
 			aboutTab.setLayoutParams(para);
 			onClickToolsTab(toolsTab);			
 		}
-		
-		
+		ActivityManager aManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningAppProcessInfo> processInfos=aManager.getRunningAppProcesses();
+		for (RunningAppProcessInfo runningAppProcessInfo : processInfos) {
+			Log.i("process", runningAppProcessInfo.processName);
+			Log.i("process", String.valueOf(runningAppProcessInfo.pid));
+			Log.i("process", String.valueOf(runningAppProcessInfo.uid));
+		}
 	}
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
 		 
@@ -707,5 +716,20 @@ public class AssistActivity extends FragmentActivity {
 		ActivityManager mManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 		int mTotalSize = mManager.getMemoryClass();
 		Toast.makeText(this, String.valueOf(mTotalSize), Toast.LENGTH_LONG).show();
+	}
+	
+	public void testwifiset(View v) {
+		//ToggleButton tbButton = (ToggleButton) findViewById(R.id.timesToggle);
+		WifiManager wifiManager = (WifiManager) this
+				.getSystemService(Context.WIFI_SERVICE);
+		wifiManager.setWifiEnabled(false);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		wifiManager.setWifiEnabled(true);
+		
 	}
 }
