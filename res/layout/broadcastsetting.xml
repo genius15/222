@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ToggleButton
+        android:id="@+id/scheduleToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="32dp"
+        android:text="ToggleButton" />
+
+    <TextView
+        android:id="@+id/scheduleTimeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/scheduleToggle"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="24dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    
+
+    <TextView
+        android:id="@+id/sendtimesTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scheduleTimeTv"
+        android:layout_below="@+id/scheduleTimeTv"
+        android:layout_marginTop="39dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ToggleButton
+        android:id="@+id/timesToggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sendtimesTv"
+        android:layout_alignLeft="@+id/scheduleToggle"
+        android:text="ToggleButton" 
+        android:onClick="testwifiset"/>
+
+    <Button
+        android:id="@+id/selectAllBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/timesToggle"
+        android:layout_below="@+id/timesToggle"
+        android:layout_marginTop="22dp"
+        android:text="@string/selectall" />
+
+    <Button
+        android:id="@+id/scheduleTaskBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sendnowBtn"
+        android:layout_marginTop="63dp"
+        android:text="@string/schedule" 
+        android:onClick="onSendbroadcast"/>
+
+    <TextView
+        android:id="@+id/taskInfoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sendnowBtn"
+        android:layout_marginTop="16dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/sendnowBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/selectAllBtn"
+        android:onClick="onSendbroadcast"
+        android:text="@string/sendnow"
+        android:visibility="visible" />
+
+</RelativeLayout>

@@ -37,4 +37,8 @@
 	<string name="version">v3.4</string>
 	<string name="source">手机助手测试组低调出品</string>
 	<string name="mt_download_dir_url">http://installer.sogou-inc.com/mirror_installer/smt_android/</string>
+	<string name="sendjsontestResult">勾选后启动时会检查并回传json容错测试结果</string>
+	<string name="sendnow">立即运行</string>
+	<string name="schedule">计划任务</string>
+	<string name="selectall">全选</string>
 </resources>

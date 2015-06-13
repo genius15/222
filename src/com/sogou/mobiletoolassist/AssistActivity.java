@@ -4,21 +4,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
-
-import com.sogou.mobiletoolassist.service.ToolsNotifBelowIceCreamSandwich;
-import com.sogou.mobiletoolassist.service.ToolNotification;
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
 import com.sogou.mobiletoolassist.ui.ReceiversFragment;
 import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
-import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
-
-import android.R.integer;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -27,8 +24,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -49,10 +45,12 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class AssistActivity extends FragmentActivity {
 	public static String myTag = "Assist";
@@ -73,6 +71,7 @@ public class AssistActivity extends FragmentActivity {
 	private ImageView toolsTab = null;
 	private ImageView contactTab = null;
 	private ImageView aboutTab = null;
+	private CheckBox jsonCheckBox = null;
 	public static String dataname = "AppData";
 	public static int neverWatching = 0x00001000;
 	public static int isWatching = neverWatching+1;
@@ -91,6 +90,9 @@ public class AssistActivity extends FragmentActivity {
 	private boolean isadded = false;
 	private final static int uninstallapps = 900;
 	private final static int installmt = uninstallapps + 1;
+	private final static int generateFile = installmt+1;
+	private final static int generateFolder = generateFile + 1;
+	private final static int generateOver = generateFolder + 1;
 	public Handler assistActhandler = new Handler(){
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -101,7 +103,55 @@ public class AssistActivity extends FragmentActivity {
 				}
 				findViewById(R.id.uninstallview).setEnabled(true);
 				break;
-			
+			case AssistActivity.generateFile:
+				final int num = msg.getData().getInt("num");
+				
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						String path = Environment.getExternalStorageDirectory()+File.separator;
+						for (int i = 0; i < num; i++) {
+							File file = new File(path+i+".log");
+							if (file.exists()) {
+								file.delete();
+							}
+							try {
+								file.createNewFile();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							file = null;
+						}
+						Message toa = new Message();
+						toa.what = AssistActivity.generateOver;
+						assistActhandler.sendMessage(toa);
+					}
+				}).start();
+				break;
+			case AssistActivity.generateFolder:
+				final int num1 = msg.getData().getInt("num");
+				new Thread(new Runnable() {
+					public void run() {
+						String path = Environment.getExternalStorageDirectory()+File.separator;
+						for (int i = 0; i < num1; i++) {
+							File file = new File(path+i);
+							if (file.exists()) {
+								file.delete();
+							}
+							file.mkdirs();
+							file = null;
+						}
+						Message toa = new Message();
+						toa.what = AssistActivity.generateOver;
+						assistActhandler.sendMessage(toa);
+					}
+				}).start();
+				break;
+			case AssistActivity.generateOver:
+				Toast.makeText(AssistApplication.getContext(),"生成完毕",Toast.LENGTH_LONG).show();
+				break;
 			}
 			super.handleMessage(msg);
 		}
@@ -112,28 +162,14 @@ public class AssistActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		Log.i("study", "assist act oncreate");
 		setContentView(R.layout.activity_assist);
-		
-		
+
+		Log.i("study", AssistActivity.class.getName());
 		// if (!appdata.getBoolean("isscadded", false)) {
 		// addShortcut();
 		// appdata.edit().putBoolean("isscadded", true).commit();
 		// }
 		//UsefulClass.processCmd("/data/local/tcpdump -p -vv -s 0 -w /sdcard/zscapture.pcap");
-		if (Build.VERSION.SDK_INT > 13) {
-			if (!UsefulClass.isServiceRunning(this,
-					ToolNotification.class.getName())) {
-				Intent it = new Intent(this, ToolNotification.class);
-				this.startService(it);
-			}
-		} else {
-			if (!UsefulClass.isServiceRunning(this,
-					ToolsNotifBelowIceCreamSandwich.class.getName())) {
-				Intent it = new Intent(this,
-						ToolsNotifBelowIceCreamSandwich.class);
-				this.startService(it);
-				Log.d(myTag, "NotificationBelowIceCreamSandwich start");
-			}
-		}
+
 		if (!UsefulClass
 				.isServiceRunning(this, CoreService.class.getName())) {
 			Intent it = new Intent(this, CoreService.class);
@@ -180,9 +216,15 @@ public class AssistActivity extends FragmentActivity {
 			para = aboutTab.getLayoutParams();
 			para.width = screenWidth - 2 * viewWidth;
 			aboutTab.setLayoutParams(para);
-			onClickToolsTab(toolsTab);
+			onClickToolsTab(toolsTab);			
 		}
-				
+		ActivityManager aManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningAppProcessInfo> processInfos=aManager.getRunningAppProcesses();
+		for (RunningAppProcessInfo runningAppProcessInfo : processInfos) {
+			Log.i("process", runningAppProcessInfo.processName);
+			Log.i("process", String.valueOf(runningAppProcessInfo.pid));
+			Log.i("process", String.valueOf(runningAppProcessInfo.uid));
+		}
 	}
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
 		 
@@ -383,6 +425,8 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onStartObserve(View v) {
+		
+
 		if (!new File(obPath).exists()) {
 			Log.e(myTag, obPath + " does not exist");
 			File p = new File(obPath);
@@ -580,7 +624,6 @@ public class AssistActivity extends FragmentActivity {
 			isFloatwinon = true;
 		}
 		
-		
 	}
 
 	public void onClickToolsTab(View v) {
@@ -618,5 +661,75 @@ public class AssistActivity extends FragmentActivity {
 			aboutFrag = new AboutTabFragment();
 		}
 		switchTab(aboutFrag);
+	}
+	public void onClickJsonTest(View v) {
+		CheckBox cbBox = (CheckBox) v;
+		boolean needSend = cbBox.isChecked();
+		this.getSharedPreferences("AppData",Context.MODE_PRIVATE).edit().putBoolean("needSend", needSend).commit();
+	}
+	
+	public void onGenerateFolder(View v){
+		EditText ev = (EditText) this.findViewById(R.id.memEdit);
+		String num = ev.getText().toString();
+		int n = 500;
+		try {
+			n = Integer.parseInt(num);
+		} catch (NumberFormatException e) {
+			Toast.makeText(this, "输入的内容不是数字,将默认生成500个", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		Message msg  = new Message();
+		msg.what = AssistActivity.generateFolder;
+		Bundle bundle = new Bundle();   
+		bundle.putInt("num", n);
+		msg.setData(bundle);
+		assistActhandler.sendMessage(msg);
+	}
+	
+	public void onGenerateEmptyFile(View v){
+		EditText ev = (EditText) this.findViewById(R.id.memEdit);
+		String num = ev.getText().toString();
+		int n = 500;
+		try {
+			n = Integer.parseInt(num);
+		} catch (NumberFormatException e) {
+			Toast.makeText(this, "输入的内容不是数字,将默认生成500个", Toast.LENGTH_LONG).show();
+			return;
+		}
+		Message msg  = new Message();
+		Bundle bundle = new Bundle();   
+		bundle.putInt("num", n);
+		msg.setData(bundle);
+		msg.what = AssistActivity.generateFile;
+		assistActhandler.sendMessage(msg);
+	}
+	
+	public void onSendbroadcast(View v) {
+		Message msg = new Message();
+		msg.what = CoreService.sendBroadcast;
+		backservice.fltwinhandler.sendMessage(msg);
+		
+	}
+	
+	public void onClickMaxHeapShow(View b) {
+		ActivityManager mManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+		int mTotalSize = mManager.getMemoryClass();
+		Toast.makeText(this, String.valueOf(mTotalSize), Toast.LENGTH_LONG).show();
+	}
+	
+	public void testwifiset(View v) {
+		//ToggleButton tbButton = (ToggleButton) findViewById(R.id.timesToggle);
+		WifiManager wifiManager = (WifiManager) this
+				.getSystemService(Context.WIFI_SERVICE);
+		wifiManager.setWifiEnabled(false);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		wifiManager.setWifiEnabled(true);
+		
 	}
 }

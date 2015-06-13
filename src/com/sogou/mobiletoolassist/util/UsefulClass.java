@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,6 +29,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 
 public class UsefulClass {
@@ -127,7 +130,7 @@ public class UsefulClass {
 
 		}
 		String result = stdoutReader.getResult();
-		// Log.i("scresult", result);
+		Log.i(AssistActivity.myTag, result);
 		return ret;
 	}
 
@@ -240,4 +243,20 @@ public class UsefulClass {
 		return true;
 
 	}
+	public static void LogToFile(String content){
+		File file = new File("/sdcard"+ File.separator+"mtAssistLog.txt");
+		
+		try {
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file,
+					true), "UTF-8");
+			writer.write(content+"\r\n");
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

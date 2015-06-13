@@ -13,16 +13,16 @@
         android:src="@drawable/aboutme" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/sendtimesTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/scheduleTimeTv"
         android:layout_centerHorizontal="true"
         android:text="@string/version"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/scheduleTimeTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
@@ -31,10 +31,10 @@
         android:text="@string/thanks" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/taskInfoTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/sendtimesTv"
         android:layout_centerHorizontal="true"
         android:text="@string/source" />
 
