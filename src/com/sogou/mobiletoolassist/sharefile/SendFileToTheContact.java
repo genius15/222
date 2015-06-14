@@ -17,13 +17,16 @@ public class SendFileToTheContact extends Activity {
 
 	@Override
 	public void onCreate(Bundle bdl) {
-
+		
 		Intent intent = getIntent();
 		Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 		final String path = uri.getPath();
 		String filename = new File(path).getName();
 
 		Log.i("sendfile", path);
+		final String receiverString = getSharedPreferences(
+				getString(R.string.cfgmailreceiver), MODE_PRIVATE)
+				.getString(getString(R.string.cfg_key_recevier), null);
 		Toast.makeText(this,
 				String.format(getString(R.string.ttsendfile), filename),
 				Toast.LENGTH_LONG).show();
@@ -31,9 +34,7 @@ public class SendFileToTheContact extends Activity {
 
 			@Override
 			public void run() {
-				String receiverString = getSharedPreferences(
-						getString(R.string.cfgmailreceiver), MODE_PRIVATE)
-						.getString(getString(R.string.cfg_key_recevier), null);
+				
 				if (receiverString != null) {
 					MailSender.sendTextMail(
 							getString(R.string.anyfilesharetitle), "", path,
