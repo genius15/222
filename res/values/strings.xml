@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">测试助手</string>
+    <string name="app_name">哆啦A梦</string>
     <string name="action_settings">Settings</string>
     <string name="addNotify">add</string>
     <string name="ClearBtn">清理数据</string>

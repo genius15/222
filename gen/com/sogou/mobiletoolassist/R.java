@@ -158,7 +158,11 @@ public final class R {
         public static final int Screenshot=0x7f060004;
         public static final int action_settings=0x7f060001;
         public static final int addNotify=0x7f060002;
+        public static final int anyfilesharetitle=0x7f06002b;
         public static final int app_name=0x7f060000;
+        public static final int author=0x7f060026;
+        public static final int cfg_key_recevier=0x7f06002a;
+        public static final int cfgmailreceiver=0x7f060029;
         public static final int floatwinofftext=0x7f06001c;
         public static final int floatwinontext=0x7f06001b;
         public static final int freemem=0x7f060019;
@@ -167,6 +171,7 @@ public final class R {
         public static final int mt_download_dir_url=0x7f060020;
         public static final int notifyIconDesc=0x7f06000b;
         public static final int notifyScreenShotBtn=0x7f06000c;
+        public static final int notifyTitileText=0x7f060025;
         public static final int proxyHost=0x7f060015;
         public static final int proxyPort=0x7f060016;
         public static final int proxySwitch=0x7f060014;
@@ -176,10 +181,12 @@ public final class R {
         public static final int selectall=0x7f060024;
         public static final int sendjsontestResult=0x7f060021;
         public static final int sendnow=0x7f060022;
+        public static final int sharefile=0x7f060027;
         public static final int source=0x7f06001f;
         public static final int startObserver=0x7f060006;
         public static final int tcpdump=0x7f060017;
         public static final int thanks=0x7f06001d;
+        public static final int ttsendfile=0x7f060028;
         public static final int uninstallApps=0x7f06000e;
         public static final int uninstallallpackages=0x7f06000d;
         public static final int version=0x7f06001e;
