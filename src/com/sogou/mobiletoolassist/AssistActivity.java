@@ -1,3 +1,4 @@
+
 package com.sogou.mobiletoolassist;
 
 import java.io.File;
@@ -150,7 +151,7 @@ public class AssistActivity extends FragmentActivity {
 				}).start();
 				break;
 			case AssistActivity.generateOver:
-				Toast.makeText(AssistApplication.getContext(),"Éú³ÉÍê±Ï",Toast.LENGTH_LONG).show();
+				Toast.makeText(AssistApplication.getContext(),"ç”Ÿæˆå®Œæ¯•",Toast.LENGTH_LONG).show();
 				break;
 			}
 			super.handleMessage(msg);
@@ -184,7 +185,7 @@ public class AssistActivity extends FragmentActivity {
 
 		initEmailReceiver();
 
-		// ÉèÖÃ²ßÂÔ£¬Ê¹Æä²»»áÅ×³önetworkonMainThreadException
+		// è®¾ç½®ç­–ç•¥ï¼Œä½¿å…¶ä¸ä¼šæŠ›å‡ºnetworkonMainThreadException
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 				.detectDiskReads().detectDiskWrites().detectNetwork()
 				.penaltyLog().build());
@@ -202,7 +203,7 @@ public class AssistActivity extends FragmentActivity {
 			DisplayMetrics dm = new DisplayMetrics();
 			Display display = getWindowManager().getDefaultDisplay();
 			display.getMetrics(dm);
-			int screenWidth = dm.widthPixels; // ÆÁÄ»¿í£¨ÏñËØ£¬Èç£º480px£©
+			int screenWidth = dm.widthPixels; // å±å¹•å®½ï¼ˆåƒç´ ï¼Œå¦‚ï¼š480pxï¼‰
 			int viewWidth = screenWidth / 3;
 			toolsTab = (ImageView) findViewById(R.id.toolsTab);
 			contactTab = ((ImageView) findViewById(R.id.receiverListTab));
@@ -286,7 +287,7 @@ public class AssistActivity extends FragmentActivity {
 		Intent shortcutIntent = new Intent(
 				"com.android.launcher.action.UNINSTALL_SHORTCUT");
 		shortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appIntent);
-		shortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "zs²âÊÔÖúÊÖ");
+		shortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "zsæµ‹è¯•åŠ©æ‰‹");
 		shortcutIntent.putExtra("duplicate", false);
 
 		sendBroadcast(shortcutIntent);
@@ -298,7 +299,7 @@ public class AssistActivity extends FragmentActivity {
 				"com.android.launcher.action.INSTALL_SHORTCUT");
 		Parcelable icon = Intent.ShortcutIconResource.fromContext(this,
 				R.drawable.ic_launcher);
-		addit.putExtra(Intent.EXTRA_SHORTCUT_NAME, "zs²âÊÔÖúÊÖ");
+		addit.putExtra(Intent.EXTRA_SHORTCUT_NAME, "zsæµ‹è¯•åŠ©æ‰‹");
 		addit.putExtra("duplicate", false);
 		addit.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, icon);
 		Intent startit = new Intent(Intent.ACTION_MAIN);
@@ -348,7 +349,7 @@ public class AssistActivity extends FragmentActivity {
 
 		final File tmp = new File(path);
 		File files[] = tmp.listFiles();
-		selectedidx = 0;// Ã¿´Î½øÈë¶¼ÖØÖÃ
+		selectedidx = 0;// æ¯æ¬¡è¿›å…¥éƒ½é‡ç½®
 		ArrayList<String> paths = new ArrayList<String>();
 		if (files != null) {
 			for (File apath : files) {
@@ -361,23 +362,23 @@ public class AssistActivity extends FragmentActivity {
 				.size()]);
 		@SuppressWarnings("unused")
 		AlertDialog ad = new AlertDialog.Builder(this)
-				.setTitle("Ñ¡ÔñÒ»¸öÒª¼à¿ØµÄÎÄ¼ş¼Ğ")
+				.setTitle("é€‰æ‹©ä¸€ä¸ªè¦ç›‘æ§çš„æ–‡ä»¶å¤¹")
 				.setSingleChoiceItems(spaths, 0,
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
-								selectedidx = which;// ²»ÖªµÀÎªÊ²Ã´ÓÃµ¥Ñ¡ÁĞ±í£¬µã»÷½øÈëÊ±whichÊÇÎŞĞ§Öµ
+								selectedidx = which;// ä¸çŸ¥é“ä¸ºä»€ä¹ˆç”¨å•é€‰åˆ—è¡¨ï¼Œç‚¹å‡»è¿›å…¥æ—¶whichæ˜¯æ— æ•ˆå€¼
 							}
 						})
-				.setNegativeButton("ÉÏÒ»²ã",
+				.setNegativeButton("ä¸Šä¸€å±‚",
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int which) {
 								if (dirs.isEmpty()) {
 									Toast.makeText(getApplicationContext(),
-											"ÒÑ¾­µ½´ï¸ùÄ¿Â¼ÁË", Toast.LENGTH_LONG)
+											"å·²ç»åˆ°è¾¾æ ¹ç›®å½•äº†", Toast.LENGTH_LONG)
 											.show();
 									ShowDialog(tmp.getPath());
 									return;
@@ -385,14 +386,14 @@ public class AssistActivity extends FragmentActivity {
 								ShowDialog(dirs.pop());
 							}
 						})
-				.setNeutralButton("½øÈë", new DialogInterface.OnClickListener() {
+				.setNeutralButton("è¿›å…¥", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dirs.add(path);
 						ShowDialog(spaths[selectedidx]);
 					}
 				})
-				.setPositiveButton("Ñ¡Ôñ", new DialogInterface.OnClickListener() {
+				.setPositiveButton("é€‰æ‹©", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						if (spaths != null && spaths.length > selectedidx) {
@@ -443,22 +444,22 @@ public class AssistActivity extends FragmentActivity {
 			((ImageView)findViewById(R.id.scanfileview)).setClickable(true);
 			backservice.stopWatching();
 			appdata.edit().putInt("isWatching", noWatching).commit();
-			Toast.makeText(this, "ÒÑ¾­Í£Ö¹¼à¿Ø", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "å·²ç»åœæ­¢ç›‘æ§", Toast.LENGTH_SHORT).show();
 		}else{
 			appdata.edit().putInt("isWatching", isWatching).commit();
 			backservice.startWatching();
 			ImageView iv = (ImageView) findViewById(R.id.observerview);
 			iv.setImageResource(R.drawable.stop_observe);
 			((ImageView)findViewById(R.id.scanfileview)).setClickable(false);
-			Toast.makeText(this, "ÒÑ¾­¿ªÊ¼¼à¿Ø£¬Ñ¡ÔñÎÄ¼ş¼Ğ¹¦ÄÜ½«»á±»½ûÓÃ", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "å·²ç»å¼€å§‹ç›‘æ§ï¼Œé€‰æ‹©æ–‡ä»¶å¤¹åŠŸèƒ½å°†ä¼šè¢«ç¦ç”¨", Toast.LENGTH_SHORT).show();
 		}		
 		
 	}
 
 	public void onUninstallAPPS(View v) {
 		AlertDialog ad = new AlertDialog.Builder(this)
-		.setTitle("È·¶¨ÒªÉ¾³ıËùÓĞapp£¿")
-		.setNegativeButton("È¡Ïû",
+		.setTitle("ç¡®å®šè¦åˆ é™¤æ‰€æœ‰appï¼Ÿ")
+		.setNegativeButton("å–æ¶ˆ",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog,
@@ -466,7 +467,7 @@ public class AssistActivity extends FragmentActivity {
 						
 					}
 				})
-		.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+		.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Message msg = new Message();
@@ -480,39 +481,39 @@ public class AssistActivity extends FragmentActivity {
 
 	public static HashMap<String, String> nameEmailMap = new HashMap<String, String>();
 	static {
-		nameEmailMap.put("ĞìÎÄ¾²", "xuwenjing@sogou-inc.com");
-		nameEmailMap.put("ÌÆÖ¾¸Õ", "tangzhigang@sogou-inc.com");
-		nameEmailMap.put("Ìïµ¤µ¤", "tindandan@sogou-inc.com");
-		nameEmailMap.put("ÕÅË§", "zhangshuai203407@sogou-inc.com");
-		nameEmailMap.put("¹ÈÏşÉ³", "guxiaosha203822@sogou-inc.com");
-		nameEmailMap.put("ÁÎÕñ»ª", "liaozhenhua@sogou-inc.com");
-		nameEmailMap.put("Íõ²Ó", "canwang@sogou-inc.com");
-		nameEmailMap.put("ÍõÀ¤", "wangkun@sogou-inc.com");
-		nameEmailMap.put("¶­ºê²©", "donghongbo@sogou-inc.com");
-		nameEmailMap.put("Ëï¾²", "sunjing@sogou-inc.com");
-		nameEmailMap.put("ÕÔÏ²Äş", "zhaoxining@sogou-inc.com");
-		nameEmailMap.put("ÉÌÀöÀö", "shanglili@sogou-inc.com");
+		nameEmailMap.put("å¾æ–‡é™", "xuwenjing@sogou-inc.com");
+		nameEmailMap.put("å”å¿—åˆš", "tangzhigang@sogou-inc.com");
+		nameEmailMap.put("ç”°ä¸¹ä¸¹", "tindandan@sogou-inc.com");
+		nameEmailMap.put("å¼ å¸…", "zhangshuai203407@sogou-inc.com");
+		nameEmailMap.put("è°·æ™“æ²™", "guxiaosha203822@sogou-inc.com");
+		nameEmailMap.put("å»–æŒ¯å", "liaozhenhua@sogou-inc.com");
+		nameEmailMap.put("ç‹ç¿", "canwang@sogou-inc.com");
+		nameEmailMap.put("ç‹å¤", "wangkun@sogou-inc.com");
+		nameEmailMap.put("è‘£å®åš", "donghongbo@sogou-inc.com");
+		nameEmailMap.put("å­™é™", "sunjing@sogou-inc.com");
+		nameEmailMap.put("èµµå–œå®", "zhaoxining@sogou-inc.com");
+		nameEmailMap.put("å•†ä¸½ä¸½", "shanglili@sogou-inc.com");
 		
 
 	}
 	public static HashMap<String, String> nameipMap = new HashMap<String, String>();
 	static {
-		nameipMap.put("ÕÅË§", "10.129.157.174");
-		nameipMap.put("ĞìÎÄ¾²", "10.129.156.128");
-		nameipMap.put("Ìïµ¤µ¤", "10.129.157.134");
-		nameipMap.put("¹ÈÏşÉ³", "10.129.156.78");
-		nameipMap.put("ÁÎÕñ»ª", "10.129.156.103");
-		nameipMap.put("Íõ²Ó", "10.129.156.42");
-		nameipMap.put("ÍõÀ¤", "10.129.158.46");
-		nameipMap.put("¶­ºê²©", "10.129.157.28");
-		nameipMap.put("Ëï¾²", "10.129.156.69");
-		nameipMap.put("ÕÔÏ²Äş", "10.129.157.249");
-		nameipMap.put("ÉÌÀöÀö", "");
-		nameipMap.put("ÌÆÖ¾¸Õ", "10.129.156.164");
+		nameipMap.put("å¼ å¸…", "10.129.157.174");
+		nameipMap.put("å¾æ–‡é™", "10.129.156.128");
+		nameipMap.put("ç”°ä¸¹ä¸¹", "10.129.157.134");
+		nameipMap.put("è°·æ™“æ²™", "10.129.156.78");
+		nameipMap.put("å»–æŒ¯å", "10.129.156.103");
+		nameipMap.put("ç‹ç¿", "10.129.156.42");
+		nameipMap.put("ç‹å¤", "10.129.158.46");
+		nameipMap.put("è‘£å®åš", "10.129.157.28");
+		nameipMap.put("å­™é™", "10.129.156.69");
+		nameipMap.put("èµµå–œå®", "10.129.157.249");
+		nameipMap.put("å•†ä¸½ä¸½", "");
+		nameipMap.put("å”å¿—åˆš", "10.129.156.164");
 
 	}
-	public final static String names[] = { "ĞìÎÄ¾²", "ÌÆÖ¾¸Õ" ,"Ìïµ¤µ¤", "ÕÅË§", "¹ÈÏşÉ³", "ÁÎÕñ»ª",
-			"Íõ²Ó", "ÍõÀ¤", "¶­ºê²©", "Ëï¾²", "ÕÔÏ²Äş", "ÉÌÀöÀö"};
+	public final static String names[] = { "å¾æ–‡é™", "å”å¿—åˆš" ,"ç”°ä¸¹ä¸¹", "å¼ å¸…", "è°·æ™“æ²™", "å»–æŒ¯å",
+			"ç‹ç¿", "ç‹å¤", "è‘£å®åš", "å­™é™", "èµµå–œå®", "å•†ä¸½ä¸½"};
 
 	public void onSetMailReceiver(View v) {
 		SharedPreferences data = AssistApplication.getContext()
@@ -525,10 +526,10 @@ public class AssistActivity extends FragmentActivity {
 				break;
 			}
 		}
-		selectedidx = idx;// ÉèÖÃÄ¬ÈÏÖµ£¬Èç¹û½øÈ¥ºóÃ»ÓĞÇĞ»»£¬ÄÇÃ´Ä¬ÈÏÊÇÕâ¸ö
+		selectedidx = idx;// è®¾ç½®é»˜è®¤å€¼ï¼Œå¦‚æœè¿›å»åæ²¡æœ‰åˆ‡æ¢ï¼Œé‚£ä¹ˆé»˜è®¤æ˜¯è¿™ä¸ª
 		@SuppressWarnings("unused")
 		AlertDialog ad = new AlertDialog.Builder(this)
-				.setTitle("Ñ¡ÔñÓÊ¼ş½ÓÊÕÕß")
+				.setTitle("é€‰æ‹©é‚®ä»¶æ¥æ”¶è€…")
 				.setSingleChoiceItems(names, idx,
 						new DialogInterface.OnClickListener() {
 							@Override
@@ -537,7 +538,7 @@ public class AssistActivity extends FragmentActivity {
 								selectedidx = which;
 							}
 						})
-				.setPositiveButton("Ñ¡Ôñ", new DialogInterface.OnClickListener() {
+				.setPositiveButton("é€‰æ‹©", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						receiver = nameEmailMap.get(names[selectedidx]);
@@ -545,7 +546,9 @@ public class AssistActivity extends FragmentActivity {
 								.getContext().getSharedPreferences("AppData",
 										MODE_PRIVATE);
 
-						appdata.edit().putString("mailReceiver", receiver)
+						appdata.edit()
+								.putString(getString(R.string.cfgmailreceiver),
+										getString(R.string.cfg_key_recevier))
 								.commit();
 						appdata.edit().putString("name", names[selectedidx])
 								.commit();
@@ -572,7 +575,7 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onMemCtrl(View v) {
-		if (!isadded) {// Èç¹ûÊÇ»¹Ã»Ìî³äÔòÌî³ä
+		if (!isadded) {// å¦‚æœæ˜¯è¿˜æ²¡å¡«å……åˆ™å¡«å……
 			EditText ev = (EditText) this.findViewById(R.id.memEdit);
 			String mem = ev.getText().toString();
 			try {
@@ -583,11 +586,11 @@ public class AssistActivity extends FragmentActivity {
 					isadded = true;
 					findViewById(R.id.memEdit).setEnabled(false);
 				} else
-					Toast.makeText(this, "³¬¹ı1000ÁË£¬Ğ¡µã°É", Toast.LENGTH_SHORT)
+					Toast.makeText(this, "è¶…è¿‡1000äº†ï¼Œå°ç‚¹å§", Toast.LENGTH_SHORT)
 							.show();
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				Toast.makeText(this, "ÄãÊäÈëµÄ²»ÊÇÊı×ÖÂğ", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "ä½ è¾“å…¥çš„ä¸æ˜¯æ•°å­—å—", Toast.LENGTH_LONG).show();
 			}
 		} else {
 			Toast.makeText(this, memfree(), Toast.LENGTH_SHORT).show();
@@ -675,7 +678,7 @@ public class AssistActivity extends FragmentActivity {
 		try {
 			n = Integer.parseInt(num);
 		} catch (NumberFormatException e) {
-			Toast.makeText(this, "ÊäÈëµÄÄÚÈİ²»ÊÇÊı×Ö,½«Ä¬ÈÏÉú³É500¸ö", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "è¾“å…¥çš„å†…å®¹ä¸æ˜¯æ•°å­—,å°†é»˜è®¤ç”Ÿæˆ500ä¸ª", Toast.LENGTH_LONG).show();
 			return;
 		}
 		
@@ -694,7 +697,7 @@ public class AssistActivity extends FragmentActivity {
 		try {
 			n = Integer.parseInt(num);
 		} catch (NumberFormatException e) {
-			Toast.makeText(this, "ÊäÈëµÄÄÚÈİ²»ÊÇÊı×Ö,½«Ä¬ÈÏÉú³É500¸ö", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "è¾“å…¥çš„å†…å®¹ä¸æ˜¯æ•°å­—,å°†é»˜è®¤ç”Ÿæˆ500ä¸ª", Toast.LENGTH_LONG).show();
 			return;
 		}
 		Message msg  = new Message();

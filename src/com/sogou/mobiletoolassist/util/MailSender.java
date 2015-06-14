@@ -26,7 +26,7 @@ import android.util.Log;
 
 
 /**
- * ·¢ËÍÓÊ¼ş¸ø¶à¸ö½ÓÊÕÕß¡¢³­ËÍÓÊ¼ş
+ * å‘é€é‚®ä»¶ç»™å¤šä¸ªæ¥æ”¶è€…ã€æŠ„é€é‚®ä»¶
  * 
  * @author andrewleo
  */
@@ -38,9 +38,9 @@ public class MailSender {
 	private static final String smtp = "portal.sys.sogou-op.org";
 	
 	/**
-	 * ÒÔÎÄ±¾¸ñÊ½·¢ËÍÓÊ¼ş
+	 * ä»¥æ–‡æœ¬æ ¼å¼å‘é€é‚®ä»¶
 	 * 
-	 *            ´ı·¢ËÍµÄÓÊ¼şµÄĞÅÏ¢
+	 *            å¾…å‘é€çš„é‚®ä»¶çš„ä¿¡æ¯
 	 */
 	public static boolean sendTextMail(String subject, String content, String file,
 			String[] maillists) {
@@ -55,26 +55,26 @@ public class MailSender {
 			props.put("mail.smtp.host", smtp);
 			props.put("mail.smtp.port", PORT);
 			// Get session
-			props.put("mail.smtp.auth", "true"); // Èç¹ûĞèÒªÃÜÂëÑéÖ¤£¬°ÑÕâÀïµÄfalse¸Ä³Étrue
+			props.put("mail.smtp.auth", "true"); // å¦‚æœéœ€è¦å¯†ç éªŒè¯ï¼ŒæŠŠè¿™é‡Œçš„falseæ”¹æˆtrue
 
-			// ÅĞ¶ÏÊÇ·ñĞèÒªÉí·İÈÏÖ¤
+			// åˆ¤æ–­æ˜¯å¦éœ€è¦èº«ä»½è®¤è¯
 			CustomizedAuthenticator authenticator = null;
 			if (true) {
-				// Èç¹ûĞèÒªÉí·İÈÏÖ¤£¬Ôò´´½¨Ò»¸öÃÜÂëÑéÖ¤Æ÷
+				// å¦‚æœéœ€è¦èº«ä»½è®¤è¯ï¼Œåˆ™åˆ›å»ºä¸€ä¸ªå¯†ç éªŒè¯å™¨
 				authenticator = new CustomizedAuthenticator(sender,
 						encryptPassword);
 			}
-			// ¸ù¾İÓÊ¼ş»á»°ÊôĞÔºÍÃÜÂëÑéÖ¤Æ÷¹¹ÔìÒ»¸ö·¢ËÍÓÊ¼şµÄsession
+			// æ ¹æ®é‚®ä»¶ä¼šè¯å±æ€§å’Œå¯†ç éªŒè¯å™¨æ„é€ ä¸€ä¸ªå‘é€é‚®ä»¶çš„session
 			Session sendMailSession = Session.getInstance(props,
 					authenticator);
 			try {
-				// ¸ù¾İsession´´½¨Ò»¸öÓÊ¼şÏûÏ¢
+				// æ ¹æ®sessionåˆ›å»ºä¸€ä¸ªé‚®ä»¶æ¶ˆæ¯
 				Message mailMessage = new MimeMessage(sendMailSession);
-				// ´´½¨ÓÊ¼ş·¢ËÍÕßµØÖ·
+				// åˆ›å»ºé‚®ä»¶å‘é€è€…åœ°å€
 				Address from = new InternetAddress(sender);
-				// ÉèÖÃÓÊ¼şÏûÏ¢µÄ·¢ËÍÕß
+				// è®¾ç½®é‚®ä»¶æ¶ˆæ¯çš„å‘é€è€…
 				mailMessage.setFrom(from);
-				// ´´½¨ÓÊ¼şµÄ½ÓÊÕÕßµØÖ·£¬²¢ÉèÖÃµ½ÓÊ¼şÏûÏ¢ÖĞ
+				// åˆ›å»ºé‚®ä»¶çš„æ¥æ”¶è€…åœ°å€ï¼Œå¹¶è®¾ç½®åˆ°é‚®ä»¶æ¶ˆæ¯ä¸­
 				Address[] tos = null;
 
 				tos = new InternetAddress[maillists.length];
@@ -82,11 +82,11 @@ public class MailSender {
 					tos[i] = new InternetAddress(maillists[i]);
 				}
 
-				// Message.RecipientType.TOÊôĞÔ±íÊ¾½ÓÊÕÕßµÄÀàĞÍÎªTO
+				// Message.RecipientType.TOå±æ€§è¡¨ç¤ºæ¥æ”¶è€…çš„ç±»å‹ä¸ºTO
 				mailMessage.setRecipients(Message.RecipientType.TO, tos);
-				// ÉèÖÃÓÊ¼şÏûÏ¢µÄÖ÷Ìâ
+				// è®¾ç½®é‚®ä»¶æ¶ˆæ¯çš„ä¸»é¢˜
 				mailMessage.setSubject(subject);
-				// ÉèÖÃÓÊ¼şÏûÏ¢·¢ËÍµÄÊ±¼ä
+				// è®¾ç½®é‚®ä»¶æ¶ˆæ¯å‘é€çš„æ—¶é—´
 				mailMessage.setSentDate(new Date());
 
 				BodyPart bodyPart = new MimeBodyPart();
@@ -148,4 +148,3 @@ public class MailSender {
 		return false;
 	}
 }
-

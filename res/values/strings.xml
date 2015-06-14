@@ -41,4 +41,12 @@
 	<string name="sendnow">立即运行</string>
 	<string name="schedule">计划任务</string>
 	<string name="selectall">全选</string>
+	
+	<string name="notifyTitileText">测试の小叮当</string>
+	<string name="author">助手测试组</string>
+	<string name="sharefile">发送文件到电脑</string>
+	<string name="ttsendfile">文件%1$s正在往邮箱发呢，别急哈</string>
+	<string name="cfgmailreceiver">mailreceiver</string>
+	<string name="cfg_key_recevier">receiver</string>
+	<string name="anyfilesharetitle">来自手机的文件</string>
 </resources>

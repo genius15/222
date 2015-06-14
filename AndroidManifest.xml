@@ -56,14 +56,25 @@
 
         
         <service android:name="com.sogou.mobiletoolassist.service.CoreService" >
+            
         </service>
 
         <receiver 
-            android:name="com.sogou.mobiletoolassist.receiver.SimuBroadcastRec">
+            android:name="com.sogou.mobiletoolassist.receiver.SimuBroadcastReceiver">
             <intent-filter >
                 <action android:name="com.sogou.mobiletoolassist.sendsimu"/>
             </intent-filter>
         </receiver>
+        <activity
+            android:name="com.sogou.mobiletoolassist.sharefile.SendFileToTheContact"
+            android:theme="@android:style/Theme.NoDisplay">
+            <intent-filter 
+                android:label="@string/sharefile">
+                <action android:name="android.intent.action.SEND"></action>
+                <category android:name="android.intent.category.DEFAULT" />  
+                <data android:mimeType="*/*"></data>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

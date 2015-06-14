@@ -3,7 +3,8 @@
     android:id="@+id/toolsNotif"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#000000">
 
     <ImageView
         android:id="@+id/custom_song_icon"

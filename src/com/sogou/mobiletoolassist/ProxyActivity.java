@@ -74,18 +74,18 @@ public class ProxyActivity extends PreferenceActivity {
 		CheckBoxPreference tcpdumenable = (CheckBoxPreference) this
 				.findPreference("isTcpdumpEnabled");
 		if (!"".equals(addrsum)) {
-			addredit.setSummary("当前为：" + addrsum);
+			addredit.setSummary("ip:" + addrsum);
 
 		}
 		if (!"".equals(portsum)) {
-			portedit.setSummary("当前为：" + portsum);
+			portedit.setSummary("port:" + portsum);
 		}
 
 		addredit.setOnPreferenceChangeListener(new EditTextPreference.OnPreferenceChangeListener() {
 
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
-				addredit.setSummary("当前为：" + (String) arg1);
+				addredit.setSummary("ip:" + (String) arg1);
 				addredit.setText((String) arg1);
 				return false;
 			}
@@ -95,7 +95,7 @@ public class ProxyActivity extends PreferenceActivity {
 
 			@Override
 			public boolean onPreferenceChange(Preference arg0, Object arg1) {
-				portedit.setSummary("当前为：" + (String) arg1);
+				portedit.setSummary("port:" + (String) arg1);
 				portedit.setText((String) arg1);
 				return false;
 			}

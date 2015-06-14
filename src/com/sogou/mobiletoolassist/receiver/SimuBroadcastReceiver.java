@@ -13,7 +13,7 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 
-public class SimuBroadcastRec extends BroadcastReceiver {
+public class SimuBroadcastReceiver extends BroadcastReceiver {
 	public static String broadcastAction = "com.sogou.mobiletoolassist.sendsimu";
 
 	@Override
@@ -63,7 +63,7 @@ public class SimuBroadcastRec extends BroadcastReceiver {
 			
 		}
 		// CoreService cService = (CoreService)
-		// context;//ÊÜÏÞandroid.app.ReceiverRestrictedContext cannot be cast to
+		// context;//ï¿½ï¿½ï¿½ï¿½android.app.ReceiverRestrictedContext cannot be cast to
 		// com.sogou.mobiletoolassist.service.CoreService
 		// cService.setNextAlarm();
 		Intent setAlarmIntent = new Intent(context, CoreService.class);

@@ -1,8 +1,10 @@
+  
 package com.sogou.mobiletoolassist.service;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.fileobserver.FileObserverThread;
-import com.sogou.mobiletoolassist.receiver.SimuBroadcastRec;
+import com.sogou.mobiletoolassist.receiver.SimuBroadcastReceiver;
 import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
 import com.sogou.mobiletoolassist.util.MailSender;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
@@ -101,7 +103,7 @@ public class CoreService extends Service implements OnClickListener {
 				break;
 			case CoreService.screenshot:
 				Uri uri = RingtoneManager
-						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);// ÏµÍ³×Ô´øÌáÊ¾Òô
+						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);// ç³»ç»Ÿè‡ªå¸¦æç¤ºéŸ³
 				Ringtone rt = RingtoneManager.getRingtone(
 						getApplicationContext(), uri);
 				if (rt != null)
@@ -126,16 +128,16 @@ public class CoreService extends Service implements OnClickListener {
 						"application/vnd.android.package-archive");
 				startActivity(intent);
 				isInstalling = false;
-				// stopForeground(true);// È¡ÏûÇ°Ì¨·şÎñ
+				// stopForeground(true);// å–æ¶ˆå‰å°æœåŠ¡
 				NotificationManager mNotifyMgr = (NotificationManager) AssistApplication
 						.getContext().getSystemService(NOTIFICATION_SERVICE);
 				mNotifyMgr.cancel(2048);
 				break;
 			case CoreService.downloadfailed:
-				Toast.makeText(AssistApplication.getContext(), "ÏÂÔØÊ§°Ü£¡",
+				Toast.makeText(AssistApplication.getContext(), "ä¸‹è½½å¤±è´¥ï¼",
 						Toast.LENGTH_LONG).show();
 				isInstalling = false;
-				// stopForeground(true);// È¡ÏûÇ°Ì¨·şÎñ
+				// stopForeground(true);// å–æ¶ˆå‰å°æœåŠ¡
 				NotificationManager motifyMgr = (NotificationManager) AssistApplication
 						.getContext().getSystemService(NOTIFICATION_SERVICE);
 				motifyMgr.cancel(2048);
@@ -203,7 +205,7 @@ public class CoreService extends Service implements OnClickListener {
 	private void init(String path) {
 		SharedPreferences appdata = this.getSharedPreferences("AppData",
 				MODE_PRIVATE);
-		appdata.edit().putString("obPath", path).commit(); // ·ÀÖ¹±»ÖØÆô£¬°Ñpath±£´æµ½±¾µØ
+		appdata.edit().putString("obPath", path).commit(); // é˜²æ­¢è¢«é‡å¯ï¼ŒæŠŠpathä¿å­˜åˆ°æœ¬åœ°
 
 	}
 
@@ -240,6 +242,8 @@ public class CoreService extends Service implements OnClickListener {
 			}
 			return Service.START_STICKY;
 		}
+		
+		
 		createFloatView();
 		SharedPreferences appdata = this.getSharedPreferences("AppData",
 				MODE_PRIVATE);
@@ -250,7 +254,7 @@ public class CoreService extends Service implements OnClickListener {
 		}
 
 		setToolNotify();
-		return Service.START_STICKY;// ±íÊ¾±»ÏµÍ³É±µôºóĞèÒªÖØÆô
+		return Service.START_STICKY;// è¡¨ç¤ºè¢«ç³»ç»Ÿæ€æ‰åéœ€è¦é‡å¯
 	}
 
 	@Override
@@ -260,7 +264,7 @@ public class CoreService extends Service implements OnClickListener {
 	}
 
 	/**
-	 * ´´½¨Ğü¸¡´°
+	 * åˆ›å»ºæ‚¬æµ®çª—
 	 */
 	@SuppressLint("InflateParams")
 	private void createFloatView() {
@@ -387,32 +391,32 @@ public class CoreService extends Service implements OnClickListener {
 
 		params = new WindowManager.LayoutParams();
 
-		// ÉèÖÃwindow type
+		// è®¾ç½®window type
 		params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 		/*
-		 * Èç¹ûÉèÖÃÎªparams.type = WindowManager.LayoutParams.TYPE_PHONE; ÄÇÃ´ÓÅÏÈ¼¶»á½µµÍÒ»Ğ©,
-		 * ¼´À­ÏÂÍ¨ÖªÀ¸²»¿É¼û
+		 * å¦‚æœè®¾ç½®ä¸ºparams.type = WindowManager.LayoutParams.TYPE_PHONE; é‚£ä¹ˆä¼˜å…ˆçº§ä¼šé™ä½ä¸€äº›,
+		 * å³æ‹‰ä¸‹é€šçŸ¥æ ä¸å¯è§
 		 */
 
 		params.format = PixelFormat.RGBA_8888;
 
-		// ÉèÖÃWindow flag
+		// è®¾ç½®Window flag
 		params.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
 				| WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 		/*
-		 * ÏÂÃæµÄflagsÊôĞÔµÄĞ§¹ûĞÎÍ¬¡°Ëø¶¨¡±¡£ Ğü¸¡´°²»¿É´¥Ãş£¬²»½ÓÊÜÈÎºÎÊÂ¼ş,Í¬Ê±²»Ó°ÏìºóÃæµÄÊÂ¼şÏìÓ¦¡£
+		 * ä¸‹é¢çš„flagså±æ€§çš„æ•ˆæœå½¢åŒâ€œé”å®šâ€ã€‚ æ‚¬æµ®çª—ä¸å¯è§¦æ‘¸ï¼Œä¸æ¥å—ä»»ä½•äº‹ä»¶,åŒæ—¶ä¸å½±å“åé¢çš„äº‹ä»¶å“åº”ã€‚
 		 * wmParams.flags=LayoutParams.FLAG_NOT_TOUCH_MODAL |
 		 * LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE;
 		 */
 
-		// ÉèÖÃĞü¸¡´°µÄ³¤µÃ¿í
+		// è®¾ç½®æ‚¬æµ®çª—çš„é•¿å¾—å®½
 
 		params.width = WindowManager.LayoutParams.WRAP_CONTENT;
 		params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-		params.gravity = Gravity.LEFT; // µ÷ÕûĞü¸¡´°¿ÚÖÁ×óÉÏ½Ç
+		params.gravity = Gravity.LEFT; // è°ƒæ•´æ‚¬æµ®çª—å£è‡³å·¦ä¸Šè§’
 		params.x = 0;
 		params.y = 0;
-		// ĞèÒªÔö¼ÓÔö¼Ósystem.alert_windowÈ¨ÏŞ
+		// éœ€è¦å¢åŠ å¢åŠ system.alert_windowæƒé™
 		wm.addView(btn_floatView, params);
 		appdata.edit().putBoolean("isFloatWinOn", true).commit();
 		smallview.setOnTouchListener(new OnTouchListener() {
@@ -433,14 +437,14 @@ public class CoreService extends Service implements OnClickListener {
 					int dx = (int) event.getRawX() - lastX;
 					int dy = (int) event.getRawY() - lastY;
 					if (Math.abs(dx) < 5 && Math.abs(dy) < 5) {
-						// ²»ÕâÃ´×öÌ«ÁéÃôÁË£¬Ã÷Ã÷ÎÒÊÇÔÚµã»÷ÄãÒÆ¶¯¸öÃ«Ïß°¡
+						// ä¸è¿™ä¹ˆåšå¤ªçµæ•äº†ï¼Œæ˜æ˜æˆ‘æ˜¯åœ¨ç‚¹å‡»ä½ ç§»åŠ¨ä¸ªæ¯›çº¿å•Š
 
 						break;
 					}
 					params.x = paramX + dx;
 					params.y = paramY + dy;
 
-					// ¸üĞÂĞü¸¡´°Î»ÖÃ
+					// æ›´æ–°æ‚¬æµ®çª—ä½ç½®
 					wm.updateViewLayout(btn_floatView, params);
 
 					break;
@@ -461,17 +465,17 @@ public class CoreService extends Service implements OnClickListener {
 	public static void onClearBtn() {
 		Context ctx = AssistApplication.getContext();
 		if (ctx == null) {
-			Log.e(AssistActivity.myTag, "ctx ÊÇ¿ÕµÄ");
+			Log.e(AssistActivity.myTag, "ctx æ˜¯ç©ºçš„");
 			return;
 		}
 		if (!UsefulClass.hasappnamedxxx(ctx, "com.sogou.androidtool")) {
-			Toast.makeText(ctx, "Ã»ÓĞ°²×°ÖúÊÖ", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ctx, "æ²¡æœ‰å®‰è£…åŠ©æ‰‹", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		String cmd = "pm clear com.sogou.androidtool";
-		Toast.makeText(ctx, "×¼±¸ÇåÀíÊı¾İ~", Toast.LENGTH_SHORT).show();
+		Toast.makeText(ctx, "å‡†å¤‡æ¸…ç†æ•°æ®~", Toast.LENGTH_SHORT).show();
 		if (UsefulClass.processCmd(cmd) == StateValue.success) {
-			Toast.makeText(ctx, "ÇåÀíÊı¾İÍê±Ï~", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ctx, "æ¸…ç†æ•°æ®å®Œæ¯•~", Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -487,13 +491,13 @@ public class CoreService extends Service implements OnClickListener {
 
 		File testpath = new File(path);
 		if (!testpath.exists()) {
-			Toast.makeText(AssistApplication.getContext(), "½ØÍ¼ÎÄ¼ş²»ÔÚ£¬Çë¼ì²ésd¿¨ÊÇ·ñÕı³£",
+			Toast.makeText(AssistApplication.getContext(), "æˆªå›¾æ–‡ä»¶ä¸åœ¨ï¼Œè¯·æ£€æŸ¥sdå¡æ˜¯å¦æ­£å¸¸",
 					Toast.LENGTH_LONG).show();
 
 			return false;
 		}
 		String info = UsefulClass.getDeviceInfo();
-		String title = info + "¡¾½ØÍ¼¡¿";
+		String title = info + "ã€æˆªå›¾ã€‘";
 		info += "</br>";
 		info += UsefulClass.getZSPkgInfo();
 		SharedPreferences appdata = AssistApplication.getContext()
@@ -508,7 +512,7 @@ public class CoreService extends Service implements OnClickListener {
 					.getActiveNetworkInfo();
 			if (mNetworkInfo == null || !mNetworkInfo.isConnected()) {
 				Toast.makeText(AssistApplication.getContext(),
-						"ÍøÂçÃ²ËÆÓĞÎÊÌâÅ¶£¬ÓÊ¼ş·¢²»³öÈ¥", Toast.LENGTH_LONG).show();
+						"ç½‘ç»œè²Œä¼¼æœ‰é—®é¢˜å“¦ï¼Œé‚®ä»¶å‘ä¸å‡ºå»", Toast.LENGTH_LONG).show();
 
 				return false;
 			}
@@ -517,13 +521,13 @@ public class CoreService extends Service implements OnClickListener {
 				new String[] { emailReceiver })) {
 			String emailReceivername = appdata.getString("name", "pdatest");
 			Toast.makeText(AssistApplication.getContext(),
-					"½ØÍ¼Íê±Ï£¬" + emailReceivername + "Í¬Ñ§Çë¾²ºòÓÊ¼ş~", Toast.LENGTH_LONG)
+					"æˆªå›¾å®Œæ¯•ï¼Œ" + emailReceivername + "åŒå­¦è¯·é™å€™é‚®ä»¶~", Toast.LENGTH_LONG)
 					.show();
 			File tmp = new File(path);
 			if (tmp.exists())
 				tmp.delete();
 		} else {
-			Toast.makeText(AssistApplication.getContext(), "·¢ËÍÓÊ¼şÒì³££¬¿ÉÄÜÊÇ¶Á½ØÍ¼Ê§°ÜÁË",
+			Toast.makeText(AssistApplication.getContext(), "å‘é€é‚®ä»¶å¼‚å¸¸ï¼Œå¯èƒ½æ˜¯è¯»æˆªå›¾å¤±è´¥äº†",
 					Toast.LENGTH_LONG).show();
 		}
 
@@ -541,20 +545,20 @@ public class CoreService extends Service implements OnClickListener {
 			List<PackageInfo> alluserapps = new ArrayList<PackageInfo>();
 			for (PackageInfo app : allapps) {
 				if ((app.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-					alluserapps.add(app);// ¹ıÂËËùÓĞ·ÇÏµÍ³Ó¦ÓÃ
+					alluserapps.add(app);// è¿‡æ»¤æ‰€æœ‰éç³»ç»Ÿåº”ç”¨
 				}
 			}
 			if (alluserapps.size() > 30) {
-				Toast.makeText(ctx, "appÌ«¶à£¬ÇåÀí½ÏÂı£¬ÏÈÈ¥ºÈ±­Ë®°É~", Toast.LENGTH_SHORT)
+				Toast.makeText(ctx, "appå¤ªå¤šï¼Œæ¸…ç†è¾ƒæ…¢ï¼Œå…ˆå»å–æ¯æ°´å§~", Toast.LENGTH_SHORT)
 						.show();
 			}
 			allapps = null;
 			if (alluserapps == null || alluserapps.isEmpty()) {
-				Toast.makeText(ctx, "ÄãµÄÊÖ»úÃ»ÓĞÒÑ°²×°Ó¦ÓÃ~", Toast.LENGTH_SHORT).show();
+				Toast.makeText(ctx, "ä½ çš„æ‰‹æœºæ²¡æœ‰å·²å®‰è£…åº”ç”¨~", Toast.LENGTH_SHORT).show();
 				CoreService.isUninstalling = false;
 				return;
 			}
-			Toast.makeText(ctx, "¿ªÊ¼ÇåÀíapp", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ctx, "å¼€å§‹æ¸…ç†app", Toast.LENGTH_SHORT).show();
 
 			String cmd = "pm uninstall ";
 			for (PackageInfo app : alluserapps) {
@@ -570,13 +574,13 @@ public class CoreService extends Service implements OnClickListener {
 
 					if (StateValue.unroot == UsefulClass.processCmd(cmd
 							+ app.packageName)) {
-						Toast.makeText(ctx, "»ñÈ¡rootÈ¨ÏŞÊ§°Ü£¡£¡£¡", Toast.LENGTH_SHORT)
+						Toast.makeText(ctx, "è·å–rootæƒé™å¤±è´¥ï¼ï¼ï¼", Toast.LENGTH_SHORT)
 								.show();
 						break;
 					}
 				}
 			}
-			Toast.makeText(ctx, "ÒÑĞ¶ÔØËùÓĞapp", Toast.LENGTH_LONG).show();
+			Toast.makeText(ctx, "å·²å¸è½½æ‰€æœ‰app", Toast.LENGTH_LONG).show();
 			CoreService.isUninstalling = false;
 		}
 	};
@@ -601,7 +605,7 @@ public class CoreService extends Service implements OnClickListener {
 
 	public void installmt() {
 		if (isInstalling) {
-			Toast.makeText(this, "ÕıÔÚÏÂÔØ£¬Çë²»ÒªÖØ¸´µã»÷", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "æ­£åœ¨ä¸‹è½½ï¼Œè¯·ä¸è¦é‡å¤ç‚¹å‡»", Toast.LENGTH_LONG).show();
 			return;
 		}
 
@@ -619,7 +623,7 @@ public class CoreService extends Service implements OnClickListener {
 				AssistApplication.getContext());
 		builder.setContentIntent(contentIntent).setAutoCancel(false)
 				.setSmallIcon(R.drawable.ic_launcher).setOngoing(true)
-				.setContentTitle("ÕıÔÚÏÂÔØ×îĞÂ°æÖúÊÖ²âÊÔ°ü");
+				.setContentTitle("æ­£åœ¨ä¸‹è½½æœ€æ–°ç‰ˆåŠ©æ‰‹æµ‹è¯•åŒ…");
 		// startForeground(1024, builder.build());
 		NotificationManager mNotifyMgr = (NotificationManager) this
 				.getSystemService(NOTIFICATION_SERVICE);
@@ -709,9 +713,9 @@ public class CoreService extends Service implements OnClickListener {
 			return;
 		}
 
-		Intent intent = new Intent(SimuBroadcastRec.broadcastAction);
+		Intent intent = new Intent(SimuBroadcastReceiver.broadcastAction);
 		intent.setClassName("com.sogou.mobiletoolassist",
-				SimuBroadcastRec.class.getName());
+				SimuBroadcastReceiver.class.getName());
 
 		intent.putExtra("broadcastname", bString);
 
@@ -735,12 +739,12 @@ public class CoreService extends Service implements OnClickListener {
 
 			mRemoteViews.setImageViewResource(R.id.custom_song_icon,
 					R.drawable.sing_icon);
-			// API3.0 ÒÔÉÏµÄÊ±ºòÏÔÊ¾°´Å¥£¬·ñÔòÏûÊ§
-			mRemoteViews.setTextViewText(R.id.notifyTitle, "ÖúÊÖ²âÊÔ¹¤¾ß");
+			// API3.0 ä»¥ä¸Šçš„æ—¶å€™æ˜¾ç¤ºæŒ‰é’®ï¼Œå¦åˆ™æ¶ˆå¤±
+			mRemoteViews.setTextViewText(R.id.notifyTitle, getString(R.string.notifyTitileText));
 			mRemoteViews
-					.setTextViewText(R.id.notifyContent, "zhangshuai203407");
+					.setTextViewText(R.id.notifyContent, getString(R.string.author));
 
-			// µã»÷µÄÊÂ¼ş´¦Àí
+			// ç‚¹å‡»çš„äº‹ä»¶å¤„ç†
 			Intent buttonIntent = new Intent(ACTION_BUTTON);
 			buttonIntent.putExtra(INTENT_BUTTONID_TAG, 3);
 			PendingIntent intent_next = PendingIntent.getBroadcast(this, 3,
@@ -775,7 +779,7 @@ public class CoreService extends Service implements OnClickListener {
 			Builder builder = new NotificationCompat.Builder(this);
 			builder.setContentIntent(contentIntent).setAutoCancel(false)
 					.setSmallIcon(R.drawable.ic_launcher).setOngoing(true)
-					.setContentTitle("µã»÷½øÈë²âÊÔÖúÊÖ").setContentText("zs");
+					.setContentTitle("ç‚¹å‡»è¿›å…¥æµ‹è¯•åŠ©æ‰‹").setContentText("zs");
 			startForeground(1024, builder.build());
 		}
 	}
@@ -793,12 +797,12 @@ public class CoreService extends Service implements OnClickListener {
 			//
 			String action = intent.getAction();
 			if (action.equals(ACTION_BUTTON)) {
-				// Í¨¹ı´«µİ¹ıÀ´µÄIDÅĞ¶Ï°´Å¥µã»÷ÊôĞÔ»òÕßÍ¨¹ıgetResultCode()»ñµÃÏàÓ¦µã»÷ÊÂ¼ş
+				// é€šè¿‡ä¼ é€’è¿‡æ¥çš„IDåˆ¤æ–­æŒ‰é’®ç‚¹å‡»å±æ€§æˆ–è€…é€šè¿‡getResultCode()è·å¾—ç›¸åº”ç‚¹å‡»äº‹ä»¶
 				int buttonId = intent.getIntExtra(INTENT_BUTTONID_TAG, 0);
 				switch (buttonId) {
 				case 1:
-					// Log.d("assist" , "ÉÏÒ»Ê×");
-					// Toast.makeText(getApplicationContext(), "ÉÏÒ»Ê×",
+					// Log.d("assist" , "ä¸Šä¸€é¦–");
+					// Toast.makeText(getApplicationContext(), "ä¸Šä¸€é¦–",
 					// Toast.LENGTH_SHORT).show();
 					// break;
 				case 2:
@@ -814,13 +818,13 @@ public class CoreService extends Service implements OnClickListener {
 						@Override
 						public void run() {
 							Uri uri = RingtoneManager
-									.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);// ÏµÍ³×Ô´øÌáÊ¾Òô
+									.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);// ç³»ç»Ÿè‡ªå¸¦æç¤ºéŸ³
 							Ringtone rt = RingtoneManager.getRingtone(
 									getApplicationContext(), uri);
 							if (rt != null)
 								rt.play();
-							// TODO ÎÒÃ»ÓÃÏß³ÌÊ±»á³öÏÖintent½ÓÊÕµÄandroid
-							// runtime£¬ÓĞÊ±¼ä½âÒ»ÏÂ£¬ÏÈÓÃÏß³Ì½â¾ö
+							// TODO æˆ‘æ²¡ç”¨çº¿ç¨‹æ—¶ä¼šå‡ºç°intentæ¥æ”¶çš„android
+							// runtimeï¼Œæœ‰æ—¶é—´è§£ä¸€ä¸‹ï¼Œå…ˆç”¨çº¿ç¨‹è§£å†³
 							Looper.prepare();
 							CoreService.ScreenShot();
 							Looper.loop();
@@ -837,3 +841,4 @@ public class CoreService extends Service implements OnClickListener {
 		}
 	}
 }
+
