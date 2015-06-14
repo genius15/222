@@ -11,7 +11,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginRight="32dp"
-        android:text="ToggleButton" />
+        android:text="ToggleButton" 
+        />
 
     <TextView
         android:id="@+id/scheduleTimeTv"
@@ -51,7 +52,8 @@
         android:layout_alignLeft="@+id/timesToggle"
         android:layout_below="@+id/timesToggle"
         android:layout_marginTop="22dp"
-        android:text="@string/selectall" />
+        android:text="@string/selectall" 
+        />
 
     <Button
         android:id="@+id/scheduleTaskBtn"

@@ -33,7 +33,7 @@ import android.os.Environment;
 import android.util.Log;
 
 public class UsefulClass {
-	// ÅĞ¶ÏÄ³¸ö·şÎñÊÇ·ñÔÚÔËĞĞ
+	// åˆ¤æ–­æŸä¸ªæœåŠ¡æ˜¯å¦åœ¨è¿è¡Œ
 	public static boolean isServiceRunning(Context mContext, String className) {
 
 		ActivityManager activityManager = (ActivityManager) mContext
@@ -161,7 +161,7 @@ public class UsefulClass {
 	}
 
 	/**
-	 * ½âÑ¹Ëõ¹¦ÄÜ. ½«zipFileÎÄ¼ş½âÑ¹µ½folderPathÄ¿Â¼ÏÂ.
+	 * è§£å‹ç¼©åŠŸèƒ½. å°†zipFileæ–‡ä»¶è§£å‹åˆ°folderPathç›®å½•ä¸‹.
 	 * 
 	 * @throws Exception
 	 */
@@ -210,28 +210,28 @@ public class UsefulClass {
 			URL url = new URL(durl);
 			HttpURLConnection connection = (HttpURLConnection) url
 					.openConnection();
-			connection.setConnectTimeout(10 * 1000); // ³¬Ê±Ê±¼ä
-			connection.connect(); // Á¬½Ó
-			if (connection.getResponseCode() == 200) { // ·µ»ØµÄÏìÓ¦Âë200,ÊÇ³É¹¦.
-				File file = new File(path); // ÕâÀïÎÒÊÇÊÖĞ´ÁË¡£½¨Òé´ó¼ÒÓÃ×Ô´øµÄÀà
+			connection.setConnectTimeout(10 * 1000); // è¶…æ—¶æ—¶é—´
+			connection.connect(); // è¿æ¥
+			if (connection.getResponseCode() == 200) { // è¿”å›çš„å“åº”ç 200,æ˜¯æˆåŠŸ.
+				File file = new File(path); // è¿™é‡Œæˆ‘æ˜¯æ‰‹å†™äº†ã€‚å»ºè®®å¤§å®¶ç”¨è‡ªå¸¦çš„ç±»
 				file.createNewFile();
 				InputStream inputStream = connection.getInputStream();
-				ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream(); // »º´æ
+				ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream(); // ç¼“å­˜
 				byte[] buffer = new byte[1024 * 100];
 				while (true) {
 					int len = inputStream.read(buffer);
 					// publishProgress(len);
 					if (len == -1) {
-						break; // ¶ÁÈ¡Íê
+						break; // è¯»å–å®Œ
 					}
-					arrayOutputStream.write(buffer, 0, len); // Ğ´Èë
+					arrayOutputStream.write(buffer, 0, len); // å†™å…¥
 				}
 				arrayOutputStream.close();
 				inputStream.close();
 
 				byte[] data = arrayOutputStream.toByteArray();
 				FileOutputStream fileOutputStream = new FileOutputStream(file);
-				fileOutputStream.write(data); // ¼ÇµÃ¹Ø±ÕÊäÈëÁ÷
+				fileOutputStream.write(data); // è®°å¾—å…³é—­è¾“å…¥æµ
 				fileOutputStream.close();
 			}
 

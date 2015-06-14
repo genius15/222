@@ -34,7 +34,7 @@
 	<string name="floatwinontext">悬浮窗开启中</string>
 	<string name="floatwinofftext">悬浮窗已关闭</string>
 	<string name="thanks">感谢伟大的开源</string>
-	<string name="version">v3.4</string>
+	<string name="version">v4.0</string>
 	<string name="source">手机助手测试组低调出品</string>
 	<string name="mt_download_dir_url">http://installer.sogou-inc.com/mirror_installer/smt_android/</string>
 	<string name="sendjsontestResult">勾选后启动时会检查并回传json容错测试结果</string>
@@ -48,5 +48,108 @@
 	<string name="ttsendfile">文件%1$s正在往邮箱发呢，别急哈</string>
 	<string name="cfgmailreceiver">mailreceiver</string>
 	<string name="cfg_key_recevier">receiver</string>
+	<string name="cfg_ftp_state">ftpState</string>
 	<string name="anyfilesharetitle">来自手机的文件</string>
+	<string name="ttFtpVersionLimit">当前系统版本低于4.0，不支持该功能</string>
+	<string name="ftpup">ftp已开启</string>
+	<string name="ftpdown">ftp已关闭</string>
+	<string name="ftpuping">ftp开启中</string>
+	<string name="ftpdowning">ftp关闭中</string>
+	
+	
+	
+	
+	<!-- 以下是ftpserver的固有string -->
+	 <string name="swiftp_name">FTP Server</string>
+    <string name="running_label">FTP Server</string>
+    <string name="running_summary_stopped">Toggle the state of the ftp server</string>
+    <string name="running_summary_started">at %s</string>
+    <string name="running_summary_failed">Failed to start the FTP server, not connected to the local network (wifi or ethernet)?</string>
+    <string name="market_version_label">Market version</string>
+    <string name="market_version_summary">
+        This is the FTP Server Demo version.
+        Support development by getting the FTP Server from the android market.
+        Click here to go to the market.</string>
+    <string name="settings_label">Settings</string>
+    <string name="user_label">User</string>
+    <string name="loginsettings_label">Login settings...</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="show_password_label">Display password</string>
+    <string name="anonymous_label">Anonymous</string>
+    <string name="allow_anonymous_label">Allow anonymous login</string>
+    <string name="anonymous_summary">Anonymous logins are only allowed read access</string>
+    <string name="advancedsettings_label">Advanced settings...</string>
+    <string name="portnumber_label">Port Number</string>
+    <string name="chroot_label">Stay in folder</string>
+    <string name="acceptwifi_label">Accept connection from wifi</string>
+    <string name="wakelock_label">Keep device awake (full CPU speed)</string>
+    <string name="extra_label">Extra</string>
+    <string name="help_label">Help...</string>
+    <string name="about_label">About...</string>
+    <string name="help_dlg_title">FTP Server Help</string>
+    <string name="help_dlg_message">\
+Thanks for using FTP Server (SwiFTP)! Here are some brief usage instructions. More
+information can be found at http://ppareit.github.com/swiftp/.\n\n\
+\
+This program allows you to run an ftp server on your android device. This means that any
+program can access the files on your device while the ftp server is running. For example,
+entering \'ftp://...\' in the firefox url bar will allow you to browse the files on your
+device from a desktop pc or a laptop.\n\n
+\
+By default, the user name and password are both \'ftp\', you should change them. You use
+this username and password when accessing the server.\n\n
+\
+There is a configuration option (\"keep phone awake\") that fixes a problem where
+file transfers go slow or stop completely when the phone sleeps. If you have this
+problem, check this box and restart the program. Your phone will stay awake as long as
+the server is running.\n\n
+\
+For power and security reasons, it is recommended that the server be stopped after use.\n\n\
+\
+If something is not working the way you expect it to, please report it to Pieter Pareit
+(pieter.pareit@gmail.com).\n\n\
+\
+The development of this open source program is supported by buying this program through
+the google play store. You can follow the development at https://github.com/ppareit/swiftp .
+To have an idea on the features that will be implemented, see the issue tracker at
+https://github.com/ppareit/swiftp/issues .\n\n
+    </string>
+    <string name="about_dlg_title">FTP Server About</string>
+    <string name="about_dlg_message">
+        <b>Description: </b>
+        FTP Server (SwiFTP) allows you to run an ftp server on your android device.\n\n\
+        <b>Website:</b>
+        http://ppareit.github.com/swiftp/\n\n
+        <b>Current maintainer:</b>
+        Pieter Pareit (pieter.pareit@gmail.com)\n\n
+        <b>Programming: </b>\
+        Dave Revell (dave.revell@gmail.com), Pieter Pareit (pieter.pareit@gmail.com)\n\n\
+        <b>Artwork:</b>
+        Birgit Niemegeers\n\n
+        <b>License: </b>
+        GNU General Public License v3.0\n\n
+    </string>
+    <string name="notif_server_starting">Starting at %s</string>
+    <string name="notif_title">FTP Server is running</string>
+    <string name="notif_text">at %s</string>
+    <string name="notif_stop_text">Stop server</string>
+
+    <string name="nsd_servername_postfix">FTP Server</string>
+
+    <!-- old strings -->
+    <string name="cant_get_url">Can\'t retrieve url</string>
+    <string name="unknown">unknown</string>
+    <string name="ok">OK</string>
+    <string name="username_validation_error">The password must consist of 1 or more alphanumeric characters. No other characters are allowed.</string>
+    <string name="password_validation_error">The password must consist of 1 or more alphanumeric characters. No other characters are allowed.</string>
+    <string name="port_validation_error">The port number must be in the range 1 to 65535.</string>
+    <string name="wifi_state_receiver_label">WifiStateReceiver</string>
+    <string name="pst_connecting">connecting</string>
+    <string name="pst_connected">connected</string>
+    <string name="pst_failed">failed</string>
+    <string name="pst_unreachable">unreachable</string>
+    <string name="pst_disconnected">disconnected</string>
+    <string name="storage_warning">Warning: storage is not available. You may want to unmount it.</string>
+    <string name="widget_name">FTP Server Widget</string>
 </resources>

@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
+
+import be.ppareit.swiftp.gui.FsPreferenceActivity;
+
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
 import com.sogou.mobiletoolassist.ui.ReceiversFragment;
@@ -23,9 +26,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -73,6 +78,7 @@ public class AssistActivity extends FragmentActivity {
 	private ImageView contactTab = null;
 	private ImageView aboutTab = null;
 	private CheckBox jsonCheckBox = null;
+	private ToggleButton ftpsetButton = null;
 	public static String dataname = "AppData";
 	public static int neverWatching = 0x00001000;
 	public static int isWatching = neverWatching+1;
@@ -219,13 +225,18 @@ public class AssistActivity extends FragmentActivity {
 			aboutTab.setLayoutParams(para);
 			onClickToolsTab(toolsTab);			
 		}
-		ActivityManager aManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-		List<RunningAppProcessInfo> processInfos=aManager.getRunningAppProcesses();
-		for (RunningAppProcessInfo runningAppProcessInfo : processInfos) {
-			Log.i("process", runningAppProcessInfo.processName);
-			Log.i("process", String.valueOf(runningAppProcessInfo.pid));
-			Log.i("process", String.valueOf(runningAppProcessInfo.uid));
-		}
+//		ActivityManager aManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//		List<RunningAppProcessInfo> processInfos=aManager.getRunningAppProcesses();
+//		for (RunningAppProcessInfo runningAppProcessInfo : processInfos) {
+//			Log.i("process", runningAppProcessInfo.processName);
+//			Log.i("process", String.valueOf(runningAppProcessInfo.pid));
+//			Log.i("process", String.valueOf(runningAppProcessInfo.uid));
+//		}
+		
+//		IntentFilter intents = new IntentFilter();
+//        intents.addAction(FTPSERVER_STARTED);
+//        intents.addAction(FTPSERVER_STOPPED);
+//        registerReceiver(mStartStopReceiver, intents);
 	}
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
 		 
@@ -274,6 +285,7 @@ public class AssistActivity extends FragmentActivity {
 	public void onDestroy() {
 		super.onDestroy();
 		unbindService(mConnection);
+		//unregisterReceiver(mStartStopReceiver);
 		Log.i("study", "assist act onDestroy");
 	}
 
@@ -663,6 +675,10 @@ public class AssistActivity extends FragmentActivity {
 		if (aboutFrag == null) {
 			aboutFrag = new AboutTabFragment();
 		}
+//		if (ftpsetButton == null) {
+//			ftpsetButton = (ToggleButton) aboutFrag.getView().findViewById(R.id.scheduleToggle);
+//		}
+		
 		switchTab(aboutFrag);
 	}
 	public void onClickJsonTest(View v) {
@@ -735,4 +751,36 @@ public class AssistActivity extends FragmentActivity {
 		wifiManager.setWifiEnabled(true);
 		
 	}
+	static final String ACTION_START_FTPSERVER = "be.ppareit.swiftp.ACTION_START_FTPSERVER";
+    static final String ACTION_STOP_FTPSERVER = "be.ppareit.swiftp.ACTION_STOP_FTPSERVER";
+    static final String FTPSERVER_STARTED = "be.ppareit.swiftp.FTPSERVER_STARTED";
+    static final String FTPSERVER_STOPPED = "be.ppareit.swiftp.FTPSERVER_STOPPED";
+	public void onSetFtp(View view) {
+		if (Build.VERSION.SDK_INT < 15) {
+			Toast.makeText(this, getString(R.string.ttFtpVersionLimit), Toast.LENGTH_LONG).show();
+			return;
+		}
+		if (ftpsetButton.isChecked()) {//如果已经是开启的，则去关闭
+			Intent startIntent = new Intent(ACTION_STOP_FTPSERVER);
+	        sendBroadcast(startIntent);
+		}else {
+			Intent startIntent = new Intent(ACTION_START_FTPSERVER);
+	        sendBroadcast(startIntent);
+		}
+		
+	}
+	
+	BroadcastReceiver mStartStopReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Swiftp: notify user if ftp server is running or not
+            if (intent.getAction().equals(FTPSERVER_STARTED)) {
+            	ftpsetButton.setChecked(true);
+                //mStatusText.setText("FTP Server is running");
+            } else if (intent.getAction().equals(FTPSERVER_STOPPED)) {
+            	ftpsetButton.setChecked(false);
+                //mStatusText.setText("FTP Server is down");
+            }
+        }
+    };
 }

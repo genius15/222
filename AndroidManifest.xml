@@ -75,6 +75,60 @@
                 <data android:mimeType="*/*"></data>
             </intent-filter>
         </activity>
+        
+        <activity android:name="be.ppareit.swiftp.gui.FsPreferenceActivity" 
+            android:exported="true" >
+           <!--  <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>--> 
+        </activity>
+        <service android:name="be.ppareit.swiftp.FsService" />
+
+        <receiver
+            android:name="be.ppareit.swiftp.gui.FsNotification"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="be.ppareit.swiftp.FTPSERVER_STARTED" />
+                <action android:name="be.ppareit.swiftp.FTPSERVER_STOPPED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="be.ppareit.swiftp.NsdService" />
+        <receiver
+            android:name="be.ppareit.swiftp.NsdService$StartStopReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="be.ppareit.swiftp.FTPSERVER_STARTED" />
+                <action android:name="be.ppareit.swiftp.FTPSERVER_STOPPED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Don't export this receiver in free, this clashes with paid -->
+        <receiver
+            android:name="be.ppareit.swiftp.RequestStartStopReceiver"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="be.ppareit.swiftp.ACTION_START_FTPSERVER" />
+                <action android:name="be.ppareit.swiftp.ACTION_STOP_FTPSERVER" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:icon="@drawable/launcher"
+            android:label="@string/swiftp_name"
+            android:name="be.ppareit.swiftp.gui.FsWidgetProvider"
+            android:exported="false" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="be.ppareit.swiftp.FTPSERVER_STARTED" />
+                <action android:name="be.ppareit.swiftp.FTPSERVER_STOPPED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <service android:name="be.ppareit.swiftp.gui.FsWidgetProvider$UpdateService" />
     </application>
 
 </manifest>
