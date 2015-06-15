@@ -79,7 +79,6 @@ public class AssistActivity extends FragmentActivity {
 	private ImageView aboutTab = null;
 	private CheckBox jsonCheckBox = null;
 	private ToggleButton ftpsetButton = null;
-	public static String dataname = "AppData";
 	public static int neverWatching = 0x00001000;
 	public static int isWatching = neverWatching+1;
 	public static int noWatching = neverWatching+2;
@@ -324,11 +323,11 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	private void initEmailReceiver() {
-		SharedPreferences appdata = this.getSharedPreferences("AppData",
+		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata),
 				MODE_PRIVATE);
-		receiver = appdata.getString("mailReceiver", "");
-		if (receiver.length() == 0) {
-			appdata.edit().putString("mailReceiver", "pdatest@sogou-inc.com")
+		receiver = appdata.getString(getString(R.string.cfg_key_recevier), null);
+		if (receiver == null) {
+			appdata.edit().putString(getString(R.string.cfg_key_recevier), "pdatest@sogou-inc.com")
 					.commit();
 		}
 	}
@@ -353,7 +352,7 @@ public class AssistActivity extends FragmentActivity {
 	private void setPathView() {
 		TextView v = (TextView) this.findViewById(R.id.observerpath);
 		v.setText(obPath);
-		SharedPreferences appdata = this.getSharedPreferences("AppData", MODE_PRIVATE);  
+		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata), MODE_PRIVATE);  
 		appdata.edit().putString("obPath", obPath).commit();
 	}
 
@@ -448,7 +447,7 @@ public class AssistActivity extends FragmentActivity {
 //		Intent intent = new Intent(this, FileObserverService.class);
 //		intent.putExtra("observerpath", obPath);
 //		this.startService(intent);
-		SharedPreferences appdata = this.getSharedPreferences(dataname, MODE_PRIVATE);
+		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata), MODE_PRIVATE);
 		int state = appdata.getInt("isWatching", AssistActivity.neverWatching);
 		if(state == AssistActivity.isWatching){
 			ImageView iv = (ImageView) findViewById(R.id.observerview);
@@ -529,7 +528,7 @@ public class AssistActivity extends FragmentActivity {
 
 	public void onSetMailReceiver(View v) {
 		SharedPreferences data = AssistApplication.getContext()
-				.getSharedPreferences("AppData", MODE_PRIVATE);
+				.getSharedPreferences(getString(R.string.cfg_appdata), MODE_PRIVATE);
 		String recname = data.getString("name", "");
 		int idx = 0;
 		for (int i = 0; i < names.length; ++i) {
@@ -555,13 +554,12 @@ public class AssistActivity extends FragmentActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						receiver = nameEmailMap.get(names[selectedidx]);
 						SharedPreferences appdata = AssistApplication
-								.getContext().getSharedPreferences("AppData",
+								.getContext().getSharedPreferences(getString(R.string.cfg_appdata),
 										MODE_PRIVATE);
 
 						appdata.edit()
-								.putString(getString(R.string.cfgmailreceiver),
-										getString(R.string.cfg_key_recevier))
-								.commit();
+								.putString(getString(R.string.cfg_key_recevier),
+										receiver).commit();
 						appdata.edit().putString("name", names[selectedidx])
 								.commit();
 						SharedPreferences settings = PreferenceManager
@@ -626,7 +624,7 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onFloatwinSet(View v) {
-		SharedPreferences appdata = getSharedPreferences("AppData",
+		SharedPreferences appdata = getSharedPreferences(getString(R.string.cfg_appdata),
 				MODE_PRIVATE);
 		appdata.edit().putBoolean("isFloatWinOn", !isFloatwinon).commit();
 		if (isFloatwinon) {
@@ -684,7 +682,7 @@ public class AssistActivity extends FragmentActivity {
 	public void onClickJsonTest(View v) {
 		CheckBox cbBox = (CheckBox) v;
 		boolean needSend = cbBox.isChecked();
-		this.getSharedPreferences("AppData",Context.MODE_PRIVATE).edit().putBoolean("needSend", needSend).commit();
+		this.getSharedPreferences(getString(R.string.cfg_appdata),Context.MODE_PRIVATE).edit().putBoolean("needSend", needSend).commit();
 	}
 	
 	public void onGenerateFolder(View v){

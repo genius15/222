@@ -18,7 +18,7 @@ public class FileObserverThread extends FileObserver {
 
 	public FileObserverThread(String path,String emailRec) {
 		/*
-		 * ÕâÖÖ¹¹Ôì·½·¨ÊÇÄ¬ÈÏ¼àÌıËùÓĞÊÂ¼şµÄ,Èç¹ûÊ¹ÓÃsuper(String,int)ÕâÖÖ¹¹Ôì·½·¨£¬ Ôòint²ÎÊıÊÇÒª¼àÌıµÄÊÂ¼şÀàĞÍ.
+		 * è¿™ç§æ„é€ æ–¹æ³•æ˜¯é»˜è®¤ç›‘å¬æ‰€æœ‰äº‹ä»¶çš„,å¦‚æœä½¿ç”¨super(String,int)è¿™ç§æ„é€ æ–¹æ³•ï¼Œ åˆ™intå‚æ•°æ˜¯è¦ç›‘å¬çš„äº‹ä»¶ç±»å‹.
 		 */
 		super(path);
 		observerpath = path;
@@ -66,7 +66,7 @@ public class FileObserverThread extends FileObserver {
 					}
 					if (attach.length()!=0 && res.length()!=0) {
 
-						MailSender.sendTextMail("ÊÖ»úÖúÊÖ±ÀÀ£ÎÄ¼ş¼à¿Ø",res, attach,
+						MailSender.sendTextMail("æ‰‹æœºåŠ©æ‰‹å´©æºƒæ–‡ä»¶ç›‘æ§",res, attach,
 								new String[] { emailReceiver});
 						Log.i(AssistActivity.myTag, "send mail over:" + tmp);
 						File att = new File(attach);

@@ -23,12 +23,15 @@ public class SendFileToTheContact extends Activity {
 		final String path = uri.getPath();
 		String filename = new File(path).getName();
 
-		Log.i("sendfile", path);
 		final String receiverString = getSharedPreferences(
-				getString(R.string.cfgmailreceiver), MODE_PRIVATE)
+				getString(R.string.cfg_appdata), MODE_PRIVATE)
 				.getString(getString(R.string.cfg_key_recevier), null);
+		if (receiverString == null) {
+			Toast.makeText(this, getString(R.string.contact_miss), Toast.LENGTH_LONG).show();
+			return;
+		}
 		Toast.makeText(this,
-				String.format(getString(R.string.ttsendfile), filename),
+				String.format(getString(R.string.ttsendfile), filename,receiverString),
 				Toast.LENGTH_LONG).show();
 		new Thread(new Runnable() {
 

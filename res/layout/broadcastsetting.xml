@@ -21,7 +21,7 @@
         android:layout_alignBottom="@+id/scheduleToggle"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="24dp"
-        android:text="Large Text"
+        android:text="@string/ftptitle"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     

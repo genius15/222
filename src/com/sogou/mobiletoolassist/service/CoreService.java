@@ -1,4 +1,3 @@
-  
 package com.sogou.mobiletoolassist.service;
 
 import java.io.File;
@@ -203,20 +202,20 @@ public class CoreService extends Service implements OnClickListener {
 	}
 
 	private void init(String path) {
-		SharedPreferences appdata = this.getSharedPreferences("AppData",
+		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata),
 				MODE_PRIVATE);
 		appdata.edit().putString("obPath", path).commit(); // 防止被重启，把path保存到本地
 
 	}
 
 	public void startWatching() {
-		SharedPreferences appdata = this.getSharedPreferences("AppData",
+		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata),
 				MODE_PRIVATE);
 		String deafultpath = Environment.getExternalStorageDirectory()
 				.getPath();
 		deafultpath += File.separator + "MobileTool/CrashReport";
 		observerpath = appdata.getString("obPath", deafultpath);
-		emailReceiver = appdata.getString("mailReceiver",
+		emailReceiver = appdata.getString(getString(R.string.cfg_key_recevier),
 				"pdatest@sogou-inc.com");
 		if (listener != null) {
 			listener.stopWatching();
@@ -242,8 +241,7 @@ public class CoreService extends Service implements OnClickListener {
 			}
 			return Service.START_STICKY;
 		}
-		
-		
+
 		createFloatView();
 		SharedPreferences appdata = this.getSharedPreferences("AppData",
 				MODE_PRIVATE);
@@ -268,7 +266,7 @@ public class CoreService extends Service implements OnClickListener {
 	 */
 	@SuppressLint("InflateParams")
 	private void createFloatView() {
-		SharedPreferences appdata = getSharedPreferences("AppData",
+		SharedPreferences appdata = getSharedPreferences(getString(R.string.cfg_appdata),
 				MODE_PRIVATE);
 		if (!appdata.getBoolean("isFloatWinOn", true)) {
 			return;
@@ -480,7 +478,11 @@ public class CoreService extends Service implements OnClickListener {
 	}
 
 	public static boolean ScreenShot() {
-
+		Context ctx = AssistApplication.getContext();
+		if (ctx == null) {
+			Log.e("err", "context is null");
+			return false;
+		}
 		String path = "";
 		if (Build.VERSION.SDK_INT > 13) {
 			path = ScreenshotforJELLY_BEAN.shoot();
@@ -501,34 +503,32 @@ public class CoreService extends Service implements OnClickListener {
 		info += "</br>";
 		info += UsefulClass.getZSPkgInfo();
 		SharedPreferences appdata = AssistApplication.getContext()
-				.getSharedPreferences("AppData", MODE_PRIVATE);
-		String emailReceiver = appdata.getString("mailReceiver",
+				.getSharedPreferences(ctx.getString(R.string.cfg_appdata),
+						MODE_PRIVATE);
+		String emailReceiver = appdata.getString(
+				ctx.getString(R.string.cfg_key_recevier),
 				"pdatest@sogou-inc.com");
-		if (AssistApplication.getContext() != null) {
-			ConnectivityManager mConnectivityManager = (ConnectivityManager) AssistApplication
-					.getContext()
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mNetworkInfo = mConnectivityManager
-					.getActiveNetworkInfo();
-			if (mNetworkInfo == null || !mNetworkInfo.isConnected()) {
-				Toast.makeText(AssistApplication.getContext(),
-						"网络貌似有问题哦，邮件发不出去", Toast.LENGTH_LONG).show();
 
-				return false;
-			}
+		ConnectivityManager mConnectivityManager = (ConnectivityManager) ctx
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+		if (mNetworkInfo == null || !mNetworkInfo.isConnected()) {
+			Toast.makeText(AssistApplication.getContext(), "网络貌似有问题哦，邮件发不出去",
+					Toast.LENGTH_LONG).show();
+
+			return false;
 		}
+
 		if (MailSender.sendTextMail(title, info, path,
 				new String[] { emailReceiver })) {
 			String emailReceivername = appdata.getString("name", "pdatest");
-			Toast.makeText(AssistApplication.getContext(),
-					"截图完毕，" + emailReceivername + "同学请静候邮件~", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(ctx, "截图完毕，" + emailReceivername + "同学请静候邮件~",
+					Toast.LENGTH_LONG).show();
 			File tmp = new File(path);
 			if (tmp.exists())
 				tmp.delete();
 		} else {
-			Toast.makeText(AssistApplication.getContext(), "发送邮件异常，可能是读截图失败了",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(ctx, "发送邮件异常，可能是读截图失败了", Toast.LENGTH_LONG).show();
 		}
 
 		return true;
@@ -697,8 +697,7 @@ public class CoreService extends Service implements OnClickListener {
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
 				"send test broadcast");
 		wakeLock.acquire();
-		
-		
+
 		String bString = intentStrings.get(cnt);
 		if (cnt == intentStrings.size()) {
 			getSharedPreferences("broadcastcnt", MODE_PRIVATE).edit()
@@ -740,9 +739,10 @@ public class CoreService extends Service implements OnClickListener {
 			mRemoteViews.setImageViewResource(R.id.custom_song_icon,
 					R.drawable.sing_icon);
 			// API3.0 以上的时候显示按钮，否则消失
-			mRemoteViews.setTextViewText(R.id.notifyTitle, getString(R.string.notifyTitileText));
-			mRemoteViews
-					.setTextViewText(R.id.notifyContent, getString(R.string.author));
+			mRemoteViews.setTextViewText(R.id.notifyTitle,
+					getString(R.string.notifyTitileText));
+			mRemoteViews.setTextViewText(R.id.notifyContent,
+					getString(R.string.author));
 
 			// 点击的事件处理
 			Intent buttonIntent = new Intent(ACTION_BUTTON);
@@ -841,4 +841,3 @@ public class CoreService extends Service implements OnClickListener {
 		}
 	}
 }
-

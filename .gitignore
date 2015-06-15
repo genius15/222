@@ -47,3 +47,5 @@ Temporary Items
 bin/
 obj/
 gen/
+.settings/
+.project

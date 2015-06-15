@@ -34,9 +34,9 @@ public class ToolsTabFragment extends Fragment {
 	@Override
 	public void onStart(){
 		super.onStart();
-		SharedPreferences appdata = getActivity().getSharedPreferences("AppData",
+		SharedPreferences appdata = getActivity().getSharedPreferences(getString(R.string.cfg_appdata),
 				getActivity().MODE_PRIVATE);
-		if (!appdata.getBoolean("isFirstLaunch", true)) {// ²»ÊÇÊ×´ÎµÇÂ½
+		if (!appdata.getBoolean("isFirstLaunch", true)) {// ï¿½ï¿½ï¿½ï¿½ï¿½×´Îµï¿½Â½
 			
 			if (!appdata.getBoolean("isFloatWinOn", false)) {
 				AssistActivity.isFloatwinon = false;
