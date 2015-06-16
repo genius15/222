@@ -47,22 +47,28 @@ public class ActionsAdapter extends BaseAdapter {
 			return null;
 		}
 		String itemContentString = mActionsList.get(position);
+		ViewHolder holder = null;
 		LayoutInflater lInflater = (LayoutInflater) ctx
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
 			convertView = lInflater.inflate(R.layout.action_item, null);
+			holder = new ViewHolder();
+			holder.tView = (TextView) convertView.findViewById(R.id.actiontv);
+			convertView.setTag(holder);
+		}else {
+			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		TextView tc = (TextView) convertView.findViewById(R.id.actiontv);
 		int sendedcnt = ctx.getSharedPreferences(
 				ctx.getString(R.string.cfg_action_cnt), Context.MODE_PRIVATE)
 				.getInt(ctx.getString(R.string.key_action_cnt), 0);
 		if (position < sendedcnt) {
-			tc.setTextColor(Color.GREEN);
+			holder.tView.setTextColor(Color.GREEN);
 		}
-		tc.setText(itemContentString);
-		convertView.setTag(tc);
+		holder.tView.setText(itemContentString);
 		return convertView;
 	}
-
+	private static class ViewHolder{
+		public TextView tView;
+	}
 }
