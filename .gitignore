@@ -44,8 +44,10 @@ Temporary Items
 # useless
 *.class
 *.cache
+lint.xml
 bin/
 obj/
 gen/
 .settings/
 .project
+.cproject

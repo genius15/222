@@ -34,7 +34,7 @@
 	<string name="floatwinontext">悬浮窗开启中</string>
 	<string name="floatwinofftext">悬浮窗已关闭</string>
 	<string name="thanks">感谢伟大的开源</string>
-	<string name="version">v4.0</string>
+	<string name="version">4.0</string>
 	<string name="source">手机助手测试组低调出品</string>
 	<string name="mt_download_dir_url">http://installer.sogou-inc.com/mirror_installer/smt_android/</string>
 	<string name="sendjsontestResult">勾选后启动时会检查并回传json容错测试结果</string>
@@ -57,10 +57,20 @@
 	<string name="ftpdown">ftp已关闭</string>
 	<string name="ftpuping">ftp开启中</string>
 	<string name="ftpdowning">ftp关闭中</string>
-	
-	
-	
-	
+	<!-- json容错相关 -->
+	<string name="jsontestresult">Json自动化测试结果</string>
+	<string name="jsonnoexcept">没有发现json容错异常</string>
+	<string name="jsonnoresultfile">没有找到测试结果文件，请手工查看一下，如果有请报工具bug</string>
+	<!-- 广播actions相关 -->
+	<string name="actionsfilename">actions.txt</string>
+	<string name="actionswitchon">开始</string>
+	<string name="actionswitchoff">停止</string>
+	<string name="actionsfreq">设置发送action的间隔(min)</string>
+	<string name="cfg_action_cnt">broadcastcnt</string>
+	<string name="key_action_cnt">bdcnt</string>
+	<string name="issending">issending</string>
+	<string name="freq_not_a_num">请输入正整数哈</string>
+	<string name="last_sended_time">上一次发送完所有广播时间为：%1$s</string>
 	<!-- 以下是ftpserver的固有string -->
 	 <string name="swiftp_name">FTP Server</string>
     <string name="running_label">FTP Server</string>
@@ -155,4 +165,5 @@ https://github.com/ppareit/swiftp/issues .\n\n
     <string name="storage_warning">Warning: storage is not available. You may want to unmount it.</string>
     <string name="widget_name">FTP Server Widget</string>
     <string name="ftptitle">文件互传开关</string>
+    
 </resources>

@@ -2,6 +2,7 @@ package com.sogou.mobiletoolassist;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
@@ -29,4 +30,9 @@ public class AssistApplication extends Application {
             return null;
         }
     }
+	
+	public static SharedPreferences getAppDataPreferences() {
+		Context context = getContext();
+		return context.getSharedPreferences(context.getString(R.string.cfg_appdata), MODE_PRIVATE);
+	}
 }

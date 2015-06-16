@@ -5,11 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.ArrayList;
-
-
-import android.R.integer;
+import com.sogou.mobiletoolassist.AssistApplication;
+import com.sogou.mobiletoolassist.R;
 import android.os.Environment;
 
 public class JsonTestResultHandle {
@@ -26,7 +24,8 @@ public class JsonTestResultHandle {
 			long recent = 0;
 			File lastFile = null;
 			for (int i = 0; i < filesString.length; i++) {
-				File tmpfileFile = new File(pathString + File.separator+filesString[i]);
+				File tmpfileFile = new File(pathString + File.separator
+						+ filesString[i]);
 				long tm = tmpfileFile.lastModified();
 				if (tm > recent) {
 					recent = tm;
@@ -36,15 +35,22 @@ public class JsonTestResultHandle {
 			if (lastFile != null) {
 				ArrayList<String> errStrings = findExceptInLog(lastFile);
 				if (errStrings == null || errStrings.isEmpty()) {
+					MailSender.sendTextMail(AssistApplication.getContext()
+							.getString(R.string.jsontestresult), 
+							AssistApplication.getContext().getString(R.string.jsonnoexcept),
+							lastFile.getPath(), new String[] { receiver });
 					return;
 				}
-				MailSender.sendTextMail("Json×Ô¶¯»¯²âÊÔ½á¹û", errStrings.toString(),
+				MailSender.sendTextMail(AssistApplication.getContext()
+						.getString(R.string.jsontestresult), errStrings.toString(),
 						lastFile.getPath(), new String[] { receiver });
-			}else{
-				MailSender.sendTextMail("¡¾Something is wrong¡¿Json×Ô¶¯»¯²âÊÔ½á¹û", "Ã»ÓĞÕÒµ½²âÊÔ½á¹ûÎÄ¼ş£¬ÇëÊÖ¹¤²é¿´Ò»ÏÂ£¬Èç¹ûÓĞÇë±¨¹¤¾ßbug",
-						null, new String[] { receiver });
+			} else {
+				MailSender.sendTextMail(AssistApplication.getContext()
+						.getString(R.string.jsontestresult),
+						AssistApplication.getContext().getString(R.string.jsonnoresultfile), null,
+						new String[] { receiver });
 			}
-			
+
 		} else {
 			// TODO
 		}
@@ -60,11 +66,11 @@ public class JsonTestResultHandle {
 
 			String tmp = bReader.readLine();
 			while (tmp != null) {
-				if (tmp.contains("¿ªÊ¼²âÊÔ")) {
+				if (tmp.contains("å¼€å§‹æµ‹è¯•")) {
 					int ididx = tmp.indexOf(":");
 					int caseidx = tmp.indexOf("caseid");
 					String id = tmp.substring(caseidx, ididx);
-					while (tmp != null && !tmp.contains(id + ":²âÊÔ½áÊø")) {						
+					while (tmp != null && !tmp.contains(id + ":æµ‹è¯•ç»“æŸ")) {
 						if (tmp.contains("except")) {
 							errCaseIdStrings.add(id);
 							break;

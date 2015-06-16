@@ -5,10 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
 
-import be.ppareit.swiftp.gui.FsPreferenceActivity;
+import java.util.Stack;
 
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
@@ -17,20 +15,18 @@ import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
+
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -56,7 +52,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 public class AssistActivity extends FragmentActivity {
 	public static String myTag = "Assist";
@@ -77,8 +72,6 @@ public class AssistActivity extends FragmentActivity {
 	private ImageView toolsTab = null;
 	private ImageView contactTab = null;
 	private ImageView aboutTab = null;
-	private CheckBox jsonCheckBox = null;
-	private ToggleButton ftpsetButton = null;
 	public static int neverWatching = 0x00001000;
 	public static int isWatching = neverWatching+1;
 	public static int noWatching = neverWatching+2;
@@ -169,15 +162,7 @@ public class AssistActivity extends FragmentActivity {
 		Log.i("study", "assist act oncreate");
 		setContentView(R.layout.activity_assist);
 
-		Log.i("study", AssistActivity.class.getName());
-		// if (!appdata.getBoolean("isscadded", false)) {
-		// addShortcut();
-		// appdata.edit().putBoolean("isscadded", true).commit();
-		// }
-		//UsefulClass.processCmd("/data/local/tcpdump -p -vv -s 0 -w /sdcard/zscapture.pcap");
-
-		if (!UsefulClass
-				.isServiceRunning(this, CoreService.class.getName())) {
+		if (!UsefulClass.isServiceRunning(this, CoreService.class.getName())) {
 			Intent it = new Intent(this, CoreService.class);
 			startService(it);
 		}
@@ -352,7 +337,7 @@ public class AssistActivity extends FragmentActivity {
 	private void setPathView() {
 		TextView v = (TextView) this.findViewById(R.id.observerpath);
 		v.setText(obPath);
-		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata), MODE_PRIVATE);  
+		SharedPreferences appdata = AssistApplication.getAppDataPreferences();  
 		appdata.edit().putString("obPath", obPath).commit();
 	}
 
@@ -428,11 +413,11 @@ public class AssistActivity extends FragmentActivity {
 //		ImageView view = (ImageView) findViewById(R.id.installmt);
 //		view.setImageResource(R.drawable.installmting);
 	}
-	private void switchTab(Fragment tab) {
+	private void switchTab(Fragment tab,String tag) {
 		FragmentManager fm = this.getSupportFragmentManager();
 		FragmentTransaction transaction = fm.beginTransaction();
 
-		transaction.replace(R.id.toolsLinear, tab);
+		transaction.replace(R.id.toolsLinear, tab,tag);
 		transaction.commit();
 	}
 
@@ -444,10 +429,7 @@ public class AssistActivity extends FragmentActivity {
 			File p = new File(obPath);
 			p.mkdirs();
 		}
-//		Intent intent = new Intent(this, FileObserverService.class);
-//		intent.putExtra("observerpath", obPath);
-//		this.startService(intent);
-		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata), MODE_PRIVATE);
+		SharedPreferences appdata = AssistApplication.getAppDataPreferences();
 		int state = appdata.getInt("isWatching", AssistActivity.neverWatching);
 		if(state == AssistActivity.isWatching){
 			ImageView iv = (ImageView) findViewById(R.id.observerview);
@@ -527,8 +509,7 @@ public class AssistActivity extends FragmentActivity {
 			"王灿", "王坤", "董宏博", "孙静", "赵喜宁", "商丽丽"};
 
 	public void onSetMailReceiver(View v) {
-		SharedPreferences data = AssistApplication.getContext()
-				.getSharedPreferences(getString(R.string.cfg_appdata), MODE_PRIVATE);
+		SharedPreferences data = AssistApplication.getAppDataPreferences();
 		String recname = data.getString("name", "");
 		int idx = 0;
 		for (int i = 0; i < names.length; ++i) {
@@ -648,7 +629,7 @@ public class AssistActivity extends FragmentActivity {
 		if (toolsFrag == null) {
 			toolsFrag = new ToolsTabFragment();
 		}
-		switchTab(toolsFrag);
+		switchTab(toolsFrag,"toolsfrag");
 		
 	}
 
@@ -661,7 +642,7 @@ public class AssistActivity extends FragmentActivity {
 		if (recFrag == null) {
 			recFrag = new ReceiversFragment();
 		}
-		switchTab(recFrag);
+		switchTab(recFrag,"recfrag");
 	}
 
 	public void onClickAbout(View v) {
@@ -677,7 +658,7 @@ public class AssistActivity extends FragmentActivity {
 //			ftpsetButton = (ToggleButton) aboutFrag.getView().findViewById(R.id.scheduleToggle);
 //		}
 		
-		switchTab(aboutFrag);
+		switchTab(aboutFrag,"aboutfrag");
 	}
 	public void onClickJsonTest(View v) {
 		CheckBox cbBox = (CheckBox) v;
@@ -723,9 +704,43 @@ public class AssistActivity extends FragmentActivity {
 	}
 	
 	public void onSendbroadcast(View v) {
-		Message msg = new Message();
-		msg.what = CoreService.sendBroadcast;
-		backservice.fltwinhandler.sendMessage(msg);
+		//Fragment fgt = getSupportFragmentManager().findFragmentByTag("aboutfrag");
+		boolean issending = getSharedPreferences(
+				getString(R.string.cfg_appdata), MODE_PRIVATE).getBoolean(getString(R.string.issending), false);
+		Button button = (Button) v;
+		EditText eText = (EditText)findViewById(R.id.actionFreqET);
+		
+		if (issending) {//if it is sending ,then stop it
+			Message msgMessage = new Message();
+			msgMessage.what = CoreService.stopsendBroadcast;
+			backservice.fltwinhandler.sendMessage(msgMessage);
+			button.setText(R.string.actionswitchon);
+			eText.setEnabled(true);
+		}else {
+			
+			String freq = eText.getEditableText().toString();
+			int f = 0;
+			try {
+				f = Integer.parseInt(freq);
+				if (f <= 0) {
+					Toast.makeText(this, getString(R.string.freq_not_a_num), Toast.LENGTH_LONG).show();
+				}
+			} catch (NumberFormatException e) {
+				Toast.makeText(this, getString(R.string.freq_not_a_num), Toast.LENGTH_LONG).show();
+				return;
+			}
+			ArrayList<String> actions = ((AboutTabFragment)aboutFrag).getActions();			
+			eText.setEnabled(false);
+			Message msg = new Message();
+			msg.what = CoreService.sendBroadcast;
+			Bundle bdl = new Bundle();
+			bdl.putStringArrayList("actions", actions);
+			bdl.putInt("freq", f);
+			msg.setData(bdl);
+			backservice.fltwinhandler.sendMessage(msg);
+			button.setText(R.string.actionswitchoff);
+		}
+		
 		
 	}
 	
@@ -735,50 +750,5 @@ public class AssistActivity extends FragmentActivity {
 		Toast.makeText(this, String.valueOf(mTotalSize), Toast.LENGTH_LONG).show();
 	}
 	
-	public void testwifiset(View v) {
-		//ToggleButton tbButton = (ToggleButton) findViewById(R.id.timesToggle);
-		WifiManager wifiManager = (WifiManager) this
-				.getSystemService(Context.WIFI_SERVICE);
-		wifiManager.setWifiEnabled(false);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		wifiManager.setWifiEnabled(true);
-		
-	}
-	static final String ACTION_START_FTPSERVER = "be.ppareit.swiftp.ACTION_START_FTPSERVER";
-    static final String ACTION_STOP_FTPSERVER = "be.ppareit.swiftp.ACTION_STOP_FTPSERVER";
-    static final String FTPSERVER_STARTED = "be.ppareit.swiftp.FTPSERVER_STARTED";
-    static final String FTPSERVER_STOPPED = "be.ppareit.swiftp.FTPSERVER_STOPPED";
-	public void onSetFtp(View view) {
-		if (Build.VERSION.SDK_INT < 15) {
-			Toast.makeText(this, getString(R.string.ttFtpVersionLimit), Toast.LENGTH_LONG).show();
-			return;
-		}
-		if (ftpsetButton.isChecked()) {//如果已经是开启的，则去关闭
-			Intent startIntent = new Intent(ACTION_STOP_FTPSERVER);
-	        sendBroadcast(startIntent);
-		}else {
-			Intent startIntent = new Intent(ACTION_START_FTPSERVER);
-	        sendBroadcast(startIntent);
-		}
-		
-	}
-	
-	BroadcastReceiver mStartStopReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Swiftp: notify user if ftp server is running or not
-            if (intent.getAction().equals(FTPSERVER_STARTED)) {
-            	ftpsetButton.setChecked(true);
-                //mStatusText.setText("FTP Server is running");
-            } else if (intent.getAction().equals(FTPSERVER_STOPPED)) {
-            	ftpsetButton.setChecked(false);
-                //mStatusText.setText("FTP Server is down");
-            }
-        }
-    };
+
 }

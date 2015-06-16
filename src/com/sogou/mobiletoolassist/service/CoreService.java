@@ -54,6 +54,7 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class CoreService extends Service implements OnClickListener {
 	private final static int installmt = 0x0000004;
 	private final static int downloadfailed = 0x0000005;
 	public final static int sendBroadcast = 0x0000006;
+	public final static int stopsendBroadcast = sendBroadcast + 1;
 	private static boolean isUninstalling = false;
 	public static String mtpathString = Environment
 			.getExternalStorageDirectory().getPath() + File.separator;
@@ -94,6 +96,7 @@ public class CoreService extends Service implements OnClickListener {
 	private String emailReceiver = null;
 	public boolean isInstalling = false;
 	private Thread sendBroadcastThd = null;
+	public int freq = 0;
 	public Handler fltwinhandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
@@ -142,7 +145,12 @@ public class CoreService extends Service implements OnClickListener {
 				motifyMgr.cancel(2048);
 				break;
 			case CoreService.sendBroadcast:
+				intentStrings = msg.getData().getStringArrayList("actions");
+				freq = msg.getData().getInt("freq");
 				sendBroadcastSimulation();
+				break;
+			case CoreService.stopsendBroadcast:
+				stopSendBroadcast();
 				break;
 			}
 			super.handleMessage(msg);
@@ -172,24 +180,24 @@ public class CoreService extends Service implements OnClickListener {
 
 	@Override
 	public void onCreate() {
-		if (intentStrings != null && intentStrings.isEmpty()) {
-			try {
-				InputStream inputStream = getAssets().open("build_in_actions");
-				int cnt = inputStream.available();
-				byte buf[] = new byte[cnt];
-				inputStream.read(buf);
-				String actions = new String(buf);
-				String actionsArrString[] = actions.split("\r\n");// note it may
-																	// be
-																	// different
-																	// in linux
-																	// system
-				intentStrings.addAll(Arrays.asList(actionsArrString));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		// if (intentStrings != null && intentStrings.isEmpty()) {
+		// try {
+		// InputStream inputStream = getAssets().open("build_in_actions");
+		// int cnt = inputStream.available();
+		// byte buf[] = new byte[cnt];
+		// inputStream.read(buf);
+		// String actions = new String(buf);
+		// String actionsArrString[] = actions.split("\r\n");// note it may
+		// // be
+		// // different
+		// // in linux
+		// // system
+		// intentStrings.addAll(Arrays.asList(actionsArrString));
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// }
 		bReceiver = new ButtonBroadcastReceiver();
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(ACTION_BUTTON);
@@ -202,15 +210,15 @@ public class CoreService extends Service implements OnClickListener {
 	}
 
 	private void init(String path) {
-		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata),
-				MODE_PRIVATE);
+		SharedPreferences appdata = this.getSharedPreferences(
+				getString(R.string.cfg_appdata), MODE_PRIVATE);
 		appdata.edit().putString("obPath", path).commit(); // 防止被重启，把path保存到本地
 
 	}
 
 	public void startWatching() {
-		SharedPreferences appdata = this.getSharedPreferences(getString(R.string.cfg_appdata),
-				MODE_PRIVATE);
+		SharedPreferences appdata = this.getSharedPreferences(
+				getString(R.string.cfg_appdata), MODE_PRIVATE);
 		String deafultpath = Environment.getExternalStorageDirectory()
 				.getPath();
 		deafultpath += File.separator + "MobileTool/CrashReport";
@@ -234,8 +242,8 @@ public class CoreService extends Service implements OnClickListener {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d("study", "core service onStartCommand");
 		if (intent != null && intent.getBooleanExtra("setalarm", false)) {
-			int cnt = getSharedPreferences("broadcastcnt", MODE_PRIVATE)
-					.getInt("bdcnt", 0);
+			int cnt = getSharedPreferences(getString(R.string.cfg_action_cnt),
+					MODE_PRIVATE).getInt(getString(R.string.key_action_cnt), 0);
 			if (cnt > 0) {
 				setNextAlarm(cnt);
 			}
@@ -243,8 +251,8 @@ public class CoreService extends Service implements OnClickListener {
 		}
 
 		createFloatView();
-		SharedPreferences appdata = this.getSharedPreferences("AppData",
-				MODE_PRIVATE);
+		SharedPreferences appdata = this.getSharedPreferences(
+				getString(R.string.cfg_appdata), MODE_PRIVATE);
 
 		int state = appdata.getInt("isWatching", AssistActivity.neverWatching);
 		if (state == AssistActivity.isWatching) {
@@ -266,8 +274,8 @@ public class CoreService extends Service implements OnClickListener {
 	 */
 	@SuppressLint("InflateParams")
 	private void createFloatView() {
-		SharedPreferences appdata = getSharedPreferences(getString(R.string.cfg_appdata),
-				MODE_PRIVATE);
+		SharedPreferences appdata = getSharedPreferences(
+				getString(R.string.cfg_appdata), MODE_PRIVATE);
 		if (!appdata.getBoolean("isFloatWinOn", true)) {
 			return;
 		}
@@ -675,20 +683,31 @@ public class CoreService extends Service implements OnClickListener {
 		}).start();
 	}
 
-	private static ArrayList<String> intentStrings = new ArrayList<String>() {
-	};
-	private static int intentCnt = 0;
+	private static ArrayList<String> intentStrings = null;
 
 	public void sendBroadcastSimulation() {
-		int cnt = getSharedPreferences("broadcastcnt", MODE_PRIVATE).getInt(
-				"bdcnt", 0);
+		int cnt = getSharedPreferences(getString(R.string.cfg_action_cnt),
+				MODE_PRIVATE).getInt(getString(R.string.key_action_cnt), 0);
 		if (cnt > 0) {
 			return;
 		}
-		setNextAlarm(cnt);
+		setNextAlarm(0);
 	}
 
-	public void setNextAlarm(int cnt) {
+	public void stopSendBroadcast() {
+		intentStrings = null;
+		freq = 0;
+		getSharedPreferences(getString(R.string.cfg_action_cnt), MODE_PRIVATE)
+				.edit().putInt(getString(R.string.key_action_cnt), 0).commit();
+		AssistApplication.getAppDataPreferences()
+				.edit().putBoolean(getString(R.string.issending), false)
+				.commit();
+	}
+
+	public void setNextAlarm(int nextidx) {
+		if (intentStrings == null) {
+			return;
+		}
 		PowerManager.WakeLock wakeLock = null;
 
 		final PowerManager pm = (PowerManager) this
@@ -698,17 +717,24 @@ public class CoreService extends Service implements OnClickListener {
 				"send test broadcast");
 		wakeLock.acquire();
 
-		String bString = intentStrings.get(cnt);
-		if (cnt == intentStrings.size()) {
-			getSharedPreferences("broadcastcnt", MODE_PRIVATE).edit()
-					.putInt("bdcnt", 0).commit();
+		if (nextidx == intentStrings.size()) {
+			stopSendBroadcast();
+			Calendar calendar = Calendar.getInstance();
+			SimpleDateFormat dFormat = new SimpleDateFormat(
+					"yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+			AssistApplication.getAppDataPreferences()
+					.edit().putString(getString(R.string.last_sended_time),
+							dFormat.format(calendar.getTime())).commit();
+			wakeLock.release();
+			wakeLock = null;
 			return;
 		}
-		cnt++;
-		getSharedPreferences("broadcastcnt", MODE_PRIVATE).edit()
-				.putInt("bdcnt", cnt).commit();
+		String bString = intentStrings.get(nextidx);
 		AlarmManager alarms = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		if (alarms == null) {
+			stopSendBroadcast();
+			wakeLock.release();
+			wakeLock = null;
 			return;
 		}
 
@@ -720,11 +746,13 @@ public class CoreService extends Service implements OnClickListener {
 
 		PendingIntent pIntent = PendingIntent.getBroadcast(this, 0, intent,
 				PendingIntent.FLAG_ONE_SHOT);
-		alarms.set(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis() + 15 * 60 * 1000, pIntent);
+		alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
+				+ freq * 60 * 1000, pIntent);
+		AssistApplication.getAppDataPreferences()
+				.edit().putBoolean(getString(R.string.issending), true)
+				.commit();
 		wakeLock.release();
 		wakeLock = null;
-		Log.i("broadcast", "fale 1 tiao");
 	}
 
 	public final static String ACTION_BUTTON = "com.notifications.intent.action.ButtonClick";
