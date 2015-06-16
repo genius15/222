@@ -49,7 +49,10 @@ public class ActionsAdapter extends BaseAdapter {
 		String itemContentString = mActionsList.get(position);
 		LayoutInflater lInflater = (LayoutInflater) ctx
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		convertView = lInflater.inflate(R.layout.action_item, null);
+		if (convertView == null) {
+			convertView = lInflater.inflate(R.layout.action_item, null);
+		}
+		
 		TextView tc = (TextView) convertView.findViewById(R.id.actiontv);
 		int sendedcnt = ctx.getSharedPreferences(
 				ctx.getString(R.string.cfg_action_cnt), Context.MODE_PRIVATE)
