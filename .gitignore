@@ -51,3 +51,4 @@ gen/
 .settings/
 .project
 .cproject
+.classpath
