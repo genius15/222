@@ -3,18 +3,23 @@ package com.sogou.mobiletoolassist.adapter;
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.contact.contactInfoArray;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 public class receiversAdapter extends BaseExpandableListAdapter {
-	private String[] teams;
-
-	public receiversAdapter() {
-		teams = AssistApplication.getContext().getResources()
-				.getStringArray(R.array.teams);
+	private contactInfoArray peopleArray = null;
+	private Context ctx = null;
+	public void addData(contactInfoArray array) {
+		peopleArray = array;
+		notifyDataSetChanged();
+	}
+	public receiversAdapter(Context ctx) {
+		this.ctx = ctx;
 	}
 
 	@Override
