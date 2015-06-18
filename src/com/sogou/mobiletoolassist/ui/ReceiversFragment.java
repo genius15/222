@@ -5,8 +5,6 @@ import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.receiversAdapter;
 import com.sogou.mobiletoolassist.contact.contactInfoArray;
 import com.sogou.mobiletoolassist.util.NetworkUtil;
-
-import android.app.DownloadManager.Request;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,7 +19,7 @@ public class ReceiversFragment extends Fragment implements
 		Response.Listener<contactInfoArray>, Response.ErrorListener {
 	private receiversAdapter recAdapter = null;
 	private ExpandableListView listv = null;
-	private static String urlString = "http://venus.sogou-inc.com/anonymous/call/userInfoQuery.getUsersByIds()";
+	private static String urlString = "";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
