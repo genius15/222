@@ -2,9 +2,13 @@
 package com.sogou.mobiletoolassist.adapter;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.contact.contactInfo;
 import com.sogou.mobiletoolassist.contact.contactInfoArray;
 
 import android.content.Context;
@@ -15,9 +19,13 @@ import android.widget.TextView;
 
 public class receiversAdapter extends BaseExpandableListAdapter {
 	private contactInfoArray peopleArray = null;
+	private HashMap<String, ArrayList<contactInfo> > desktopqa = new HashMap<>();
 	private Context ctx = null;
 	public void addData(contactInfoArray array) {
 		peopleArray = array;
+		for (contactInfo contactInfo : peopleArray) {
+			//desktopqa.containsKey(contactInfo.userGroupIds[0])
+		}
 		notifyDataSetChanged();
 	}
 	public receiversAdapter(Context ctx) {
@@ -59,13 +67,13 @@ public class receiversAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getGroup(int groupPosition) {
 
-		return teams[groupPosition];
+		return 0;
 	}
 
 	@Override
 	public int getGroupCount() {
 
-		return teams.length;
+		return 0;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package com.sogou.mobiletoolassist.ui;
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.receiversAdapter;
+import com.sogou.mobiletoolassist.contact.contactIdsArray;
 import com.sogou.mobiletoolassist.contact.contactInfoArray;
 import com.sogou.mobiletoolassist.util.NetworkUtil;
 import android.os.Bundle;
@@ -14,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ReceiversFragment extends Fragment implements
 		Response.Listener<contactInfoArray>, Response.ErrorListener {
 	private receiversAdapter recAdapter = null;
 	private ExpandableListView listv = null;
 	private static String urlString = "";
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -34,17 +38,39 @@ public class ReceiversFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		Log.i("learn", "rec onCreate");
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
-		request();
+		NetworkUtil.get("", contactIdsArray.class, new Response.Listener<contactIdsArray>(){
+
+			@Override
+			public void onResponse(contactIdsArray response) {
+				// TODO Auto-generated method stub
+				if (response != null && !response.isEmpty()) {
+					request(response);
+				}
+				
+			}
+			
+		}, new Response.ErrorListener(){
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
-	private void request(){
+	private void request(contactIdsArray response){
+		Gson gson = new Gson();
 		
+		String ids = gson.toJson(response);
 		NetworkUtil.get(urlString, contactInfoArray.class, this, this);
 	}
 	
@@ -61,5 +87,6 @@ public class ReceiversFragment extends Fragment implements
 		
 	}
 
+	
 }
 
