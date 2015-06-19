@@ -16,7 +16,7 @@ public class NetworkUtil {
 	
 	public static <T> void get(String url,Class<T> clazz,Response.Listener<T> listener,
 			Response.ErrorListener errorListener) {
-		GsonRequest<T> request = new GsonRequest<T>(Method.GET, url, listener, errorListener);
+		GsonRequest<T> request = new GsonRequest<T>(Method.GET, url, clazz,listener, errorListener);
 		getRequestQueue().add(request);
 	}
 }

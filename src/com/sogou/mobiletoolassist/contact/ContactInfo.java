@@ -2,7 +2,7 @@
 package com.sogou.mobiletoolassist.contact;
 import com.google.gson.annotations.SerializedName;
 
-public class contactInfo {
+public class ContactInfo {
 	@SerializedName("email")
 	public String email="";
 	
