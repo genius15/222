@@ -73,10 +73,6 @@ public class SimuBroadcastReceiver extends BroadcastReceiver {
 			}).start();
 			
 		}
-		// CoreService cService = (CoreService)
-		// context;//����android.app.ReceiverRestrictedContext cannot be cast to
-		// com.sogou.mobiletoolassist.service.CoreService
-		// cService.setNextAlarm();
 		Intent setAlarmIntent = new Intent(context, CoreService.class);
 		setAlarmIntent.putExtra("setalarm", true);
 		

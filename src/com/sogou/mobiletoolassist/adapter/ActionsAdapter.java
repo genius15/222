@@ -15,10 +15,12 @@ import android.widget.TextView;
 public class ActionsAdapter extends BaseAdapter {
 	private ArrayList<String> mActionsList = null;
 	private Context ctx = null;
-
+	LayoutInflater lInflater = null;
 	public ActionsAdapter(ArrayList<String> actions) {
 		mActionsList = actions;
 		ctx = AssistApplication.getContext();
+		lInflater = (LayoutInflater) ctx
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class ActionsAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return null;
+		return mActionsList.get(position);
 	}
 
 	@Override
@@ -43,22 +45,20 @@ public class ActionsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+
 		if (mActionsList == null) {
 			return null;
 		}
 		String itemContentString = mActionsList.get(position);
-		ViewHolder holder = null;
-		LayoutInflater lInflater = (LayoutInflater) ctx
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ViewHolder holder;
+		
 		if (convertView == null) {
 			convertView = lInflater.inflate(R.layout.action_item, null);
 			holder = new ViewHolder();
 			holder.tView = (TextView) convertView.findViewById(R.id.actiontv);
 			convertView.setTag(holder);
-		}else {
-			holder = (ViewHolder) convertView.getTag();
 		}
-		
+		holder = (ViewHolder) convertView.getTag();
 		int sendedcnt = ctx.getSharedPreferences(
 				ctx.getString(R.string.cfg_action_cnt), Context.MODE_PRIVATE)
 				.getInt(ctx.getString(R.string.key_action_cnt), 0);

@@ -1,9 +1,13 @@
 package com.sogou.mobiletoolassist.ui;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -174,12 +178,19 @@ public class AboutTabFragment extends Fragment {
 				inputStream = context.getAssets()
 						.open("build_in_actions");
 			}
-			int cnt = inputStream.available();
-			byte buf[] = new byte[cnt];
-			inputStream.read(buf);
-			String actionstr = new String(buf);
-			String actionsArrString[] = actionstr.split("\r\n");
-			actions.addAll(Arrays.asList(actionsArrString));
+			BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream));
+			String line = null;
+			while ((line = bReader.readLine())!=null) {
+				actions.add(line);
+			}
+//			int cnt = inputStream.available();
+//			byte buf[] = new byte[cnt];
+//			
+//			inputStream.read(buf);
+//			String actionstr = new String(buf);
+//			String actionsArrString[] = actionstr.split("\r\n");
+//			actions.addAll(Arrays.asList(actionsArrString));
+			bReader.close();
 			inputStream.close();
 		} catch (IOException e) {
 			e.printStackTrace();

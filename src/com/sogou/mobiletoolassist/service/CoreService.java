@@ -721,7 +721,8 @@ public class CoreService extends Service implements OnClickListener {
 			stopSendBroadcast();
 			Calendar calendar = Calendar.getInstance();
 			SimpleDateFormat dFormat = new SimpleDateFormat(
-					"yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+					"yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+			
 			AssistApplication.getAppDataPreferences()
 					.edit().putString(getString(R.string.last_sended_time),
 							dFormat.format(calendar.getTime())).commit();

@@ -16,7 +16,6 @@ import android.widget.ExpandableListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class ReceiversFragment extends Fragment implements
 		Response.Listener<contactInfoArray>, Response.ErrorListener {
