@@ -14,6 +14,8 @@ public class ContactInfo {
 	
 	@SerializedName("userGroupIds")
 	public String[] userGroupIds=null;
+
+	public String ip = "";
 	
 }
 

@@ -7,10 +7,13 @@ import java.util.HashMap;
 
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.contact.ContactInfo;
+import com.sogou.mobiletoolassist.ui.ContactInfoActivity;
 
 
 import android.R.integer;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +33,11 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 		userMap = desktopqa;
 		names = new String[userMap.size()];
 		names = userMap.keySet().toArray(names);
+		notifyDataSetChanged();
+	}
+	public void clearData(){
+		userMap = null;
+		names = null;
 		notifyDataSetChanged();
 	}
 	public ContactAdapter(Context ctx) {
@@ -61,14 +69,7 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 			convertView = mInflater.inflate(R.layout.usertv, null);	
 			viewHolder = new UserViewHolder();
 			viewHolder.tvView = (TextView) convertView.findViewById(R.id.user_tv);
-			viewHolder.tvView.setOnTouchListener(new OnTouchListener() {
-				
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					// TODO Auto-generated method stub
-					return false;
-				}
-			});
+			
 			viewHolder.tvView.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -76,7 +77,12 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 					
 					ContactInfo info = (ContactInfo) v.getTag();
 					
-					Toast.makeText(ctx, String.valueOf(info.name), Toast.LENGTH_LONG).show();
+					Intent intent = new Intent(ctx, ContactInfoActivity.class);
+					intent.putExtra("name", info.name);
+					intent.putExtra("email", info.email);
+					intent.putExtra("ip", info.ip);
+					ctx.startActivity(intent);
+					//Toast.makeText(ctx, String.valueOf(info.name), Toast.LENGTH_LONG).show();
 				}
 			});
 			convertView.setTag(viewHolder);

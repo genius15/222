@@ -42,7 +42,8 @@
             android:layout_marginRight="10dp"
             android:onClick="onSetMailReceiver"
             android:scaleType="matrix"
-            android:src="@drawable/contact" />
+            android:src="@drawable/contact"
+            android:visibility="gone" />
 
         <com.sogou.mobiletoolassist.ui.MyImageView
             android:id="@+id/observerview"

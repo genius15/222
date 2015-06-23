@@ -71,6 +71,10 @@
 	<string name="issending">issending</string>
 	<string name="freq_not_a_num">请输入正整数哈</string>
 	<string name="last_sended_time">上一次发送完所有广播时间为：%1$s</string>
+	
+	<!-- 联系人相关 -->
+	<string name="contact_backup">contact_backup</string>
+	<string name="contact_key">contact_key</string>
 	<!-- 以下是ftpserver的固有string -->
 	 <string name="swiftp_name">FTP Server</string>
     <string name="running_label">FTP Server</string>
@@ -165,5 +169,11 @@ https://github.com/ppareit/swiftp/issues .\n\n
     <string name="storage_warning">Warning: storage is not available. You may want to unmount it.</string>
     <string name="widget_name">FTP Server Widget</string>
     <string name="ftptitle">文件互传开关</string>
-    
+    <string name="contact_name">姓名:</string>
+    <string name="contact_email">E-Mail:</string>
+    <string name="contact_ip">IP地址:</string>
+    <string name="contact_cancel">取消</string>
+    <string name="contact_confirm">设为邮件接收者</string>
+    <string name="contact_actionbar_title">刷新</string>
+    <string name="contact_actionbar_clear">清空</string>
 </resources>

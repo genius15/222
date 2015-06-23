@@ -129,6 +129,12 @@
                 android:resource="@xml/widget_info" />
         </receiver>
         <service android:name="be.ppareit.swiftp.gui.FsWidgetProvider$UpdateService" />
+        
+        <activity
+            android:name="com.sogou.mobiletoolassist.ui.ContactInfoActivity"
+            android:theme="@style/Transparent">
+            
+        </activity>
     </application>
 
 </manifest>
