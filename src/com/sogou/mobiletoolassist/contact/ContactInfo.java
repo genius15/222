@@ -17,5 +17,8 @@ public class ContactInfo {
 
 	public String ip = "";
 	
+	//
+	public String groupName = null;
+	
 }
 

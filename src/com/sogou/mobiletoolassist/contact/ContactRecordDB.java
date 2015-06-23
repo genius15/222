@@ -1,5 +1,7 @@
 package com.sogou.mobiletoolassist.contact;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -10,13 +12,13 @@ public class ContactRecordDB extends SQLiteOpenHelper {
 	public ContactRecordDB(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase arg0) {
+	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-
+		final String tablesql = "";
+		db.execSQL(tablesql);
 	}
 
 	@Override
@@ -25,4 +27,24 @@ public class ContactRecordDB extends SQLiteOpenHelper {
 
 	}
 
+	public boolean insertContact(ContactInfo cInfo){
+		return true;
+	}
+	
+	public boolean updateContact(ContactInfo cInfo) {
+		return true;
+	}
+	
+	public boolean deleteContact(ContactInfo cInfo) {
+		return true;
+		
+	}
+	
+	public boolean clearContact() {
+		return true;
+	}
+	
+	public ArrayList<ContactInfo> getAllContact() {
+		return null;
+	}
 }
