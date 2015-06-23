@@ -220,10 +220,6 @@ public class AssistActivity extends FragmentActivity {
 //        intents.addAction(FTPSERVER_STARTED);
 //        intents.addAction(FTPSERVER_STOPPED);
 //        registerReceiver(mStartStopReceiver, intents);
-		android.app.ActionBar aBar = getActionBar();
-		if (aBar == null) {
-			Log.i("babbbbbbb", "ffffffffffff");
-		}
 	}
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
 		 
