@@ -134,7 +134,7 @@ public class AboutTabFragment extends Fragment {
 		}
 		if (!ftpsetButton.isChecked()) {// 点击后状态会立即改变，所以这里是改变后的状态
 			Intent startIntent = new Intent(ACTION_STOP_FTPSERVER);
-
+			
 			context.sendBroadcast(startIntent);
 			ftpsetButton.setChecked(true);
 			ftpsetButton.setText(getString(R.string.ftpdowning));

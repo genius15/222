@@ -10,13 +10,11 @@ import java.util.Stack;
 
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
-import com.sogou.mobiletoolassist.ui.ReceiversFragment;
+import com.sogou.mobiletoolassist.ui.ContactFragment;
 import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.UsefulClass;
-
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -39,6 +37,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -273,6 +272,7 @@ public class AssistActivity extends FragmentActivity {
 		Log.i("study", "assist act onDestroy");
 	}
 
+	
 	private void deleteShortcut() {
 		// Build the intent for the chosen application
 		Intent appIntent = new Intent(Intent.ACTION_VIEW);
@@ -640,7 +640,7 @@ public class AssistActivity extends FragmentActivity {
 		((ImageView) findViewById(R.id.toolsTab))
 				.setImageResource(R.drawable.toolstabnew);
 		if (recFrag == null) {
-			recFrag = new ReceiversFragment();
+			recFrag = new ContactFragment();
 		}
 		switchTab(recFrag,"recfrag");
 	}

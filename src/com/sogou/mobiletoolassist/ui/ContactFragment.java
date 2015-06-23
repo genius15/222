@@ -14,18 +14,27 @@ import com.sogou.mobiletoolassist.contact.ContactInfoArray;
 import com.sogou.mobiletoolassist.contact.GroupInfoArray;
 import com.sogou.mobiletoolassist.contact.GroupInfoUpdate;
 import com.sogou.mobiletoolassist.util.NetworkUtil;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-public class ReceiversFragment extends Fragment implements
+public class ContactFragment extends Fragment implements
 		Response.Listener<ContactInfoArray>, Response.ErrorListener,
 		GroupInfoUpdate {
 	private ContactAdapter recAdapter = null;
@@ -37,6 +46,7 @@ public class ReceiversFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		setHasOptionsMenu(true);
 		Log.i("learn", "rec onCreateView");
 		listv = (ExpandableListView) inflater.inflate(R.layout.receivers,
 				container, false);
@@ -55,9 +65,19 @@ public class ReceiversFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		SharedPreferences spPreferences = getActivity()
+				.getSharedPreferences(getString(R.string.contact_backup),
+						Context.MODE_PRIVATE);
+//		String users = spPreferences.getString(getString(R.string.contact_key), null);
+//		if (users != null) {
+//			Gson gson = new GsonBuilder().create();
+//			desktopqa = gson.fromJson(users, desktopqa.getClass());
+//		}
 		if (requestGroupId != null) {
 			requestGroupId.Request();
 		}
+		
+		
 	}
 
 	private void requestUserInfo(IdsArray response) {
@@ -74,14 +94,24 @@ public class ReceiversFragment extends Fragment implements
 			for (ContactInfo contactInfo : response) {
 				String name = groupid_name.get(contactInfo.userGroupIds[0]);
 				if (contactInfo.userGroupIds.length < 1 || name == null) {
+					
 					desktopqa.get("others").add(contactInfo);
 					continue;
 				}
 				// group by the first group id
-				
+				String ip = AssistActivity.nameipMap.get(contactInfo.name);
+				if (ip != null) {
+					contactInfo.ip = ip;
+				}
 				desktopqa.get(name).add(contactInfo);
 			}
 			recAdapter.addData(desktopqa);
+//			Gson gson = new GsonBuilder().create();
+//			String usersString = gson.toJson(desktopqa);
+//			SharedPreferences spPreferences = getActivity()
+//					.getSharedPreferences(getString(R.string.contact_backup),
+//							Context.MODE_PRIVATE);
+//			spPreferences.edit().putString(getString(R.string.contact_key), usersString).commit();
 		}
 	}
 
@@ -91,26 +121,25 @@ public class ReceiversFragment extends Fragment implements
 	}
 
 	private void RequestUserIds() {
-		NetworkUtil
-				.get(ConstantValues.allids_url,
-						IdsArray.class, new Response.Listener<IdsArray>() {
-							@Override
-							public void onResponse(IdsArray response) {
-								if (response != null && !response.isEmpty()) {
-									requestUserInfo(response);
-								}
+		NetworkUtil.get(ConstantValues.allids_url, IdsArray.class,
+				new Response.Listener<IdsArray>() {
+					@Override
+					public void onResponse(IdsArray response) {
+						if (response != null && !response.isEmpty()) {
+							requestUserInfo(response);
+						}
 
-							}
+					}
 
-						}, new Response.ErrorListener() {
+				}, new Response.ErrorListener() {
 
-							@Override
-							public void onErrorResponse(VolleyError error) {
-								// TODO Auto-generated method stub
-								error.printStackTrace();
-							}
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// TODO Auto-generated method stub
+						error.printStackTrace();
+					}
 
-						});
+				});
 	}
 
 	private class RequestGroupId implements Response.Listener<IdsArray>,
@@ -122,7 +151,8 @@ public class ReceiversFragment extends Fragment implements
 		}
 
 		public void Request() {
-			NetworkUtil.get(ConstantValues.allgroup_ids_url, IdsArray.class, this, this);
+			NetworkUtil.get(ConstantValues.allgroup_ids_url, IdsArray.class,
+					this, this);
 		}
 
 		@Override
@@ -134,9 +164,9 @@ public class ReceiversFragment extends Fragment implements
 		@Override
 		public void onResponse(IdsArray response) {
 			// id 请求回来后请求各组信息
-			String url = ConstantValues.groupinfo_url_pre+"("+new Gson().toJson(response)+")";
-			NetworkUtil.get(url,
-					GroupInfoArray.class,
+			String url = ConstantValues.groupinfo_url_pre + "("
+					+ new Gson().toJson(response) + ")";
+			NetworkUtil.get(url, GroupInfoArray.class,
 					new Response.Listener<GroupInfoArray>() {
 
 						@Override
@@ -160,15 +190,36 @@ public class ReceiversFragment extends Fragment implements
 		if (groupid_name == null) {
 			groupid_name = new HashMap<>();
 		}
-		
+
 		for (GroupInfo groupInfo : gInfoArray) {
 			desktopqa.put(groupInfo.name, new ArrayList<ContactInfo>());
 			groupid_name.put(String.valueOf(groupInfo.id), groupInfo.name);
 		}
-		
+
 		desktopqa.put("others", new ArrayList<ContactInfo>());
 		// group info is done,request users info
 		RequestUserIds();
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.contact_menu, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.clear_contact:
+			recAdapter.clearData();
+			break;
+		case R.id.refresh_contact:
+			if (requestGroupId != null) {
+				requestGroupId.Request();
+			}
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
 }

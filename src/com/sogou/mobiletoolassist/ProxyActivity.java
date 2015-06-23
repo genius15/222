@@ -61,8 +61,9 @@ public class ProxyActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.mainview);
 
-		SharedPreferences settings = PreferenceManager
-				.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences settings = AssistApplication.getAppDataPreferences();
+//				PreferenceManager
+//				.getDefaultSharedPreferences(getBaseContext());
 
 		CheckBoxPreference cb = (CheckBoxPreference) findPreference("isEnabled");
 		String addrsum = settings.getString("proxyHost", "");
@@ -127,8 +128,9 @@ public class ProxyActivity extends PreferenceActivity {
 
 	public boolean proxy(int action) {
 		if (action == START) { // start proxy
-			SharedPreferences settings = PreferenceManager
-					.getDefaultSharedPreferences(getBaseContext());
+			SharedPreferences settings = AssistApplication.getAppDataPreferences();
+//					PreferenceManager
+//					.getDefaultSharedPreferences(getBaseContext());
 
 			String host = settings.getString("proxyHost", "");
 			String port = settings.getString("proxyPort", "");
@@ -318,8 +320,9 @@ public class ProxyActivity extends PreferenceActivity {
 	@SuppressWarnings("deprecation")
 	public void setenabled(boolean b) {
 
-		SharedPreferences settings = PreferenceManager
-				.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences settings = AssistApplication.getAppDataPreferences();
+//				PreferenceManager
+//				.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor = settings.edit();
 		Log.v("tproxy", "Enabled = " + b);
 

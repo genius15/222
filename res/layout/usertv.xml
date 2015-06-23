@@ -10,8 +10,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:gravity="center|left"
         android:layout_marginLeft="45dp"
+        android:gravity="center|left"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
