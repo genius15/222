@@ -4,25 +4,18 @@ import java.io.File;
 
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.util.MailSender;
-import com.sogou.mobiletoolassist.util.UsefulClass;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 public class SendFileToTheContact extends Activity {
 
 	@Override
 	public void onCreate(Bundle bdl) {
-		
-		Intent intent = getIntent();
-		Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-		final String path = uri.getPath();
-		String filename = new File(path).getName();
-
+		super.onCreate(bdl);
 		final String receiverString = getSharedPreferences(
 				getString(R.string.cfg_appdata), MODE_PRIVATE)
 				.getString(getString(R.string.cfg_key_recevier), null);
@@ -30,23 +23,50 @@ public class SendFileToTheContact extends Activity {
 			Toast.makeText(this, getString(R.string.contact_miss), Toast.LENGTH_LONG).show();
 			return;
 		}
-		Toast.makeText(this,
-				String.format(getString(R.string.ttsendfile), filename,receiverString),
-				Toast.LENGTH_LONG).show();
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
+		Intent intent = getIntent();
+		String type = intent.getType();
+		if (type.equals("text/plain")) {
+			final String contentString = intent.getStringExtra(Intent.EXTRA_TEXT);
+			new Thread(new Runnable() {
 				
-				if (receiverString != null) {
-					MailSender.sendTextMail(
-							getString(R.string.anyfilesharetitle), "", path,
-							new String[] { receiverString });
+				@Override
+				public void run() {
+					if (receiverString != null) {
+						MailSender.sendTextMail(
+								getString(R.string.anyfilesharetitle), contentString, "",
+								new String[] { receiverString });
+					}
+					
 				}
-
+			}).start();
+		}else {
+			Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+			final String path = uri.getPath();
+			if (path == null) {
+				finish();
 			}
-		}).start();
-		super.onCreate(bdl);
+			String filename = new File(path).getName();
+
+			
+			Toast.makeText(this,
+					String.format(getString(R.string.ttsendfile), filename,receiverString),
+					Toast.LENGTH_LONG).show();
+			new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					
+					if (receiverString != null) {
+						MailSender.sendTextMail(
+								getString(R.string.anyfilesharetitle), "", path,
+								new String[] { receiverString });
+					}
+
+				}
+			}).start();
+		}
+		
+		
 		finish();
 	}
 
