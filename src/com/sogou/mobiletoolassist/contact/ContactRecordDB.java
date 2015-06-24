@@ -2,22 +2,30 @@ package com.sogou.mobiletoolassist.contact;
 
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class ContactRecordDB extends SQLiteOpenHelper {
+	private SQLiteDatabase mDatabase = null;
+	final private String users = "usersInfo";
 
 	public ContactRecordDB(Context context, String name, CursorFactory factory,
 			int version) {
 		super(context, name, factory, version);
+		mDatabase = getWritableDatabase();
+
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		// TODO Auto-generated method stub
-		final String tablesql = "";
+		final String tablesql = "create table "
+				+ users
+				+ "(id INTEGER primary key autoincrement,name text,email text,hostip text,gourpname text)";
 		db.execSQL(tablesql);
 	}
 
@@ -27,24 +35,57 @@ public class ContactRecordDB extends SQLiteOpenHelper {
 
 	}
 
-	public boolean insertContact(ContactInfo cInfo){
-		return true;
+	public long insertContact(ContactInfo cInfo) {
+		ContentValues cValues = new ContentValues();
+		cValues.put("id", cInfo.id);
+		cValues.put("name", cInfo.name);
+		cValues.put("email", cInfo.email);
+		cValues.put("hostip", cInfo.ip);
+		cValues.put("groupname", cInfo.groupName);
+		return mDatabase.insert(users, null, cValues);
+
 	}
-	
-	public boolean updateContact(ContactInfo cInfo) {
-		return true;
+
+	public int updateContact(ContactInfo cInfo) {
+		ContentValues cValues = new ContentValues();
+
+		cValues.put("name", cInfo.name);
+		cValues.put("email", cInfo.email);
+		cValues.put("hostip", cInfo.ip);
+		cValues.put("groupname", cInfo.groupName);
+		return mDatabase.update(users, cValues, "where id=" + cInfo.id, null);
+
 	}
-	
-	public boolean deleteContact(ContactInfo cInfo) {
-		return true;
-		
+
+	public int deleteContact(ContactInfo cInfo) {
+
+		return mDatabase.delete(users, "where id=" + cInfo.id, null);
+
 	}
-	
+
 	public boolean clearContact() {
 		return true;
 	}
-	
-	public ArrayList<ContactInfo> getAllContact() {
-		return null;
+
+	public ArrayList<ContactInfo> getUsersByGroup(String groupname) {
+		Cursor coures = mDatabase.query(users, null, "where groupname="
+				+ groupname, null, null, null, null);
+		if (coures == null || !coures.moveToFirst()) {
+			return null;
+		}
+		ArrayList<ContactInfo> contacts = new ArrayList<>();
+		ContactInfo cInfo = null;
+		
+		for (; coures.isAfterLast();coures.moveToNext()) {
+			cInfo = new ContactInfo();
+			cInfo.id = coures.getInt(0);
+			cInfo.name = coures.getString(1);
+			cInfo.email = coures.getString(2);
+			cInfo.ip = coures.getString(3);
+			cInfo.ip = coures.getString(4);
+			contacts.add(cInfo);
+		}
+		
+		return contacts;
 	}
 }
