@@ -12,12 +12,16 @@
 	<string name="ClearZSData">清理数据</string>
 	<string name="ScreenCap">截图</string>
 	<string name="NotifyScreenshot">截图</string>
+	<string name="failFoundScreenshot">截图文件不在，请检查sd卡是否正常</string>
 	<string name="notifyIconDesc">左侧大icon</string>
 	<string name="notifyScreenShotBtn">通知里截图按钮</string>
 	<string name="uninstallallpackages">卸载除助手外全部app</string>
 	<string name="uninstallApps">卸载所有app</string>
+	<string name="uninstallconfirmdlg">确认要卸载所有app？</string>
 	<string name="mailreceiver">邮件接收者</string>
-	
+	<string name="fileobservestop">已停止监控</string>
+	<string name="NoContactSetted">没有设置邮件接收者</string>
+	<string name="fileobserverStart">监控已开始</string>
 	
 	<string name="proxyactivity">代理相关设置</string>	
 	<string name="proxysetbtn">设置代理</string>

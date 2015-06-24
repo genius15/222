@@ -66,7 +66,7 @@ public class FileObserverThread extends FileObserver {
 					}
 					if (attach.length()!=0 && res.length()!=0) {
 
-						MailSender.sendTextMail("手机助手崩溃文件监控",res, attach,
+						MailSender.sendTextMail("目录监控",res, attach,
 								new String[] { emailReceiver});
 						Log.i(AssistActivity.myTag, "send mail over:" + tmp);
 						File att = new File(attach);

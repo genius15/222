@@ -104,12 +104,12 @@ public class CoreService extends Service implements OnClickListener {
 				wm.removeView(btn_floatView);
 				break;
 			case CoreService.screenshot:
-				Uri uri = RingtoneManager
-						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);// 系统自带提示音
-				Ringtone rt = RingtoneManager.getRingtone(
-						getApplicationContext(), uri);
-				if (rt != null)
-					rt.play();
+//				Uri uri = RingtoneManager
+//						.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);// 系统自带提示音
+//				Ringtone rt = RingtoneManager.getRingtone(
+//						getApplicationContext(), uri);
+//				if (rt != null)
+//					rt.play(); 不在主线程中执行磁盘、网络的操作
 				CoreService.ScreenShot();
 				Message message = new Message();
 				message.what = CoreService.visiable;
@@ -119,10 +119,6 @@ public class CoreService extends Service implements OnClickListener {
 				wm.addView(btn_floatView, params);
 				break;
 			case CoreService.installmt:
-				// Intent installIntent = new Intent(Intent.ACTION_MAIN);
-				// installIntent.setAction(AssistActivity.installedaction);
-				// installIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				// startActivity(installIntent);
 				String pathString = msg.getData().getString("path");
 				Intent intent = new Intent(Intent.ACTION_VIEW);
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -216,26 +212,32 @@ public class CoreService extends Service implements OnClickListener {
 
 	}
 
-	public void startWatching() {
+	public boolean startWatching() {
 		SharedPreferences appdata = this.getSharedPreferences(
 				getString(R.string.cfg_appdata), MODE_PRIVATE);
 		String deafultpath = Environment.getExternalStorageDirectory()
 				.getPath();
 		deafultpath += File.separator + "MobileTool/CrashReport";
 		observerpath = appdata.getString("obPath", deafultpath);
-		emailReceiver = appdata.getString(getString(R.string.cfg_key_recevier),
-				"pdatest@sogou-inc.com");
+		emailReceiver = AssistApplication.getEmailAddr();
 		if (listener != null) {
 			listener.stopWatching();
 			listener = null;
 		}
+		if (emailReceiver == null) {
+			return false;
+		}
 		listener = new FileObserverThread(observerpath, emailReceiver);
 		listener.startWatching();
+		return true;
 	}
 
 	public void stopWatching() {
-		listener.stopWatching();
-		listener = null;
+		if (listener != null) {
+			listener.stopWatching();
+			listener = null;
+		}
+		
 	}
 
 	@Override
@@ -488,9 +490,15 @@ public class CoreService extends Service implements OnClickListener {
 	public static boolean ScreenShot() {
 		Context ctx = AssistApplication.getContext();
 		if (ctx == null) {
-			Log.e("err", "context is null");
+			Log.e(CoreService.class.getSimpleName(), "context is null");
 			return false;
 		}
+		String emailReceiver = AssistApplication.getEmailAddr();
+		if (emailReceiver == null) {
+			Toast.makeText(ctx, ctx.getString(R.string.NoContactSetted), Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
 		String path = "";
 		if (Build.VERSION.SDK_INT > 13) {
 			path = ScreenshotforJELLY_BEAN.shoot();
@@ -501,7 +509,7 @@ public class CoreService extends Service implements OnClickListener {
 
 		File testpath = new File(path);
 		if (!testpath.exists()) {
-			Toast.makeText(AssistApplication.getContext(), "截图文件不在，请检查sd卡是否正常",
+			Toast.makeText(ctx, ctx.getString(R.string.failFoundScreenshot),
 					Toast.LENGTH_LONG).show();
 
 			return false;
@@ -510,12 +518,8 @@ public class CoreService extends Service implements OnClickListener {
 		String title = info + "【截图】";
 		info += "</br>";
 		info += UsefulClass.getZSPkgInfo();
-		SharedPreferences appdata = AssistApplication.getContext()
-				.getSharedPreferences(ctx.getString(R.string.cfg_appdata),
-						MODE_PRIVATE);
-		String emailReceiver = appdata.getString(
-				ctx.getString(R.string.cfg_key_recevier),
-				"pdatest@sogou-inc.com");
+		
+		
 
 		ConnectivityManager mConnectivityManager = (ConnectivityManager) ctx
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -526,10 +530,10 @@ public class CoreService extends Service implements OnClickListener {
 
 			return false;
 		}
-
+		
 		if (MailSender.sendTextMail(title, info, path,
 				new String[] { emailReceiver })) {
-			String emailReceivername = appdata.getString("name", "pdatest");
+			String emailReceivername = AssistApplication.getEmailName();
 			Toast.makeText(ctx, "截图完毕，" + emailReceivername + "同学请静候邮件~",
 					Toast.LENGTH_LONG).show();
 			File tmp = new File(path);
@@ -669,6 +673,7 @@ public class CoreService extends Service implements OnClickListener {
 					file.delete();
 					file = null;
 				}
+				//downloadurlString = "http://mobile.zhushou.sogou.com/android/download.html?app_id=26100";
 				UsefulClass.Download(downloadurlString, mtpathString
 						+ filenameString);
 				Message msg = new Message();

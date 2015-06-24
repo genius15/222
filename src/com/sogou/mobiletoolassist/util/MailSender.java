@@ -2,6 +2,7 @@ package com.sogou.mobiletoolassist.util;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -111,16 +112,19 @@ public class MailSender {
 				
 				Multipart multipart = new MimeMultipart();
 				MimeBodyPart attachPart = new MimeBodyPart();
-				File resultFile = new File(file);
-				if(resultFile.exists()){
-					DataSource source = new FileDataSource(file);
-					attachPart.setDataHandler(new DataHandler(source));
-					attachPart.setFileName(new File(file).getName());
-					multipart.addBodyPart(attachPart);
-					
-				}else{
-					Log.e("mailtag", file);
+				if (file != null) {
+					File resultFile = new File(file);
+					if(resultFile.exists()){
+						DataSource source = new FileDataSource(file);
+						attachPart.setDataHandler(new DataHandler(source));
+						attachPart.setFileName(new File(file).getName());
+						multipart.addBodyPart(attachPart);
+						
+					}else{
+						Log.e("mailtag", file);
+					}
 				}
+				
 				
 				multipart.addBodyPart(bodyPart);
 				mailMessage.setContent(multipart);

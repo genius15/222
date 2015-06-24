@@ -46,7 +46,7 @@ public class ProxyActivity extends PreferenceActivity {
 				alert("No su binary found on your ROM !", this);
 			}
 		}
-		if(basedir == null){
+		if (basedir == null) {
 			try {
 				basedir = getBaseContext().getFilesDir().getAbsolutePath();
 			} catch (Exception e) {
@@ -61,9 +61,8 @@ public class ProxyActivity extends PreferenceActivity {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.mainview);
 
-		SharedPreferences settings = AssistApplication.getAppDataPreferences();
-//				PreferenceManager
-//				.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getBaseContext());
 
 		CheckBoxPreference cb = (CheckBoxPreference) findPreference("isEnabled");
 		String addrsum = settings.getString("proxyHost", "");
@@ -111,26 +110,27 @@ public class ProxyActivity extends PreferenceActivity {
 				return ret;
 			}
 		});
-		tcpdumenable.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
-			public boolean onPreferenceChange(Preference preference,
-					Object newValue) {
-				if((Boolean) newValue){				
-					UsefulClass.processCmdWithoutWait("/data/local/tcpdump -n -s 0 -w - | busybox nc -l -p 11233 ");
-				}else{
-					UsefulClass.processCmd("busybox killall tcpdump");
-				}
-				
-				return true;
-			}
-		});
+		tcpdumenable
+				.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+					public boolean onPreferenceChange(Preference preference,
+							Object newValue) {
+						if ((Boolean) newValue) {
+							UsefulClass
+									.processCmdWithoutWait("/data/local/tcpdump -n -s 0 -w - | busybox nc -l -p 11233 ");
+						} else {
+							UsefulClass.processCmd("busybox killall tcpdump");
+						}
+
+						return true;
+					}
+				});
 		setenabled(checklistener());
 	}
 
 	public boolean proxy(int action) {
 		if (action == START) { // start proxy
-			SharedPreferences settings = AssistApplication.getAppDataPreferences();
-//					PreferenceManager
-//					.getDefaultSharedPreferences(getBaseContext());
+			SharedPreferences settings = PreferenceManager
+					.getDefaultSharedPreferences(getBaseContext());
 
 			String host = settings.getString("proxyHost", "");
 			String port = settings.getString("proxyPort", "");
@@ -212,7 +212,7 @@ public class ProxyActivity extends PreferenceActivity {
 
 	public void copyfile(String file) {
 		String of = file;
-		File f = new File(basedir+File.separator+of);
+		File f = new File(basedir + File.separator + of);
 
 		if (!f.exists()) {
 			try {
@@ -320,9 +320,8 @@ public class ProxyActivity extends PreferenceActivity {
 	@SuppressWarnings("deprecation")
 	public void setenabled(boolean b) {
 
-		SharedPreferences settings = AssistApplication.getAppDataPreferences();
-//				PreferenceManager
-//				.getDefaultSharedPreferences(getBaseContext());
+		SharedPreferences settings = PreferenceManager
+				.getDefaultSharedPreferences(getBaseContext());
 		SharedPreferences.Editor editor = settings.edit();
 		Log.v("tproxy", "Enabled = " + b);
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class AssistApplication extends Application {
@@ -54,28 +55,48 @@ public class AssistApplication extends Application {
 		return sharedPreferences.edit().putString(name, value).commit();
 	}
 
-	public static boolean putEmailAddr(String value) {
-		SharedPreferences sharedPreferences = getAppDataPreferences();
+	public static boolean putEmailAddrToDefault(String value) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
 		return sharedPreferences
 				.edit()
 				.putString(getContext().getString(R.string.cfg_key_recevier),
 						value).commit();
 	}
 
-	public static boolean putEmailName(String value) {
-		SharedPreferences sharedPreferences = getAppDataPreferences();
+	public static boolean putEmailNameToDefault(String value) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
 		return sharedPreferences.edit().putString("name", value).commit();
 	}
 
-	public static boolean putIp(String ip) {
-		SharedPreferences sharedPreferences = getAppDataPreferences();
+	public static boolean putIpToDefault(String ip) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
 		return sharedPreferences.edit().putString("proxyHost", ip).commit();
 
 	}
-	
-	public static boolean putPort(String port) {
-		SharedPreferences sharedPreferences = getAppDataPreferences();
+
+	public static boolean putPortToDefault(String port) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
 		return sharedPreferences.edit().putString("proxyPort", port).commit();
 
+	}
+
+	public static String getEmailAddr() {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
+		return sharedPreferences.getString(
+				getContext().getString(R.string.cfg_key_recevier),
+				null);
+	}
+	
+	public static String getEmailName() {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getContext());
+		return sharedPreferences.getString(
+				"name",
+				"");
 	}
 }

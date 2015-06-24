@@ -37,7 +37,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -63,7 +62,7 @@ public class AssistActivity extends FragmentActivity {
 	private AssistApplication app = new AssistApplication();
 	private Stack<String> dirs = new Stack<String>();
 	private CoreService backservice;
-	private String basedir = null;
+	//private String basedir = null;
 	public static boolean isFloatwinon = true;
 	private Fragment toolsFrag = null;
 	private Fragment aboutFrag = null;
@@ -182,12 +181,12 @@ public class AssistActivity extends FragmentActivity {
 				.detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath()
 				.build());
 		// detectLeakedClosableObjects()
-		try {
-			if (basedir == null)
-				basedir = getBaseContext().getFilesDir().getAbsolutePath();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			if (basedir == null)
+//				basedir = getBaseContext().getFilesDir().getAbsolutePath();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		if (toolsTab == null || contactTab == null || aboutTab == null) {
 			DisplayMetrics dm = new DisplayMetrics();
 			Display display = getWindowManager().getDefaultDisplay();
@@ -208,18 +207,6 @@ public class AssistActivity extends FragmentActivity {
 			aboutTab.setLayoutParams(para);
 			onClickToolsTab(toolsTab);			
 		}
-//		ActivityManager aManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//		List<RunningAppProcessInfo> processInfos=aManager.getRunningAppProcesses();
-//		for (RunningAppProcessInfo runningAppProcessInfo : processInfos) {
-//			Log.i("process", runningAppProcessInfo.processName);
-//			Log.i("process", String.valueOf(runningAppProcessInfo.pid));
-//			Log.i("process", String.valueOf(runningAppProcessInfo.uid));
-//		}
-		
-//		IntentFilter intents = new IntentFilter();
-//        intents.addAction(FTPSERVER_STARTED);
-//        intents.addAction(FTPSERVER_STOPPED);
-//        registerReceiver(mStartStopReceiver, intents);
 	}
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
 		 
@@ -437,21 +424,24 @@ public class AssistActivity extends FragmentActivity {
 			((ImageView)findViewById(R.id.scanfileview)).setClickable(true);
 			backservice.stopWatching();
 			appdata.edit().putInt("isWatching", noWatching).commit();
-			Toast.makeText(this, "已经停止监控", Toast.LENGTH_SHORT).show();
-		}else{
+			Toast.makeText(this, getString(R.string.fileobservestop), Toast.LENGTH_SHORT).show();
+		}else{			
+			if (!backservice.startWatching()) {
+				Toast.makeText(this, getString(R.string.NoContactSetted), Toast.LENGTH_SHORT).show();
+				return;
+			}
 			appdata.edit().putInt("isWatching", isWatching).commit();
-			backservice.startWatching();
 			ImageView iv = (ImageView) findViewById(R.id.observerview);
 			iv.setImageResource(R.drawable.stop_observe);
 			((ImageView)findViewById(R.id.scanfileview)).setClickable(false);
-			Toast.makeText(this, "已经开始监控，选择文件夹功能将会被禁用", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getString(R.string.fileobserverStart), Toast.LENGTH_SHORT).show();
 		}		
 		
 	}
 
 	public void onUninstallAPPS(View v) {
 		AlertDialog ad = new AlertDialog.Builder(this)
-		.setTitle("确定要删除所有app？")
+		.setTitle(getString(R.string.uninstallconfirmdlg))
 		.setNegativeButton("取消",
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -472,23 +462,23 @@ public class AssistActivity extends FragmentActivity {
 		
 	}
 
-	public static HashMap<String, String> nameEmailMap = new HashMap<String, String>();
-	static {
-		nameEmailMap.put("徐文静", "xuwenjing@sogou-inc.com");
-		nameEmailMap.put("唐志刚", "tangzhigang@sogou-inc.com");
-		nameEmailMap.put("田丹丹", "tindandan@sogou-inc.com");
-		nameEmailMap.put("张帅", "zhangshuai203407@sogou-inc.com");
-		nameEmailMap.put("谷晓沙", "guxiaosha203822@sogou-inc.com");
-		nameEmailMap.put("廖振华", "liaozhenhua@sogou-inc.com");
-		nameEmailMap.put("王灿", "canwang@sogou-inc.com");
-		nameEmailMap.put("王坤", "wangkun@sogou-inc.com");
-		nameEmailMap.put("董宏博", "donghongbo@sogou-inc.com");
-		nameEmailMap.put("孙静", "sunjing@sogou-inc.com");
-		nameEmailMap.put("赵喜宁", "zhaoxining@sogou-inc.com");
-		nameEmailMap.put("商丽丽", "shanglili@sogou-inc.com");
-		
-
-	}
+//	public static HashMap<String, String> nameEmailMap = new HashMap<String, String>();
+//	static {
+//		nameEmailMap.put("徐文静", "xuwenjing@sogou-inc.com");
+//		nameEmailMap.put("唐志刚", "tangzhigang@sogou-inc.com");
+//		nameEmailMap.put("田丹丹", "tindandan@sogou-inc.com");
+//		nameEmailMap.put("张帅", "zhangshuai203407@sogou-inc.com");
+//		nameEmailMap.put("谷晓沙", "guxiaosha203822@sogou-inc.com");
+//		nameEmailMap.put("廖振华", "liaozhenhua@sogou-inc.com");
+//		nameEmailMap.put("王灿", "canwang@sogou-inc.com");
+//		nameEmailMap.put("王坤", "wangkun@sogou-inc.com");
+//		nameEmailMap.put("董宏博", "donghongbo@sogou-inc.com");
+//		nameEmailMap.put("孙静", "sunjing@sogou-inc.com");
+//		nameEmailMap.put("赵喜宁", "zhaoxining@sogou-inc.com");
+//		nameEmailMap.put("商丽丽", "shanglili@sogou-inc.com");
+//		
+//
+//	}
 	public static HashMap<String, String> nameipMap = new HashMap<String, String>();
 	static {
 		nameipMap.put("张帅", "10.129.157.174");
@@ -505,60 +495,60 @@ public class AssistActivity extends FragmentActivity {
 		nameipMap.put("唐志刚", "10.129.156.164");
 
 	}
-	public final static String names[] = { "徐文静", "唐志刚" ,"田丹丹", "张帅", "谷晓沙", "廖振华",
-			"王灿", "王坤", "董宏博", "孙静", "赵喜宁", "商丽丽"};
+//	public final static String names[] = { "徐文静", "唐志刚" ,"田丹丹", "张帅", "谷晓沙", "廖振华",
+//			"王灿", "王坤", "董宏博", "孙静", "赵喜宁", "商丽丽"};
 
-	public void onSetMailReceiver(View v) {
-		SharedPreferences data = AssistApplication.getAppDataPreferences();
-		String recname = data.getString("name", "");
-		int idx = 0;
-		for (int i = 0; i < names.length; ++i) {
-			if (names[i].equals(recname)) {
-				idx = i;
-				break;
-			}
-		}
-		selectedidx = idx;// 设置默认值，如果进去后没有切换，那么默认是这个
-		@SuppressWarnings("unused")
-		AlertDialog ad = new AlertDialog.Builder(this)
-				.setTitle("选择邮件接收者")
-				.setSingleChoiceItems(names, idx,
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								selectedidx = which;
-							}
-						})
-				.setPositiveButton("选择", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						receiver = nameEmailMap.get(names[selectedidx]);
-						SharedPreferences appdata = AssistApplication
-								.getContext().getSharedPreferences(getString(R.string.cfg_appdata),
-										MODE_PRIVATE);
-
-						appdata.edit()
-								.putString(getString(R.string.cfg_key_recevier),
-										receiver).commit();
-						appdata.edit().putString("name", names[selectedidx])
-								.commit();
-						SharedPreferences settings = PreferenceManager
-								.getDefaultSharedPreferences(getBaseContext());
-						settings.edit()
-								.putString("proxyHost",
-										nameipMap.get(names[selectedidx]))
-								.commit();
-						settings.edit().putString("proxyPort", "8888").commit();
-						ShellCommand cmd = new ShellCommand();
-						cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
-						cmd.su.runWaitFor(basedir + "/redirect.sh stop");
-						settings.edit().putBoolean("isEnabled", false).commit();
-						selectedidx = 0;
-					}
-				}).show();
-
-	}
+//	public void onSetMailReceiver(View v) {
+//		SharedPreferences data = AssistApplication.getAppDataPreferences();
+//		String recname = data.getString("name", "");
+//		int idx = 0;
+//		for (int i = 0; i < names.length; ++i) {
+//			if (names[i].equals(recname)) {
+//				idx = i;
+//				break;
+//			}
+//		}
+//		selectedidx = idx;// 设置默认值，如果进去后没有切换，那么默认是这个
+//		@SuppressWarnings("unused")
+//		AlertDialog ad = new AlertDialog.Builder(this)
+//				.setTitle("选择邮件接收者")
+//				.setSingleChoiceItems(names, idx,
+//						new DialogInterface.OnClickListener() {
+//							@Override
+//							public void onClick(DialogInterface dialog,
+//									int which) {
+//								selectedidx = which;
+//							}
+//						})
+//				.setPositiveButton("选择", new DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						receiver = nameEmailMap.get(names[selectedidx]);
+//						SharedPreferences appdata = AssistApplication
+//								.getContext().getSharedPreferences(getString(R.string.cfg_appdata),
+//										MODE_PRIVATE);
+//
+//						appdata.edit()
+//								.putString(getString(R.string.cfg_key_recevier),
+//										receiver).commit();
+//						appdata.edit().putString("name", names[selectedidx])
+//								.commit();
+//						SharedPreferences settings = PreferenceManager
+//								.getDefaultSharedPreferences(getBaseContext());
+//						settings.edit()
+//								.putString("proxyHost",
+//										nameipMap.get(names[selectedidx]))
+//								.commit();
+//						settings.edit().putString("proxyPort", "8888").commit();
+//						ShellCommand cmd = new ShellCommand();
+//						cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
+//						cmd.su.runWaitFor(basedir + "/redirect.sh stop");
+//						settings.edit().putBoolean("isEnabled", false).commit();
+//						selectedidx = 0;
+//					}
+//				}).show();
+//
+//	}
 
 	public void onSetProxyBtn(View v) {
 		Intent intent = new Intent(this, ProxyActivity.class);

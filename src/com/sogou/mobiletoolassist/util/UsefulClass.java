@@ -208,8 +208,10 @@ public class UsefulClass {
 	public static boolean Download(String durl, String path) {
 		try {
 			URL url = new URL(durl);
+			// \000\000 Build/JDQ39
 			HttpURLConnection connection = (HttpURLConnection) url
 					.openConnection();
+			connection.addRequestProperty("User-Agent","fjskfj \0 ajfks)");
 			connection.setConnectTimeout(10 * 1000); // 超时时间
 			connection.connect(); // 连接
 			if (connection.getResponseCode() == 200) { // 返回的响应码200,是成功.

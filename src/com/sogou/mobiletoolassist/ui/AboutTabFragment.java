@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,11 +44,14 @@ public class AboutTabFragment extends Fragment {
 	static final String FTPSERVER_STARTED = "be.ppareit.swiftp.FTPSERVER_STARTED";
 	static final String FTPSERVER_STOPPED = "be.ppareit.swiftp.FTPSERVER_STOPPED";
 	private ListView actionsLView = null;
-	private ArrayList<String> actions = null;
 	private Activity context = null;
-
+	private ActionsAdapter actionsAdapter = null;
+	
 	public ArrayList<String> getActions() {
-		return actions;
+		if (actionsAdapter != null) {
+			return actionsAdapter.getData();
+		}
+		return null;
 	}
 
 	@Override
@@ -94,8 +98,10 @@ public class AboutTabFragment extends Fragment {
 		}
 
 		actionsLView = (ListView) context.findViewById(R.id.actionlv);
-		ActionsAdapter adapter = new ActionsAdapter(getActionsFromFile());
-		actionsLView.setAdapter(adapter);
+		actionsAdapter = new ActionsAdapter();
+		actionsLView.setAdapter(actionsAdapter);
+		
+		
 		boolean issending = context.getSharedPreferences(
 				getString(R.string.cfg_appdata), Context.MODE_PRIVATE)
 				.getBoolean(getString(R.string.issending), false);
@@ -104,12 +110,14 @@ public class AboutTabFragment extends Fragment {
 		EditText eText = (EditText) context.findViewById(
 				R.id.actionFreqET);
 		eText.setEnabled(!issending);
+		
 		if (issending) {
 			button.setText(R.string.actionswitchoff);
 
 		} else {
 			button.setText(R.string.actionswitchon);
 		}
+		button.setEnabled(false);
 		TextView tView = (TextView) context.findViewById(R.id.last_sended_time);
 		String lasttime = context.getSharedPreferences(
 				getString(R.string.cfg_appdata), Context.MODE_PRIVATE)
@@ -117,6 +125,8 @@ public class AboutTabFragment extends Fragment {
 						"never");
 		tView.setText(String.format(
 				context.getString(R.string.last_sended_time), lasttime));
+		
+		new ReadActionsFromFile(button,actionsAdapter).execute();
 	}
 
 	@Override
@@ -154,52 +164,61 @@ public class AboutTabFragment extends Fragment {
 			if (intent.getAction().equals(FTPSERVER_STARTED)) {
 				ftpsetButton.setChecked(true);
 				ftpsetButton.setText(getString(R.string.ftpup));
-				// mStatusText.setText("FTP Server is running");
 			} else if (intent.getAction().equals(FTPSERVER_STOPPED)) {
 				ftpsetButton.setChecked(false);
 				ftpsetButton.setText(getString(R.string.ftpdown));
-				// mStatusText.setText("FTP Server is down");
 			}
 		}
 	};
 
-	private ArrayList<String> getActionsFromFile() {
-		ArrayList<String> actions = new ArrayList<>();
-		String actionsfilepath = Environment.getExternalStorageDirectory()
-				.getPath()
-				+ File.separator
-				+ context.getString(R.string.actionsfilename);
-		File actionfile = new File(actionsfilepath);
-		InputStream inputStream = null;
-		try {
-			if (actionfile.exists()) {
-				inputStream = new FileInputStream(actionfile);
-			} else {
-				inputStream = context.getAssets()
-						.open("build_in_actions");
-			}
-			BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream));
-			String line = null;
-			while ((line = bReader.readLine())!=null) {
-				actions.add(line);
-			}
-//			int cnt = inputStream.available();
-//			byte buf[] = new byte[cnt];
-//			
-//			inputStream.read(buf);
-//			String actionstr = new String(buf);
-//			String actionsArrString[] = actionstr.split("\r\n");
-//			actions.addAll(Arrays.asList(actionsArrString));
-			bReader.close();
-			inputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+	
+	private class ReadActionsFromFile extends AsyncTask<Void, Void, ArrayList<String>>{
+		private Button sendBtn = null;
+		private ActionsAdapter actionsAdapter = null;
+		public ReadActionsFromFile(Button btn, ActionsAdapter adp) {
+			super();
+			sendBtn = btn;
+			actionsAdapter = adp;
 		}
-		this.actions = actions;
-		if (actions.isEmpty()) {
-			actions.add("no actions");
+		@Override
+		protected ArrayList<String> doInBackground(Void... params) {
+			ArrayList<String> actions = new ArrayList<>();
+			String actionsfilepath = Environment.getExternalStorageDirectory()
+					.getPath()
+					+ File.separator
+					+ context.getString(R.string.actionsfilename);
+			File actionfile = new File(actionsfilepath);
+			InputStream inputStream = null;
+			try {
+				if (actionfile.exists()) {
+					inputStream = new FileInputStream(actionfile);
+				} else {
+					inputStream = context.getAssets()
+							.open("build_in_actions");
+				}
+				BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream));
+				String line = null;
+				while ((line = bReader.readLine())!=null) {
+					actions.add(line);
+				}
+				bReader.close();
+				inputStream.close();
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return actions;
 		}
-		return actions;
+		
+		@Override
+		protected void onPostExecute(ArrayList<String> actions){
+			if (actionsAdapter != null) {
+				actionsAdapter.updateData(actions);
+			}
+			if (sendBtn != null) {
+				sendBtn.setEnabled(true);
+			}
+		}
 	}
 }
 

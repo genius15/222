@@ -34,10 +34,10 @@ public class ContactInfoActivity extends Activity {
 	
 	public void onSetitAsContact(View v){
 		if (name != null && email != null) {
-			AssistApplication.putEmailName(name);
-			AssistApplication.putEmailAddr(email);
-			AssistApplication.putIp(ip);
-			AssistApplication.putPort("8888");
+			AssistApplication.putEmailNameToDefault(name);
+			AssistApplication.putEmailAddrToDefault(email);
+			AssistApplication.putIpToDefault(ip);
+			AssistApplication.putPortToDefault("8888");
 		}
 		finish();
 	}

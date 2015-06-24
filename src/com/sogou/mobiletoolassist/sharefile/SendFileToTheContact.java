@@ -2,6 +2,7 @@ package com.sogou.mobiletoolassist.sharefile;
 
 import java.io.File;
 
+import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.util.MailSender;
 
@@ -16,9 +17,7 @@ public class SendFileToTheContact extends Activity {
 	@Override
 	public void onCreate(Bundle bdl) {
 		super.onCreate(bdl);
-		final String receiverString = getSharedPreferences(
-				getString(R.string.cfg_appdata), MODE_PRIVATE)
-				.getString(getString(R.string.cfg_key_recevier), null);
+		final String receiverString = AssistApplication.getEmailAddr();
 		if (receiverString == null) {
 			Toast.makeText(this, getString(R.string.contact_miss), Toast.LENGTH_LONG).show();
 			return;

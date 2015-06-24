@@ -16,13 +16,19 @@ public class ActionsAdapter extends BaseAdapter {
 	private ArrayList<String> mActionsList = null;
 	private Context ctx = null;
 	LayoutInflater lInflater = null;
-	public ActionsAdapter(ArrayList<String> actions) {
-		mActionsList = actions;
+	public ActionsAdapter() {
 		ctx = AssistApplication.getContext();
 		lInflater = (LayoutInflater) ctx
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-
+	public void updateData(ArrayList<String> actions) {
+		mActionsList = actions;
+		notifyDataSetChanged();
+	}
+	
+	public ArrayList<String> getData() {
+		return mActionsList;
+	}
 	@Override
 	public int getCount() {
 		if (mActionsList != null) {
