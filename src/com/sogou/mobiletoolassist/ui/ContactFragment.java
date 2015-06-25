@@ -9,6 +9,7 @@ import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.ContactAdapter;
 import com.sogou.mobiletoolassist.contact.ConstantValues;
 import com.sogou.mobiletoolassist.contact.ContactInfo;
+
 import com.sogou.mobiletoolassist.contact.ContactLoader;
 import com.sogou.mobiletoolassist.contact.ContactRecordDB;
 import com.sogou.mobiletoolassist.contact.GroupInfo;
@@ -82,8 +83,8 @@ public class ContactFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		Log.i(tag, "onActivityCreated");
 		requestGroupId = new RequestGroupId(this);
-		Loader<Boolean> loader = getLoaderManager().initLoader(0, null, this);
-		loader.startLoading();
+		getLoaderManager().initLoader(0, null, this);
+		
 //		new LoadContact().execute();
 	}
 
@@ -135,7 +136,7 @@ public class ContactFragment extends Fragment implements
 		}
 		
 	}
-
+	
 	
 //	private class LoadContact extends AsyncTask<Void, Void, Boolean>{
 //
@@ -284,7 +285,9 @@ public class ContactFragment extends Fragment implements
 
 	@Override
 	public Loader<Boolean> onCreateLoader(int arg0, Bundle arg1) {
-		return new ContactLoader(getActivity(),dao);
+		ContactLoader loader =  new ContactLoader(getActivity());
+		loader.setDao(dao);
+		return loader;
 	}
 
 	@Override
@@ -302,7 +305,7 @@ public class ContactFragment extends Fragment implements
 
 	@Override
 	public void onLoaderReset(Loader<Boolean> arg0) {
-		// TODO Auto-generated method stub
+		Log.i(tag, "fffff");
 		
 	}
 }

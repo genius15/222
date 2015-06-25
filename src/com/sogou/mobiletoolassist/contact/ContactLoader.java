@@ -16,9 +16,12 @@ public class ContactLoader extends AsyncTaskLoader<Boolean>{
 	private HashMap<String, ArrayList<ContactInfo>> desktopqa = new HashMap<>();
 	private ContactRecordDB dao = null;
 	private Context context;
-	public ContactLoader(Context context,ContactRecordDB dao) {
+	public ContactLoader(Context context) {
 		super(context);
 		this.context = context;
+		
+	}
+	public void setDao(ContactRecordDB dao){
 		this.dao = dao;
 	}
 	public HashMap<String, ArrayList<ContactInfo>> getData(){
@@ -51,5 +54,8 @@ public class ContactLoader extends AsyncTaskLoader<Boolean>{
 		
 		return loaded;
 	}
-	
+	@Override
+	protected void onStartLoading() {
+		forceLoad();
+	}
 }
