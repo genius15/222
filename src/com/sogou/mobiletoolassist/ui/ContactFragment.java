@@ -4,19 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.sogou.mobiletoolassist.AssistActivity;
+import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.ContactAdapter;
 import com.sogou.mobiletoolassist.contact.ConstantValues;
 import com.sogou.mobiletoolassist.contact.ContactInfo;
+import com.sogou.mobiletoolassist.contact.ContactRecordDB;
 import com.sogou.mobiletoolassist.contact.GroupInfo;
 import com.sogou.mobiletoolassist.contact.IdsArray;
 import com.sogou.mobiletoolassist.contact.ContactInfoArray;
 import com.sogou.mobiletoolassist.contact.GroupInfoArray;
 import com.sogou.mobiletoolassist.contact.GroupInfoUpdate;
+import com.sogou.mobiletoolassist.contact.StringArray;
 import com.sogou.mobiletoolassist.util.NetworkUtil;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -42,7 +46,8 @@ public class ContactFragment extends Fragment implements
 	private HashMap<String, ArrayList<ContactInfo>> desktopqa = new HashMap<>();
 	private HashMap<String, String> groupid_name = null;
 	private RequestGroupId requestGroupId = null;
-
+	private Gson gson = null;
+	private ContactRecordDB dao = null;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -52,36 +57,26 @@ public class ContactFragment extends Fragment implements
 				container, false);
 		recAdapter = new ContactAdapter(getActivity());
 		listv.setAdapter(recAdapter);
+		gson = new GsonBuilder().create();
+		dao = new ContactRecordDB(getActivity(), "contacts", null, 6);
 		return listv;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestGroupId = new RequestGroupId(this);
+		
 		Log.i("learn", "rec onCreate");
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		SharedPreferences spPreferences = getActivity()
-				.getSharedPreferences(getString(R.string.contact_backup),
-						Context.MODE_PRIVATE);
-//		String users = spPreferences.getString(getString(R.string.contact_key), null);
-//		if (users != null) {
-//			Gson gson = new GsonBuilder().create();
-//			desktopqa = gson.fromJson(users, desktopqa.getClass());
-//		}
-		if (requestGroupId != null) {
-			requestGroupId.Request();
-		}
-		
-		
+		requestGroupId = new RequestGroupId(this);
+		new LoadContact().execute();
 	}
 
 	private void requestUserInfo(IdsArray response) {
-		Gson gson = new Gson();
 
 		String ids = gson.toJson(response);
 		String allmen = ConstantValues.userinfo_url_pre + "(" + ids + ")";
@@ -94,7 +89,7 @@ public class ContactFragment extends Fragment implements
 			for (ContactInfo contactInfo : response) {
 				String name = groupid_name.get(contactInfo.userGroupIds[0]);
 				if (contactInfo.userGroupIds.length < 1 || name == null) {
-					
+
 					desktopqa.get("others").add(contactInfo);
 					continue;
 				}
@@ -103,15 +98,67 @@ public class ContactFragment extends Fragment implements
 				if (ip != null) {
 					contactInfo.ip = ip;
 				}
+				contactInfo.groupName = name;
 				desktopqa.get(name).add(contactInfo);
 			}
 			recAdapter.addData(desktopqa);
-//			Gson gson = new GsonBuilder().create();
-//			String usersString = gson.toJson(desktopqa);
-//			SharedPreferences spPreferences = getActivity()
-//					.getSharedPreferences(getString(R.string.contact_backup),
-//							Context.MODE_PRIVATE);
-//			spPreferences.edit().putString(getString(R.string.contact_key), usersString).commit();
+			new SaveContact().execute(response);
+		}
+	}
+	private class SaveContact extends AsyncTask<ContactInfoArray, Void, Void>{
+
+		@Override
+		protected Void doInBackground(ContactInfoArray... params) {
+			ArrayList<String> groups = new ArrayList<String>(groupid_name.values());
+			String groupString = gson.toJson(groups);
+			SharedPreferences sPreferences = AssistApplication
+					.getAppDataPreferences();
+			sPreferences.edit()
+					.putString(getString(R.string.contact_group), groupString)
+					.commit();
+			dao.drop();
+			for (ContactInfo contactInfo : params[0]) {
+				dao.insertContact(contactInfo);
+			}
+			return null;
+		}
+		
+	}
+
+	private class LoadContact extends AsyncTask<Void, Void, Boolean>{
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			SharedPreferences sPreferences = AssistApplication
+					.getAppDataPreferences();
+			String string = sPreferences.getString(getString(R.string.contact_group), null);
+			StringArray groupList = gson.fromJson(string, StringArray.class);
+			if (groupList == null) {
+				return false;
+			}
+			boolean loaded = false;
+			for (String string2 : groupList) {
+				if (desktopqa.get(string2) == null) {
+					ArrayList<ContactInfo> lists = dao.getUsersByGroup(string2);
+					if (lists != null) {
+						desktopqa.put(string2, lists);
+						loaded = true;
+					}				
+				}else {
+					loaded = true;
+				}
+				
+			}		
+			
+			return loaded;
+		}
+		@Override
+		protected void onPostExecute(Boolean loaded){
+			if (!loaded && requestGroupId != null) {
+				requestGroupId.Request();
+			}else {
+				recAdapter.addData(desktopqa);
+			}
 		}
 	}
 

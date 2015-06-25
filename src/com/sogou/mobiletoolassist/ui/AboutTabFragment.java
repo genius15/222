@@ -212,6 +212,7 @@ public class AboutTabFragment extends Fragment {
 		
 		@Override
 		protected void onPostExecute(ArrayList<String> actions){
+			//该方法在主线程中执行，如果在doinbackground中更新UI会报异常，UI只能在主线程中更新
 			if (actionsAdapter != null) {
 				actionsAdapter.updateData(actions);
 			}

@@ -8,21 +8,14 @@ import java.util.HashMap;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.contact.ContactInfo;
 import com.sogou.mobiletoolassist.ui.ContactInfoActivity;
-
-
-import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ContactAdapter extends BaseExpandableListAdapter {
 	private HashMap<String, ArrayList<ContactInfo>> userMap = null;
