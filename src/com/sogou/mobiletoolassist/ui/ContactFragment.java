@@ -9,6 +9,7 @@ import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.ContactAdapter;
 import com.sogou.mobiletoolassist.contact.ConstantValues;
 import com.sogou.mobiletoolassist.contact.ContactInfo;
+import com.sogou.mobiletoolassist.contact.ContactLoader;
 import com.sogou.mobiletoolassist.contact.ContactRecordDB;
 import com.sogou.mobiletoolassist.contact.GroupInfo;
 import com.sogou.mobiletoolassist.contact.IdsArray;
@@ -18,11 +19,16 @@ import com.sogou.mobiletoolassist.contact.GroupInfoUpdate;
 import com.sogou.mobiletoolassist.contact.StringArray;
 import com.sogou.mobiletoolassist.util.NetworkUtil;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 
@@ -40,7 +46,7 @@ import com.google.gson.GsonBuilder;
 
 public class ContactFragment extends Fragment implements
 		Response.Listener<ContactInfoArray>, Response.ErrorListener,
-		GroupInfoUpdate {
+		GroupInfoUpdate ,LoaderCallbacks<Boolean>{
 	private ContactAdapter recAdapter = null;
 	private ExpandableListView listv = null;
 	private HashMap<String, ArrayList<ContactInfo>> desktopqa = new HashMap<>();
@@ -48,11 +54,12 @@ public class ContactFragment extends Fragment implements
 	private RequestGroupId requestGroupId = null;
 	private Gson gson = null;
 	private ContactRecordDB dao = null;
+	private String tag = ContactFragment.class.getSimpleName();
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
-		Log.i("learn", "rec onCreateView");
+		Log.i(tag, "rec onCreateView");
 		listv = (ExpandableListView) inflater.inflate(R.layout.receivers,
 				container, false);
 		recAdapter = new ContactAdapter(getActivity());
@@ -66,14 +73,18 @@ public class ContactFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		Log.i("learn", "rec onCreate");
+		Log.i(tag, "rec onCreate");
+		
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		Log.i(tag, "onActivityCreated");
 		requestGroupId = new RequestGroupId(this);
-		new LoadContact().execute();
+		Loader<Boolean> loader = getLoaderManager().initLoader(0, null, this);
+		loader.startLoading();
+//		new LoadContact().execute();
 	}
 
 	private void requestUserInfo(IdsArray response) {
@@ -125,42 +136,43 @@ public class ContactFragment extends Fragment implements
 		
 	}
 
-	private class LoadContact extends AsyncTask<Void, Void, Boolean>{
-
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			SharedPreferences sPreferences = AssistApplication
-					.getAppDataPreferences();
-			String string = sPreferences.getString(getString(R.string.contact_group), null);
-			StringArray groupList = gson.fromJson(string, StringArray.class);
-			if (groupList == null) {
-				return false;
-			}
-			boolean loaded = false;
-			for (String string2 : groupList) {
-				if (desktopqa.get(string2) == null) {
-					ArrayList<ContactInfo> lists = dao.getUsersByGroup(string2);
-					if (lists != null) {
-						desktopqa.put(string2, lists);
-						loaded = true;
-					}				
-				}else {
-					loaded = true;
-				}
-				
-			}		
-			
-			return loaded;
-		}
-		@Override
-		protected void onPostExecute(Boolean loaded){
-			if (!loaded && requestGroupId != null) {
-				requestGroupId.Request();
-			}else {
-				recAdapter.addData(desktopqa);
-			}
-		}
-	}
+	
+//	private class LoadContact extends AsyncTask<Void, Void, Boolean>{
+//
+//		@Override
+//		protected Boolean doInBackground(Void... params) {
+//			SharedPreferences sPreferences = AssistApplication
+//					.getAppDataPreferences();
+//			String string = sPreferences.getString(getString(R.string.contact_group), null);
+//			StringArray groupList = gson.fromJson(string, StringArray.class);
+//			if (groupList == null) {
+//				return false;
+//			}
+//			boolean loaded = false;
+//			for (String string2 : groupList) {
+//				if (desktopqa.get(string2) == null) {
+//					ArrayList<ContactInfo> lists = dao.getUsersByGroup(string2);
+//					if (lists != null) {
+//						desktopqa.put(string2, lists);
+//						loaded = true;
+//					}				
+//				}else {
+//					loaded = true;
+//				}
+//				
+//			}		
+//			
+//			return loaded;
+//		}
+//		@Override
+//		protected void onPostExecute(Boolean loaded){
+//			if (!loaded && requestGroupId != null) {
+//				requestGroupId.Request();
+//			}else {
+//				recAdapter.addData(desktopqa);
+//			}
+//		}
+//	}
 
 	@Override
 	public void onErrorResponse(VolleyError error) {
@@ -268,5 +280,29 @@ public class ContactFragment extends Fragment implements
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public Loader<Boolean> onCreateLoader(int arg0, Bundle arg1) {
+		return new ContactLoader(getActivity(),dao);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Boolean> arg0, Boolean loaded) {
+		// TODO Auto-generated method stub
+		ContactLoader clLoader = (ContactLoader) arg0;
+		desktopqa = clLoader.getData();
+		if (!loaded && requestGroupId != null) {
+			requestGroupId.Request();
+		}else {
+			recAdapter.addData(desktopqa);
+		}
+	}
+
+
+	@Override
+	public void onLoaderReset(Loader<Boolean> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
