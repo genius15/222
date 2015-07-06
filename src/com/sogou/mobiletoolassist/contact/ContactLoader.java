@@ -54,8 +54,8 @@ public class ContactLoader extends AsyncTaskLoader<Boolean>{
 		
 		return loaded;
 	}
-	@Override
-	protected void onStartLoading() {
-		forceLoad();
-	}
+//	@Override
+//	protected void onStartLoading() {
+//		forceLoad();
+//	}
 }

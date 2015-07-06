@@ -75,6 +75,8 @@ public class ContactFragment extends Fragment implements
 		super.onCreate(savedInstanceState);
 		
 		Log.i(tag, "rec onCreate");
+		requestGroupId = new RequestGroupId(this);
+		getLoaderManager().initLoader(0, null, this);
 		
 	}
 
@@ -82,8 +84,7 @@ public class ContactFragment extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Log.i(tag, "onActivityCreated");
-		requestGroupId = new RequestGroupId(this);
-		getLoaderManager().initLoader(0, null, this);
+		
 		
 //		new LoadContact().execute();
 	}

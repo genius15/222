@@ -50,6 +50,11 @@
             android:name="com.sogou.mobiletoolassist.ProxyActivity"
             android:label="@string/proxyactivity"
             android:screenOrientation="portrait" >
+            <intent-filter 
+                >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.action.MONKEY"></category>
+            </intent-filter>
         </activity>
 
         
