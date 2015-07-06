@@ -13,6 +13,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -28,7 +31,7 @@ public class ToolsTabFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.tools, container, false);
-
+		setHasOptionsMenu(true);
 		return v;
 	}
 
@@ -85,4 +88,21 @@ public class ToolsTabFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.tool_set_menu, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch (item.getItemId()) {
+		case R.id.setting:
+			
+			break;
+
+		default:
+			break;
+		}
+		return true;
+	}
 }

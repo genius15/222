@@ -476,13 +476,17 @@ public class CoreService extends Service implements OnClickListener {
 			Log.e(AssistActivity.myTag, "ctx 是空的");
 			return;
 		}
-		if (!UsefulClass.hasappnamedxxx(ctx, "com.sogou.androidtool")) {
-			Toast.makeText(ctx, "没有安装助手", Toast.LENGTH_SHORT).show();
+		String packageName = "com.sogou.androidtool";
+		if (!UsefulClass.hasappnamedxxx(ctx, packageName)) {
+			Toast.makeText(ctx, "没有安装包名为"+packageName+"的APP", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String cmd = "pm clear com.sogou.androidtool";
+		
+		String cmd = "pm clear "+packageName;
+		String stop = "am force-stop "+packageName;
 		Toast.makeText(ctx, "准备清理数据~", Toast.LENGTH_SHORT).show();
-		if (UsefulClass.processCmd(cmd) == StateValue.success) {
+		if (UsefulClass.processCmd(stop) == StateValue.success
+				&& UsefulClass.processCmd(cmd)==StateValue.success) {
 			Toast.makeText(ctx, "清理数据完毕~", Toast.LENGTH_SHORT).show();
 		}
 	}
