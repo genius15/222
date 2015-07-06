@@ -20,7 +20,6 @@ import com.sogou.mobiletoolassist.contact.GroupInfoUpdate;
 import com.sogou.mobiletoolassist.contact.StringArray;
 import com.sogou.mobiletoolassist.util.NetworkUtil;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;

@@ -471,39 +471,18 @@ public class AssistActivity extends FragmentActivity {
 
 	}
 
-	// public static HashMap<String, String> nameEmailMap = new HashMap<String,
-	// String>();
-	// static {
-	// nameEmailMap.put("徐文静", "xuwenjing@sogou-inc.com");
-	// nameEmailMap.put("唐志刚", "tangzhigang@sogou-inc.com");
-	// nameEmailMap.put("田丹丹", "tindandan@sogou-inc.com");
-	// nameEmailMap.put("张帅", "zhangshuai203407@sogou-inc.com");
-	// nameEmailMap.put("谷晓沙", "guxiaosha203822@sogou-inc.com");
-	// nameEmailMap.put("廖振华", "liaozhenhua@sogou-inc.com");
-	// nameEmailMap.put("王灿", "canwang@sogou-inc.com");
-	// nameEmailMap.put("王坤", "wangkun@sogou-inc.com");
-	// nameEmailMap.put("董宏博", "donghongbo@sogou-inc.com");
-	// nameEmailMap.put("孙静", "sunjing@sogou-inc.com");
-	// nameEmailMap.put("赵喜宁", "zhaoxining@sogou-inc.com");
-	// nameEmailMap.put("商丽丽", "shanglili@sogou-inc.com");
-	//
-	//
-	// }
 	public static HashMap<String, String> nameipMap = new HashMap<String, String>();
 	static {
 		nameipMap.put("张帅", "10.129.157.174");
-		nameipMap.put("徐文静", "10.129.156.128");
-		nameipMap.put("田丹丹", "10.129.157.134");
-		nameipMap.put("谷晓沙", "10.129.156.78");
-		nameipMap.put("廖振华", "10.129.156.103");
-		nameipMap.put("王灿", "10.129.156.42");
-		nameipMap.put("王坤", "10.129.158.46");
-		nameipMap.put("董宏博", "10.129.157.28");
-		nameipMap.put("孙静", "10.129.156.69");
-		nameipMap.put("赵喜宁", "10.129.157.249");
-		nameipMap.put("商丽丽", "");
-		nameipMap.put("唐志刚", "10.129.156.164");
-
+		nameipMap.put("徐文静", "10.129.193.51");
+		nameipMap.put("田丹丹", "10.129.192.215");
+		nameipMap.put("谷晓沙", "10.129.193.78");
+		nameipMap.put("王灿", "");
+		nameipMap.put("董宏博", "10.129.193.68");
+		nameipMap.put("孙静", "10.129.193.85");
+		nameipMap.put("赵喜宁", "10.129.193.87");
+		nameipMap.put("商丽丽", "10.129.193.83");
+		nameipMap.put("唐志刚", "10.129.193.90");
 	}
 
 	// public final static String names[] = { "徐文静", "唐志刚" ,"田丹丹", "张帅", "谷晓沙",
