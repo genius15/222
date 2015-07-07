@@ -63,7 +63,8 @@ public class ProxyActivity extends PreferenceActivity {
 		copyfile("proxy.sh");
 		copyfile("redirect.sh");
 		copyTcpDumpfile();
-		copyBusybox();
+		//copyBusybox();
+		copyfile("busybox");
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.mainview);
 
@@ -124,7 +125,7 @@ public class ProxyActivity extends PreferenceActivity {
 							UsefulClass
 									.processCmdWithoutWait("/data/local/tcpdump -n -s 0 -w - | busybox nc -l -p 11233 ");
 						} else {
-							UsefulClass.processCmd("busybox killall tcpdump");
+							UsefulClass.processCmd(basedir+File.separator+"busybox killall tcpdump");
 						}
 
 						return true;
@@ -212,6 +213,7 @@ public class ProxyActivity extends PreferenceActivity {
 			ShellCommand cmd = new ShellCommand();
 			cmd.sh.runWaitFor(basedir + "/proxy.sh stop " + basedir);
 			cmd.su.runWaitFor(basedir + "/redirect.sh stop");
+			cmd.su.runWaitFor(basedir+File.separator+"busybox killall redsocks");
 			return true;
 		}
 	}
@@ -292,7 +294,9 @@ public class ProxyActivity extends PreferenceActivity {
 
 	public void copyBusybox() {
 		try {
-			Runtime.getRuntime().exec("chmod 777 /system/bin");
+			ShellCommand cmd = new ShellCommand();
+//			cmd.su.run("chmod 777 /system/bin");
+//			Runtime.getRuntime().exec("chmod 777 /system/bin");
 			File busybox = new File("/system/bin/busybox");
 			if (!busybox.exists()) {
 				InputStream in = getAssets().open("busybox");
