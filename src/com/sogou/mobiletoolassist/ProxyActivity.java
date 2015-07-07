@@ -62,8 +62,9 @@ public class ProxyActivity extends PreferenceActivity {
 		
 		copyfile("proxy.sh");
 		copyfile("redirect.sh");
-		copyTcpDumpfile();
+		//copyTcpDumpfile();
 		//copyBusybox();
+		copyfile("tcpdump");
 		copyfile("busybox");
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.layout.mainview);
@@ -123,7 +124,7 @@ public class ProxyActivity extends PreferenceActivity {
 							Object newValue) {
 						if ((Boolean) newValue) {
 							UsefulClass
-									.processCmdWithoutWait("/data/local/tcpdump -n -s 0 -w - | busybox nc -l -p 11233 ");
+									.processCmdWithoutWait(basedir+File.separator+"tcpdump -n -s 0 -w - | busybox nc -l -p 11233 ");
 						} else {
 							UsefulClass.processCmd(basedir+File.separator+"busybox killall tcpdump");
 						}
@@ -292,29 +293,7 @@ public class ProxyActivity extends PreferenceActivity {
 
 	}
 
-	public void copyBusybox() {
-		try {
-			ShellCommand cmd = new ShellCommand();
-//			cmd.su.run("chmod 777 /system/bin");
-//			Runtime.getRuntime().exec("chmod 777 /system/bin");
-			File busybox = new File("/system/bin/busybox");
-			if (!busybox.exists()) {
-				InputStream in = getAssets().open("busybox");
-				FileOutputStream out = new FileOutputStream(
-						"/system/bin/busybox");
-				byte[] buf = new byte[1024];
-				int len;
-				while ((len = in.read(buf)) > 0) {
-					out.write(buf, 0, len);
-				}
-				out.close();
-				in.close();
-				Runtime.getRuntime().exec("chmod 777  /system/bin/busybox");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	public void alert(String msg, Activity a) {
 
@@ -343,7 +322,7 @@ public class ProxyActivity extends PreferenceActivity {
 			try {
 				socket.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace(); this is correct
 			}
 			return true;
 		} else {
