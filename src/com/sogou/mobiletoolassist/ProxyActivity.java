@@ -128,7 +128,7 @@ public class ProxyActivity extends PreferenceActivity {
 						} else {
 							UsefulClass.processCmd(basedir+File.separator+"busybox killall tcpdump");
 						}
-
+						AssistApplication.ShowToast("端口号是11233");
 						return true;
 					}
 				});
