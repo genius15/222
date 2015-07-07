@@ -19,7 +19,7 @@
         android:onClick="onSetitAsContact" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/apppkg_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/setitascontact"
@@ -32,7 +32,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
+        android:layout_above="@+id/apppkg_name"
         android:layout_alignParentLeft="true"
         android:text="@string/contact_email"
         android:textAppearance="?android:attr/textAppearanceLarge" />

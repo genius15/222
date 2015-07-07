@@ -181,4 +181,9 @@ https://github.com/ppareit/swiftp/issues .\n\n
     <string name="contact_confirm">设为邮件接收者</string>
     <string name="contact_actionbar_title">刷新</string>
     <string name="contact_actionbar_clear">清空</string>
+    <string name="setpackage">当前被测APP包名</string>
+    <string name="pkg_hint">输入法为com.sohu.inputmethod.sogou</string>
+    <string name="set_new_pkg">设置新包名</string>
+    <string name="cancel_pkg_set">默默离开不修改</string>
+    <string name="defaultpkgname">暂未设置包名</string>
 </resources>

@@ -57,7 +57,12 @@
             </intent-filter>
         </activity>
 
-        
+        <activity 
+            android:name="com.sogou.mobiletoolassist.setting.GlobalSetting"
+            android:screenOrientation="portrait"
+            android:theme="@style/Transparent">
+            
+        </activity>
         <service android:name="com.sogou.mobiletoolassist.service.CoreService" >
             
         </service>

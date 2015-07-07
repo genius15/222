@@ -1,5 +1,6 @@
 package com.sogou.mobiletoolassist;
 
+import android.R.integer;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class AssistApplication extends Application {
 	private static Context ctx = null;
@@ -54,7 +56,10 @@ public class AssistApplication extends Application {
 		SharedPreferences sharedPreferences = getAppDataPreferences();
 		return sharedPreferences.edit().putString(name, value).commit();
 	}
-
+	public static String getString(String key) {
+		SharedPreferences sharedPreferences = getAppDataPreferences();
+		return sharedPreferences.getString(key, null);
+	}
 	public static boolean putEmailAddrToDefault(String value) {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(getContext());
@@ -98,5 +103,15 @@ public class AssistApplication extends Application {
 		return sharedPreferences.getString(
 				"name",
 				"");
+	}
+	
+	public static void ShowToast(String text) {
+		Context ctx = getContext();
+		Toast.makeText(ctx, text, Toast.LENGTH_SHORT).show();
+	}
+	
+	public static void ShowToast(String text,int duration) {
+		Context ctx = getContext();
+		Toast.makeText(ctx, text, duration).show();
 	}
 }

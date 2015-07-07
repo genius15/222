@@ -13,6 +13,7 @@ import com.sogou.mobiletoolassist.ui.ContactFragment;
 import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.UsefulClass;
+import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
 
 import android.R.bool;
 import android.annotation.SuppressLint;
@@ -204,6 +205,7 @@ public class AssistActivity extends FragmentActivity {
 			onClickToolsTab(toolsTab);
 		}
 		addShortcut();
+		Pingbackhandler.sendPB("0");
 	}
 
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
@@ -477,12 +479,18 @@ public class AssistActivity extends FragmentActivity {
 		nameipMap.put("徐文静", "10.129.193.51");
 		nameipMap.put("田丹丹", "10.129.192.215");
 		nameipMap.put("谷晓沙", "10.129.193.78");
-		nameipMap.put("王灿", "");
+		nameipMap.put("王灿", "10.129.157.139");
 		nameipMap.put("董宏博", "10.129.193.68");
 		nameipMap.put("孙静", "10.129.193.85");
 		nameipMap.put("赵喜宁", "10.129.193.87");
 		nameipMap.put("商丽丽", "10.129.193.83");
 		nameipMap.put("唐志刚", "10.129.193.90");
+		nameipMap.put("舒丹", "10.129.157.139");
+		nameipMap.put("贺颖", "10.129.158.39");
+		nameipMap.put("付玉朋", "10.129.157.202");
+		nameipMap.put("王杨", "10.129.156.47");
+		nameipMap.put("方红月", "10.129.158.21");
+		nameipMap.put("赵芳", "10.129.157.95");
 	}
 
 	// public final static String names[] = { "徐文静", "唐志刚" ,"田丹丹", "张帅", "谷晓沙",

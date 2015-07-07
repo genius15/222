@@ -38,6 +38,9 @@ public class ContactLoader extends AsyncTaskLoader<Boolean>{
 			return false ;
 		}
 		boolean loaded = false;
+		if (dao == null) {
+			return loaded;
+		}
 		for (String string2 : groupList) {
 			if (desktopqa.get(string2) == null) {
 				ArrayList<ContactInfo> lists = dao.getUsersByGroup(string2);
@@ -54,8 +57,8 @@ public class ContactLoader extends AsyncTaskLoader<Boolean>{
 		
 		return loaded;
 	}
-//	@Override
-//	protected void onStartLoading() {
-//		forceLoad();
-//	}
+	@Override
+	protected void onStartLoading() {
+		forceLoad();
+	}
 }

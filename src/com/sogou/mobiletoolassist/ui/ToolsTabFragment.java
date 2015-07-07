@@ -5,9 +5,11 @@ import java.io.File;
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.setting.GlobalSetting;
 import com.sogou.mobiletoolassist.util.JsonTestResultHandle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
@@ -97,12 +99,23 @@ public class ToolsTabFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch (item.getItemId()) {
 		case R.id.setting:
-			
+			Intent intent = new Intent(getActivity(),GlobalSetting.class);
+			startActivityForResult(intent, 999);
 			break;
 
 		default:
 			break;
 		}
 		return true;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent){
+		if (requestCode == 999) {
+			if (resultCode == 0 && intent != null) {
+				String pkgString = intent.getStringExtra("pkgname");
+				AssistApplication.putString("pkgname", pkgString);
+			}
+		}
 	}
 }

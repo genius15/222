@@ -65,7 +65,7 @@ public class ContactFragment extends Fragment implements
 		recAdapter = new ContactAdapter(getActivity());
 		listv.setAdapter(recAdapter);
 		gson = new GsonBuilder().create();
-		dao = new ContactRecordDB(getActivity(), "contacts", null, 6);
+		
 		return listv;
 	}
 
@@ -76,7 +76,7 @@ public class ContactFragment extends Fragment implements
 		Log.i(tag, "rec onCreate");
 		requestGroupId = new RequestGroupId(this);
 		getLoaderManager().initLoader(0, null, this);
-		
+		dao = new ContactRecordDB(getActivity(), "contacts", null, 6);
 	}
 
 	@Override
@@ -286,6 +286,9 @@ public class ContactFragment extends Fragment implements
 	@Override
 	public Loader<Boolean> onCreateLoader(int arg0, Bundle arg1) {
 		ContactLoader loader =  new ContactLoader(getActivity());
+		if (dao == null) {
+			dao = new ContactRecordDB(getActivity(), "contacts", null, 6);
+		}
 		loader.setDao(dao);
 		return loader;
 	}
@@ -300,6 +303,7 @@ public class ContactFragment extends Fragment implements
 		}else {
 			recAdapter.addData(desktopqa);
 		}
+		//dao.close();
 	}
 
 

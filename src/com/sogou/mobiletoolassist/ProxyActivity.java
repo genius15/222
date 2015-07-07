@@ -6,6 +6,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.preference.CheckBoxPreference;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -53,7 +54,12 @@ public class ProxyActivity extends PreferenceActivity {
 				e.printStackTrace();
 			}
 		}
-		copyfile("redsocks");
+		if (Build.VERSION.SDK_INT < 20) {
+			copyfileBelowAPI19("redsocks");
+		}else {
+			copyfile("redsocks");
+		}
+		
 		copyfile("proxy.sh");
 		copyfile("redirect.sh");
 		copyTcpDumpfile();
@@ -217,6 +223,30 @@ public class ProxyActivity extends PreferenceActivity {
 		if (!f.exists()) {
 			try {
 				InputStream in = getAssets().open(file);
+				FileOutputStream out = getBaseContext().openFileOutput(of,
+						MODE_PRIVATE);
+
+				byte[] buf = new byte[1024];
+				int len;
+				while ((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				out.close();
+				in.close();
+				Runtime.getRuntime().exec("chmod 700 " + basedir + "/" + of);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void copyfileBelowAPI19(String file) {
+		String of = file;
+		File f = new File(basedir + File.separator + of);
+
+		if (!f.exists()) {
+			try {
+				InputStream in = getAssets().open("below19/"+file);
 				FileOutputStream out = getBaseContext().openFileOutput(of,
 						MODE_PRIVATE);
 

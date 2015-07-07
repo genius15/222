@@ -476,7 +476,12 @@ public class CoreService extends Service implements OnClickListener {
 			Log.e(AssistActivity.myTag, "ctx 是空的");
 			return;
 		}
-		String packageName = "com.sogou.androidtool";
+		String packageName = AssistApplication.getString("pkgname");
+		if (packageName == null) {
+			AssistApplication.ShowToast("先设置包名先~");
+			return;
+		}
+		//String packageName = "com.sogou.androidtool";
 		if (!UsefulClass.hasappnamedxxx(ctx, packageName)) {
 			Toast.makeText(ctx, "没有安装包名为"+packageName+"的APP", Toast.LENGTH_SHORT).show();
 			return;
