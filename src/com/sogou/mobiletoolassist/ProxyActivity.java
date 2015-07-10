@@ -22,6 +22,7 @@ import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.util.ShellCommand;
 import com.sogou.mobiletoolassist.util.ShellCommand.CommandResult;
 import com.sogou.mobiletoolassist.util.UsefulClass;
+import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
 
 public class ProxyActivity extends PreferenceActivity {
 	public static final String PREFS_NAME = "prefs";
@@ -129,6 +130,7 @@ public class ProxyActivity extends PreferenceActivity {
 							UsefulClass.processCmd(basedir+File.separator+"busybox killall tcpdump");
 						}
 						AssistApplication.ShowToast("端口号是11233");
+						Pingbackhandler.sendPB("TCPdump","120");
 						return true;
 					}
 				});
@@ -137,6 +139,7 @@ public class ProxyActivity extends PreferenceActivity {
 
 	public boolean proxy(int action) {
 		if (action == START) { // start proxy
+			Pingbackhandler.sendPB("设置代理","60");
 			SharedPreferences settings = PreferenceManager
 					.getDefaultSharedPreferences(getBaseContext());
 
@@ -204,7 +207,7 @@ public class ProxyActivity extends PreferenceActivity {
 							+ proxy_type);
 					return true;
 				}
-
+				
 			} else {
 				alert("Proxy failed to start", null);
 				return false;

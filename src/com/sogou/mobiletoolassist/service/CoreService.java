@@ -22,6 +22,8 @@ import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.ScreenshotforJELLY_BEAN;
 import com.sogou.mobiletoolassist.util.StateValue;
 import com.sogou.mobiletoolassist.util.UsefulClass;
+import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -320,7 +322,7 @@ public class CoreService extends Service implements OnClickListener {
 				Intent it = new Intent(Settings.ACTION_APPLICATION_SETTINGS);
 				it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(it);
-
+				Pingbackhandler.sendPB("进入应用管理页","30");
 			}
 
 		});
@@ -348,10 +350,25 @@ public class CoreService extends Service implements OnClickListener {
 			public void onClick(View arg0) {
 				Calendar ca = Calendar.getInstance();
 				ca.add(Calendar.DAY_OF_MONTH, 1);
+				int hour = ca.get(Calendar.HOUR_OF_DAY);
+				int min = ca.get(Calendar.MINUTE);
+				String minStr = "";
+				if (min < 10) {
+					minStr = "0" + min;
+				}else {
+					minStr = String.valueOf(min);
+				}
+				String hourString = "";
+				if (hour < 10) {
+					hourString = "0" + hour;
+				}else {
+					hourString = String.valueOf(hour);
+				}
 				SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd",
 						Locale.CHINA);
 				String nowTime = format.format(ca.getTime());
-				UsefulClass.processCmd("date -s " + nowTime + ".000500");
+				UsefulClass.processCmd("date -s " + nowTime + "."+hourString+minStr+"55");
+				Pingbackhandler.sendPB("向后调整24小时","30");
 			}
 		});
 		wifisetview = (ImageButton) btn_floatView.findViewById(R.id.wifiset);
@@ -371,6 +388,7 @@ public class CoreService extends Service implements OnClickListener {
 			@Override
 			public void onClick(View arg0) {
 				CoreService.onClearBtn();
+				Pingbackhandler.sendPB("清理被测app数据","60");
 			}
 
 		});
@@ -388,6 +406,7 @@ public class CoreService extends Service implements OnClickListener {
 						message1.what = CoreService.screenshot;
 						fltwinhandler.sendMessage(message);
 						fltwinhandler.sendMessageDelayed(message1, 500);
+						
 					}
 
 				}).start();
@@ -497,6 +516,7 @@ public class CoreService extends Service implements OnClickListener {
 	}
 
 	public static boolean ScreenShot() {
+		Pingbackhandler.sendPB("在悬浮窗屏幕截图","120");
 		Context ctx = AssistApplication.getContext();
 		if (ctx == null) {
 			Log.e(CoreService.class.getSimpleName(), "context is null");

@@ -5,6 +5,7 @@ import java.io.File;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.util.MailSender;
+import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -34,6 +35,7 @@ public class SendFileToTheContact extends Activity {
 						MailSender.sendTextMail(
 								getString(R.string.anyfilesharetitle), contentString, "",
 								new String[] { receiverString });
+						Pingbackhandler.sendPB("共享方式传文件","60");
 					}
 					
 				}

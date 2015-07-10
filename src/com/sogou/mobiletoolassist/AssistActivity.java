@@ -98,6 +98,7 @@ public class AssistActivity extends FragmentActivity {
 					backservice.uninstallAPPs();
 				}
 				findViewById(R.id.uninstallview).setEnabled(true);
+				Pingbackhandler.sendPB("卸载所有app","120");
 				break;
 			case AssistActivity.generateFile:
 				final int num = msg.getData().getInt("num");
@@ -161,7 +162,7 @@ public class AssistActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		Log.i("study", "assist act oncreate");
 		setContentView(R.layout.activity_assist);
-
+		
 		if (!UsefulClass.isServiceRunning(this, CoreService.class.getName())) {
 			Intent it = new Intent(this, CoreService.class);
 			startService(it);
@@ -205,7 +206,7 @@ public class AssistActivity extends FragmentActivity {
 			onClickToolsTab(toolsTab);
 		}
 		addShortcut();
-		Pingbackhandler.sendPB("0");
+		Pingbackhandler.sendPB("启动哆啦A梦次数统计","1");
 	}
 
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
@@ -487,7 +488,7 @@ public class AssistActivity extends FragmentActivity {
 		nameipMap.put("唐志刚", "10.129.193.90");
 		nameipMap.put("舒丹", "10.129.157.139");
 		nameipMap.put("贺颖", "10.129.158.39");
-		nameipMap.put("付玉朋", "10.129.157.202");
+		nameipMap.put("付玉鹏", "10.129.157.202");
 		nameipMap.put("王杨", "10.129.156.47");
 		nameipMap.put("方红月", "10.129.158.21");
 		nameipMap.put("赵芳", "10.129.157.95");
@@ -660,6 +661,7 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onGenerateFolder(View v) {
+		Pingbackhandler.sendPB("生成空文件夹","30");
 		EditText ev = (EditText) this.findViewById(R.id.memEdit);
 		String num = ev.getText().toString();
 		int n = 500;
@@ -680,6 +682,7 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onGenerateEmptyFile(View v) {
+		Pingbackhandler.sendPB("生成空文件","30");
 		EditText ev = (EditText) this.findViewById(R.id.memEdit);
 		String num = ev.getText().toString();
 		int n = 500;
@@ -699,6 +702,7 @@ public class AssistActivity extends FragmentActivity {
 	}
 
 	public void onSendbroadcast(View v) {
+		Pingbackhandler.sendPB("发送模拟广播次数统计","1");
 		// Fragment fgt =
 		// getSupportFragmentManager().findFragmentByTag("aboutfrag");
 		boolean issending = getSharedPreferences(

@@ -13,6 +13,7 @@ import java.util.Arrays;
 
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.ActionsAdapter;
+import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -164,6 +165,7 @@ public class AboutTabFragment extends Fragment {
 			if (intent.getAction().equals(FTPSERVER_STARTED)) {
 				ftpsetButton.setChecked(true);
 				ftpsetButton.setText(getString(R.string.ftpup));
+				Pingbackhandler.sendPB("FTP文件互传","60");
 			} else if (intent.getAction().equals(FTPSERVER_STOPPED)) {
 				ftpsetButton.setChecked(false);
 				ftpsetButton.setText(getString(R.string.ftpdown));
