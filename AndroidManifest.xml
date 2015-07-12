@@ -144,6 +144,8 @@
             android:theme="@style/Transparent">
             
         </activity>
+        <activity 
+            android:name="com.sogou.mobiletoolassist.setting.TestedAppSetting"></activity>
     </application>
 
 </manifest>

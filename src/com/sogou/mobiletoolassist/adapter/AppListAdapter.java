@@ -1,11 +1,15 @@
 package com.sogou.mobiletoolassist.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.setting.GlobalSetting;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,14 +19,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class AppListAdapter extends BaseAdapter {
-	private ArrayList<PackageInfo> pkgList = null;
+	private ArrayList<ApplicationInfo> pkgList = null;
 	private Context ctx = null;
 	private LayoutInflater lInflater = null;
-	public AppListAdapter(){
+	public AppListAdapter(ArrayList<ApplicationInfo> userapps){
 		ctx = AssistApplication.getContext();
 		lInflater = (LayoutInflater) ctx
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.pkgList = userapps;
 	}
+	
 	@Override
 	public int getCount() {
 		if (pkgList != null) {
@@ -34,7 +40,8 @@ public class AppListAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		if (pkgList != null || pkgList.size() > position) {
-			return pkgList.get(position).applicationInfo.name;
+			
+			return pkgList.get(position).loadLabel(ctx.getPackageManager());
 		}
 		return "";
 	}
@@ -56,11 +63,16 @@ public class AppListAdapter extends BaseAdapter {
 		}
 		viewHolder = (ViewHolder) convertView.getTag();
 		viewHolder.tView.setText((String)getItem(position));
+		viewHolder.tView.setTag(pkgList.get(position));
 		viewHolder.tView.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				ApplicationInfo app = (ApplicationInfo) v.getTag();
+				Intent intent = new Intent(ctx,GlobalSetting.class);
+				intent.putExtra("appname", ((TextView)v).getText());
+				intent.putExtra("pkgname", app.packageName);
+				ctx.startActivity(intent);
 				
 			}
 		});

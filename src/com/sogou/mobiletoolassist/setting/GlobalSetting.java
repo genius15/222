@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class GlobalSetting extends Activity{
-
+	private String pkgname = null;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);

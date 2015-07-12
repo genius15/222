@@ -6,6 +6,7 @@ import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.setting.GlobalSetting;
+import com.sogou.mobiletoolassist.setting.TestedAppSetting;
 import com.sogou.mobiletoolassist.util.JsonTestResultHandle;
 
 import android.content.Context;
@@ -99,8 +100,9 @@ public class ToolsTabFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch (item.getItemId()) {
 		case R.id.setting:
-			Intent intent = new Intent(getActivity(),GlobalSetting.class);
-			startActivityForResult(intent, 999);
+			Intent intent = new Intent(getActivity(),TestedAppSetting.class);
+			//startActivityForResult(intent, 999);
+			startActivity(intent);
 			break;
 
 		default:
