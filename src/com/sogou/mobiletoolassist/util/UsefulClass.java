@@ -60,8 +60,7 @@ public class UsefulClass {
 					return true;
 				}
 			} catch (NameNotFoundException e) {
-				//
-				e.printStackTrace();
+				
 			}
 		}
 		return false;

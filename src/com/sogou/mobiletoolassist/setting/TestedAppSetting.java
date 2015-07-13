@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class TestedAppSetting extends FragmentActivity implements LoaderCallbacks<Boolean>{
+public class TestedAppSetting extends FragmentActivity implements LoaderCallbacks<Integer>{
 	
 	private ViewPager viewPager;
 	private List<View> lists = new ArrayList<View>();
@@ -111,23 +111,23 @@ public class TestedAppSetting extends FragmentActivity implements LoaderCallback
 				
 			}
 		});
-		getSupportLoaderManager().initLoader(0, null, this);
+		getSupportLoaderManager().initLoader(888, null, this);
 	}
 
 	@Override
-	public Loader<Boolean> onCreateLoader(int arg0, Bundle arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void onLoadFinished(Loader<Boolean> arg0, Boolean arg1) {
-		// TODO Auto-generated method stub
+	public Loader<Integer> onCreateLoader(int arg0, Bundle arg1) {
 		
+		return new ApkInfoLoader(this);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Boolean> arg0) {
+	public void onLoadFinished(Loader<Integer> arg0, Integer arg1) {
+		ApkInfoLoader loader = (ApkInfoLoader)arg0;
+		apkAdapter.setData(loader.getAppInfos());
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Integer> arg0) {
 		// TODO Auto-generated method stub
 		
 	}
