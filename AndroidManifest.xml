@@ -146,6 +146,10 @@
         </activity>
         <activity 
             android:name="com.sogou.mobiletoolassist.setting.TestedAppSetting"></activity>
+        <activity 
+            android:name="com.sogou.mobiletoolassist.setting.ConfirmTestAppActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PurelyTransparent"></activity>
     </application>
 
 </manifest>

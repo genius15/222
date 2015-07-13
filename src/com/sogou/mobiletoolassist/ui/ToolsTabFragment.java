@@ -101,6 +101,7 @@ public class ToolsTabFragment extends Fragment {
 		switch (item.getItemId()) {
 		case R.id.setting:
 			Intent intent = new Intent(getActivity(),TestedAppSetting.class);
+			//Intent intent = new Intent(getActivity(),GlobalSetting.class);
 			//startActivityForResult(intent, 999);
 			startActivity(intent);
 			break;

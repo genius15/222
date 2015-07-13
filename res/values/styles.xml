@@ -45,5 +45,12 @@
 	    <item name="android:windowIsTranslucent">true</item> 
 	    <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
   	</style>
+  	
+	<style name="PurelyTransparent">  
+	    <item name="android:windowBackground">@color/purly_transparent_background</item>
+	    <item name="android:windowNoTitle">true</item>  
+	    <item name="android:windowIsTranslucent">true</item> 
+	    <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
+  	</style>
 
 </resources>

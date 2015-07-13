@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.setting.ConfirmTestAppActivity;
 import com.sogou.mobiletoolassist.setting.GlobalSetting;
 
 import android.content.Context;
@@ -69,9 +70,10 @@ public class AppListAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				ApplicationInfo app = (ApplicationInfo) v.getTag();
-				Intent intent = new Intent(ctx,GlobalSetting.class);
+				Intent intent = new Intent(ctx,ConfirmTestAppActivity.class);
 				intent.putExtra("appname", ((TextView)v).getText());
 				intent.putExtra("pkgname", app.packageName);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				ctx.startActivity(intent);
 				
 			}
