@@ -1,5 +1,7 @@
 package com.sogou.mobiletoolassist;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import android.R.integer;
 import android.app.Application;
 import android.content.Context;
@@ -16,7 +18,16 @@ public class AssistApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		ctx = getApplicationContext();
+		ctx = getApplicationContext();          
+	                
+
+		String appId = "900004935"; // 上Bugly(bugly.qq.com)注册产品获取的AppId
+
+		boolean isDebug = false; // true代表App处于调试阶段，false代表App发布阶段
+
+		CrashReport.initCrashReport(ctx, appId, isDebug); // 初始化SDK  
+
+	     
 	}
 
 	public static Context getContext() {

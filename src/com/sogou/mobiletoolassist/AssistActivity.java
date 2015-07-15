@@ -15,6 +15,7 @@ import com.sogou.mobiletoolassist.ui.ToolsTabFragment;
 import com.sogou.mobiletoolassist.util.ScreenshotforGINGERBREAD_MR1;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import android.R.bool;
 import android.annotation.SuppressLint;
@@ -208,6 +209,7 @@ public class AssistActivity extends FragmentActivity {
 		}
 		addShortcut();
 		Pingbackhandler.sendPB("启动哆啦A梦次数统计","1");
+		
 	}
 
 	public BroadcastReceiver broadreceiver = new BroadcastReceiver() {
