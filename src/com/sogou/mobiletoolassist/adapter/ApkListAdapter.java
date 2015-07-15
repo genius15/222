@@ -6,8 +6,11 @@ import java.util.List;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.adapter.AppListAdapter.ViewHolder;
+import com.sogou.mobiletoolassist.setting.APKInfo;
+import com.sogou.mobiletoolassist.setting.ApkInstallConfirmActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.view.LayoutInflater;
@@ -18,7 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 public class ApkListAdapter extends BaseAdapter {
-	private ArrayList<PackageInfo> packages = null;
+	private ArrayList<APKInfo> packages = null;
 	private LayoutInflater inflater = null;
 	private Context context = null;
 	private PackageManager pm = null;
@@ -35,17 +38,24 @@ public class ApkListAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public void setData(List<PackageInfo> infos) {
-		packages = (ArrayList<PackageInfo>) infos;
+	public void setData(List<APKInfo> infos) {
+		packages = (ArrayList<APKInfo>) infos;
+		if (packages != null && packages.isEmpty()) {
+			APKInfo info = new APKInfo();
+			info.name = "没有扫描到未安装的APK";
+			packages.add(info);
+		}
 		notifyDataSetChanged();
 	}
 	@Override
 	public Object getItem(int position) {
 		if (packages != null) {
-			PackageInfo info =  packages.get(position);
+			APKInfo info =  packages.get(position);
 			if (info!= null) {
-				
-				return info.applicationInfo.loadLabel(pm);
+				if (info.pkgInfo != null) {
+					return info.name+" v"+info.pkgInfo.versionName+"("+info.pkgInfo.versionCode+")";
+				}
+				return info.name;
 			}
 		}
 		return null;
@@ -73,7 +83,17 @@ public class ApkListAdapter extends BaseAdapter {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				
+				APKInfo info = (APKInfo) v.getTag();
+				if (info.pkgInfo == null) {
+					return;
+				}
+				Intent intent = new Intent(context,ApkInstallConfirmActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra("appname", info.name);
+				intent.putExtra("apkpath", info.apkpath);
+				
+				context.startActivity(intent);
 				
 			}
 		});

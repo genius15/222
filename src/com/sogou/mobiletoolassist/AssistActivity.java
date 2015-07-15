@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import java.util.Stack;
 
+import com.sogou.mobiletoolassist.appmanager.APKUtil;
 import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.ui.AboutTabFragment;
 import com.sogou.mobiletoolassist.ui.ContactFragment;
@@ -754,4 +755,13 @@ public class AssistActivity extends FragmentActivity {
 				.show();
 	}
 
+	public void onUninstallTestApp(View v) {
+		Pingbackhandler.sendPB("卸载被测APP","5");
+		String pkgString = AssistApplication.getString("pkgname");
+		if (pkgString != null) {
+			APKUtil.uninstallAPP(pkgString);
+		}else {
+			AssistApplication.ShowToast("未设置被测app");
+		}
+	}
 }

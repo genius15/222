@@ -40,10 +40,10 @@
             android:layout_height="wrap_content"
             
             android:layout_marginRight="10dp"
-            android:onClick="onSetMailReceiver"
+            android:onClick="onUninstallTestApp"
             android:scaleType="matrix"
-            android:src="@drawable/contact"
-            android:visibility="gone" />
+            android:src="@drawable/uninstalltestapp"
+            />
 
         <com.sogou.mobiletoolassist.ui.MyImageView
             android:id="@+id/observerview"

@@ -11,7 +11,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/button1"
         android:onClick="onCancel"
-        android:text="@string/cancel_pkg_set" />
+        android:text="@string/cancel_install" />
 
     <Button
         android:id="@+id/button1"
@@ -21,10 +21,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:onClick="onSetTestPkgName"
-        android:text="@string/set_new_pkg" />
+        android:text="@string/install_apk" />
 
     <TextView
-        android:id="@+id/set_app_confirm_tv"
+        android:id="@+id/install_confirm_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button1"

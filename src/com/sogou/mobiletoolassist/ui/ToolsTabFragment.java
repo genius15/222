@@ -2,16 +2,26 @@ package com.sogou.mobiletoolassist.ui;
 
 import java.io.File;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.AssistApplication;
 import com.sogou.mobiletoolassist.R;
+import com.sogou.mobiletoolassist.appmanager.APKUtil;
+import com.sogou.mobiletoolassist.appmanager.SelfUpdate;
+import com.sogou.mobiletoolassist.service.CoreService;
 import com.sogou.mobiletoolassist.setting.GlobalSetting;
 import com.sogou.mobiletoolassist.setting.TestedAppSetting;
 import com.sogou.mobiletoolassist.util.JsonTestResultHandle;
+import com.sogou.mobiletoolassist.util.NetworkUtil;
+import com.sogou.mobiletoolassist.util.UsefulClass;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -26,15 +36,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ToolsTabFragment extends Fragment {
+public class ToolsTabFragment extends Fragment implements Response.Listener<SelfUpdate>, Response.ErrorListener{
 
 	private CheckBox jsonCheckBox = null;
-
+	private String update = "http://10.129.157.174/update/update.php";
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.tools, container, false);
 		setHasOptionsMenu(true);
+		NetworkUtil.get(update, SelfUpdate.class, this, this);
 		return v;
 	}
 
@@ -120,5 +131,46 @@ public class ToolsTabFragment extends Fragment {
 				AssistApplication.putString("pkgname", pkgString);
 			}
 		}
+	}
+
+	@Override
+	public void onErrorResponse(VolleyError error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onResponse(SelfUpdate response) {
+		if (response != null) {
+			PackageManager pManager = getActivity().getPackageManager();
+			PackageInfo info = null;
+			try {
+				info = pManager.getPackageInfo("com.sogou.mobiletoolassist", 0);
+			} catch (NameNotFoundException e) {
+				// TODO Auto-generated catch block
+				return;
+			}
+			
+			if (response.vc > info.versionCode) {
+//				Intent intent = new Intent(getActivity(),CoreService.class);
+//				intent.putExtra("dl", response.dl);
+//				getActivity().startService(intent);
+				AssistApplication.ShowToast("哆啦A梦有新版，正在下载,请不要退出哦");		
+				final String dlString = response.dl;
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+									
+						UsefulClass.Download(dlString, "/sdcard/update.apk");
+						APKUtil.installAPKNotSlience("/sdcard/update.apk");	
+						
+					}
+				}).start();
+				
+			}
+			
+		}
+		
 	}
 }

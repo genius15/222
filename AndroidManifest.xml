@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sogou.mobiletoolassist"
-    android:versionCode="22"
+    android:versionCode="23"
     android:versionName="@string/version" 
    
     >
@@ -145,9 +145,14 @@
             
         </activity>
         <activity 
-            android:name="com.sogou.mobiletoolassist.setting.TestedAppSetting"></activity>
+            android:name="com.sogou.mobiletoolassist.setting.TestedAppSetting"
+            android:screenOrientation="portrait"></activity>
         <activity 
             android:name="com.sogou.mobiletoolassist.setting.ConfirmTestAppActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/PurelyTransparent"></activity>
+        <activity 
+            android:name="com.sogou.mobiletoolassist.setting.ApkInstallConfirmActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PurelyTransparent"></activity>
     </application>

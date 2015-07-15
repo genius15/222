@@ -13,14 +13,14 @@ import android.content.pm.PackageManager;
 import android.support.v4.content.AsyncTaskLoader;
 
 public class ApkInfoLoader extends AsyncTaskLoader<Integer> {
-	private List<PackageInfo> pkgList = null;
+	private List<APKInfo> pkgList = null;
 	private Context context = null;
 	public ApkInfoLoader(Context context) {
 		super(context);
 		this.context = context;
 		// TODO Auto-generated constructor stub
 	}
-	public List<PackageInfo> getAppInfos(){
+	public List<APKInfo> getAppInfos(){
 		return pkgList;
 	}
 

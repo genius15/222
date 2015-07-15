@@ -78,6 +78,7 @@
 	
 	
 	<string name="test_app_name_view">已选择%1$s</string>
+	<string name="install_app_name_view">确认要安装%1$s？</string>
 	<!-- 联系人相关 -->
 	<string name="contact_backup">contact_backup</string>
 	<string name="contact_key">contact_key</string>
@@ -188,4 +189,6 @@ https://github.com/ppareit/swiftp/issues .\n\n
     <string name="set_new_pkg">设为被测APP</string>
     <string name="cancel_pkg_set">默默离开不修改</string>
     <string name="defaultpkgname">暂未设置包名</string>
+    <string name="install_apk">安装</string>
+    <string name="cancel_install">取消</string>
 </resources>

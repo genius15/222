@@ -14,6 +14,7 @@ import java.util.Locale;
 import com.sogou.mobiletoolassist.AssistActivity;
 import com.sogou.mobiletoolassist.R;
 import com.sogou.mobiletoolassist.AssistApplication;
+import com.sogou.mobiletoolassist.appmanager.APKUtil;
 import com.sogou.mobiletoolassist.fileobserver.FileObserverThread;
 import com.sogou.mobiletoolassist.receiver.SimuBroadcastReceiver;
 import com.sogou.mobiletoolassist.util.FetchNewestMTApk;
@@ -24,6 +25,7 @@ import com.sogou.mobiletoolassist.util.StateValue;
 import com.sogou.mobiletoolassist.util.UsefulClass;
 import com.sogou.mobiletoolassit.infostatic.Pingbackhandler;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -90,6 +92,7 @@ public class CoreService extends Service implements OnClickListener {
 	private final static int downloadfailed = 0x0000005;
 	public final static int sendBroadcast = 0x0000006;
 	public final static int stopsendBroadcast = sendBroadcast + 1;
+	public final static int selfupdate = stopsendBroadcast + 1;
 	private static boolean isUninstalling = false;
 	public static String mtpathString = Environment
 			.getExternalStorageDirectory().getPath() + File.separator;
@@ -150,6 +153,8 @@ public class CoreService extends Service implements OnClickListener {
 			case CoreService.stopsendBroadcast:
 				stopSendBroadcast();
 				break;
+			case CoreService.selfupdate:
+				
 			}
 			super.handleMessage(msg);
 		}
@@ -254,6 +259,19 @@ public class CoreService extends Service implements OnClickListener {
 			return Service.START_STICKY;
 		}
 
+//		if (intent != null && intent.getStringExtra("dl") != null) {
+//			final String dl = intent.getStringExtra("dl");
+//			fltwinhandler.post(new Runnable() {
+//				
+//				@Override
+//				public void run() {
+//					AssistApplication.ShowToast("哆啦A梦有新版，正在下载,请不要退出哦");					
+//					UsefulClass.Download(dl, "/sdcard/update.apk");
+//					APKUtil.installAPKNotSlience("/sdcard/update.apk");					
+//				}
+//			});
+//			return Service.START_STICKY;
+//		}
 		createFloatView();
 		SharedPreferences appdata = this.getSharedPreferences(
 				getString(R.string.cfg_appdata), MODE_PRIVATE);
