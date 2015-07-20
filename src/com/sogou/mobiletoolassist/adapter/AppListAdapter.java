@@ -59,20 +59,22 @@ public class AppListAdapter extends BaseAdapter {
 			convertView = lInflater.inflate(R.layout.app_info_item, null);
 			viewHolder = new ViewHolder();
 			viewHolder.tView = (TextView) convertView.findViewById(R.id.app_info_item_id);
+			viewHolder.pnameView = (TextView)convertView.findViewById(R.id.app_pkgname_item_id);
 			convertView.setTag(viewHolder);
 			
 		}
 		viewHolder = (ViewHolder) convertView.getTag();
 		viewHolder.tView.setText((String)getItem(position));
+		viewHolder.pnameView.setText(((ApplicationInfo)pkgList.get(position)).packageName);
 		viewHolder.tView.setTag(pkgList.get(position));
-		viewHolder.tView.setOnClickListener(new OnClickListener() {
+		convertView.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				ApplicationInfo app = (ApplicationInfo) v.getTag();
+				ViewHolder viewHold = (ViewHolder) v.getTag();
 				Intent intent = new Intent(ctx,ConfirmTestAppActivity.class);
-				intent.putExtra("appname", ((TextView)v).getText());
-				intent.putExtra("pkgname", app.packageName);
+				intent.putExtra("appname", viewHold.tView.getText());
+				intent.putExtra("pkgname", viewHold.pnameView.getText());
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				ctx.startActivity(intent);
 				
@@ -83,5 +85,6 @@ public class AppListAdapter extends BaseAdapter {
 
 	public static class ViewHolder{
 		public TextView tView = null;
+		public TextView pnameView = null;
 	}
 }
