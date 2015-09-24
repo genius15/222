@@ -1,5 +1,5 @@
 {
-	"vc": 53,
-	"dl": "http://file.mt.sogou.com/download?fileId=desktopqadev/M00/1E/54/CgvXElX7soWAGA1GAGIYZk6sQbk308.apk",
-	"changeLog": "1、设置代理前判断是否已经在系统设置过,2、修复低版本一个兼容崩溃"
+	"vc": 56,
+	"dl": "http://file.mt.sogou.com/download?fileId=desktopqadev/M00/1E/F5/CgvXElYD8naAWtQXAGekxB1mtOM537.apk",
+	"changeLog": "1、修复性能监控cpu值过大的bug,2、统一TITIL风格,3、icon换了一个,4、集成输入法评测工具"
 }
