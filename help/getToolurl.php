@@ -1,0 +1,1 @@
+{"xposedDurl":"http:\/\/file.mt.sogou.com/download?fileId=desktopqadev\/M00\/24\/00\/CgvXElZNfk2APimOAAwJI156AJY910.apk","toolDurl":"http:\/\/file.mt.sogou.com/download?fileId=desktopqadev\/M00\/23\/FF\/CogLTVZNfXWADu1vAATk_R_xWQc628.apk"}
