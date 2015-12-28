@@ -1,5 +1,5 @@
 {
-	"vc": 81,
-	"dl": "http://file.mt.sogou.com/g2/M00/01/CF/CoZa6FZ1DYWAe0O6AD0yImXrkZw778.apk?n=DoraemonBox_Sogou_6.9.4_81.apk",
-	"changeLog": "1、新增渠道包验证工具,2、修复5.0以上系统通知icon为白色的bug,3、代理设置可选择两种方案,4、大幅度减少安装包体积,5、键盘模拟增加密码键盘"
+	"vc": 84,
+	"dl": "http://file.mt.sogou.com/g2/M00/03/BB/CoZa6FaBQ_mAVV8BAD5gB2s1jJ8674.apk?n=DoraemonBox_Sogou_7.0.0_84.apk",
+	"changeLog": "1、适配6.0动态权限,2、键盘测试可以横屏了,3、打字性能测试随机时y值减小，防止点到收起按钮"
 }
