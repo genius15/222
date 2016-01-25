@@ -1,5 +1,5 @@
 {
-	"vc": 88,
-	"dl": "http://file.mt.sogou.com/g2/M00/04/23/CoZsllaD5I-ANEAhAD58TyjAaac755.apk?n=DoraemonBox_Sogou_7.1.0_88.apk",
-	"changeLog": "1、设备信息更完整,2、修复按键响应UI actionbar问题,3、区分手动升级和自动升级"
+	"vc": 91,
+	"dl": "http://file.mt.sogou.com/g2/M00/07/78/CoZa6FagpV2AV_K5AFU6wOfR0Rs123.apk?n=DoraemonBox_Sogou_V7.5.0_91.apk",
+	"changeLog": "1、全新的logo，扁平化,2、小清新的界面,3、新增自定义时间调整功能,4、增加分享给朋友的功能"
 }
