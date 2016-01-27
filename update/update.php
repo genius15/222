@@ -1,5 +1,5 @@
 {
-	"vc": 91,
-	"dl": "http://file.mt.sogou.com/g2/M00/07/78/CoZa6FagpV2AV_K5AFU6wOfR0Rs123.apk?n=DoraemonBox_Sogou_V7.5.0_91.apk",
-	"changeLog": "1、全新的logo，扁平化,2、小清新的界面,3、新增自定义时间调整功能,4、增加分享给朋友的功能"
+	"vc": 80,
+	"dl": "http://file.mt.sogou.com/g2/M00/01/BF/CoZa6FZz_juAWiaWAD0WFctUiCA904.apk?n=DoraemonBox_Sogou_6.9.3_80.apk",
+	"changeLog": "1、新增渠道包验证工具,2、修复5.0以上系统通知icon为白色的bug,3、代理设置可选择两种方案,4、大幅度减少安装包体积,5、修复线上崩溃及ANR"
 }
